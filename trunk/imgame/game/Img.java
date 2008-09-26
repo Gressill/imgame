@@ -23,9 +23,6 @@ public class Img extends Applet {
 
 	Agent[] agents;
 
-	// private ImageIcon iconBuy = new ImageIcon("up.jpg");
-	// private ImageIcon iconSell = new ImageIcon("down.jpg");
-
 	private int[] initCurrentChoise;
 
 	public void init() {
