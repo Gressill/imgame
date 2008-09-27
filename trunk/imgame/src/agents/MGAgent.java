@@ -42,9 +42,10 @@ public class MGAgent extends Agent {
 				// this is how the game works,use random num to simulate the
 				// people's select & init strategies
 				strategiesArray[i][j] = (Math.random() < 0.5) ? -1 : 1;
+				
+				//System.out.println("strategiesArray ["+i+"]["+j+"]= "+strategiesArray[i][j]);
 			}
 		}
-		
 		return strategiesArray;
 	}
 
