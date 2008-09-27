@@ -2,7 +2,7 @@ package agents;
 
 public abstract class Agent {
 
-	protected int action;//
+	protected double action = 0;//
 	protected double gain = 0;//
 	protected int[][] determin;//
 

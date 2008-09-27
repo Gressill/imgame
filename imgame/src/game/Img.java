@@ -7,29 +7,37 @@ import agents.MGAgent;
 import agents.MGHuman;
 
 public class Img {
-/*
+
 	Game game;
 
 	Agent[] agents;
 
 	private int[] initCurrentChoise;
+	
+	private String getParameter(String x) {
+		return "test";
+	}
 
 	public void init() {
 
 		try {
 			//用户没填m,s,n的时候用默认数据3，2，95
-			Constant.memorySize = Integer
-					.parseInt((this.getParameter("memory") == null) ? String
-							.valueOf(Constant.memorySize) : this
-							.getParameter("memory"));
-			Constant.strategySize = Integer.parseInt((this
-					.getParameter("strategy") == null) ? String
-					.valueOf(Constant.strategySize) : this
-					.getParameter("strategy"));
-			Constant.agentNumber = Integer.parseInt((this
-					.getParameter("agents") == null) ? String
-					.valueOf(Constant.agentNumber) : this
-					.getParameter("agents"));
+//			Constant.memorySize = Integer
+//					.parseInt((this.getParameter("memory") == null) ? String
+//							.valueOf(Constant.memorySize) : this
+//							.getParameter("memory"));
+//			Constant.strategySize = Integer.parseInt((this
+//					.getParameter("strategy") == null) ? String
+//					.valueOf(Constant.strategySize) : this
+//					.getParameter("strategy"));
+//			Constant.agentNumber = Integer.parseInt((this
+//					.getParameter("agents") == null) ? String
+//					.valueOf(Constant.agentNumber) : this
+//					.getParameter("agents"));
+			
+			Constant.memorySize = Integer.parseInt(String.valueOf(Constant.memorySize) );
+			Constant.strategySize = Integer.parseInt( String.valueOf(Constant.strategySize));
+			Constant.agentNumber = Integer.parseInt(String.valueOf(Constant.agentNumber));
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -46,8 +54,11 @@ public class Img {
 		}
 		
 		// game plays once to initialize the Graph
-		game = new Game(agents, 0, 200 * (1 << 3));
+		//game = new Game(agents, 0, 200 * (1 << 3));
+		game = new Game(agents, 0, 59);
 		game.playGame();
+		
+		
 		double[] price = new double[Constant.timeStepNumber + 1];
 		initCurrentChoise = game.getCurrentChoise();
 
@@ -55,8 +66,9 @@ public class Img {
 		price[0] = 0;
 		//
 		for (int i = 0; i < price.length - 1; ++i) {
-			price[i + 1] = price[i]
-					+ initCurrentChoise[(initCurrentChoise.length - price.length - 1) + i];
+			price[i + 1] = price[i] + initCurrentChoise[(initCurrentChoise.length - price.length - 1) + i];
+			//System.out.println("price["+i+"]"+price[i]);
+			//System.out.println((initCurrentChoise.length - price.length - 1) + i);
 		}
 
 		price = null;
@@ -68,7 +80,7 @@ public class Img {
 			agents[i].setGain(0);
 		}
 
-		game = new Game(agents, 0, 1000);
+		game = new Game(agents, 0, 100);
 
 	}
 
@@ -80,34 +92,17 @@ public class Img {
 
 	}
 
-	public void start() {
-		game.start();
-	}
-
-	public void stop() {
-		game.stop();
-	}
-
-	public void processEvent(AWTEvent e) {
-		if (e.getID() == Event.WINDOW_DESTROY) {
-			System.exit(0);
-		}
-	}
-
 	public String getAppletInfo() {
 		return "Title: Interactive Minority Game \nAuthor: <f>";
 	}
-*/
+
 	
 
 
 	public static void main(String[] args) {
 
-//		Img ImgTest = new Img();
-	//
-//		ImgTest.init();
-//		ImgTest.start();
-
-		System.out.print("yayayayaya");
+		Img ImgTest = new Img();
+	
+		ImgTest.init();
 	}
 }

@@ -17,8 +17,8 @@ public class Game implements Strategy,Runnable {
 	//computer agents number
 	private int tmax = 0;
 
-	//2^16 means what?
-	private int P = 1 << 16;
+	//history space
+	private int P = 8;//1 << 16;
 	
 	private int[] historyChoise;
 
@@ -31,12 +31,72 @@ public class Game implements Strategy,Runnable {
 	//tTrans make nosence
 	//
 	public Game(Agent[] agents, int tTrans, int tMax) {
-		this.agent = agents;
+		this.agent = agents; //agents[95]
 		ttrans = tTrans;
-		tmax = tMax;
+		tmax = tMax;		//59
 		currentChoise = new int[tmax];
 		historyChoise = new int[tmax];
 		historyChoise[0] = (int) (P * Math.random());
+	}
+	
+public void playGame() {
+		
+		//create sockets
+		//SocketServer mgSocket=new SocketServer();
+		//mgSocket.startServer(Constant.port);
+		
+		turns = 0;
+		boolean keepPlaying = true;//when keepPlaying == false ,we end the game.
+		
+		while (keepPlaying) {
+			currentChoise[turns] = 0;
+			for (int i = 0; i < agent.length; ++i) {
+//				 System.out.print("i:"+i);
+//				 System.out.println(agent[i]);
+				if (agent[i].agentAct(historyChoise[turns]) != true) { 
+					// Each agent acts. They have the choice
+					keepPlaying = false; // to return false and end the game.
+					break;
+				}
+				// TODO As all the MGAgents' action are 0. so A[t] would be -1 or 1
+				currentChoise[turns] += agent[i].getAction();
+			}
+			//
+			
+			/////////////////////////////////////////////////////////////////////////////////
+//			 System.out.println("[turns]:"+turns);
+//			 System.out.println("currentChoise[turns]:"+currentChoise[turns]);			 
+
+			if (!keepPlaying) // If any agent wanted out, we get out.
+				break;
+
+			//System.out.println("********************"+agent.length);
+			for (int i = 0; i < agent.length; ++i) {
+				agent[i].setGain(agent[i].getGain() - agent[i].getAction() * currentChoise[turns]);
+				//System.out.println("getgain"+agent[i].getGain());
+				if (agent[i].feedback(currentChoise[turns], historyChoise[turns]) != true) { // Each agent
+					// gets
+					// feedback.
+					keepPlaying = false; // Again, they can return false and
+					// end things!
+					break;
+				}
+			}
+
+			if ((++turns) < tmax) {
+				updateHistory(historyChoise, currentChoise);
+				//historyChoise[turns] = ((2 * historyChoise[turns - 1]) + ((currentChoise[turns - 1] > 0) ? 1 : 0)) % P; 
+				// We update the history.
+				if (turns == ttrans) {
+					for (int i = 0; i < agent.length; ++i)
+						agent[i].setGain(0); // If we've finished the
+					// transient period, we set
+					// agents' gain to 0.
+				}
+			} else
+				keepPlaying = false;
+		}
+		
 	}
 	/*
 	 * loading history price
@@ -79,7 +139,7 @@ public class Game implements Strategy,Runnable {
 		
 		int historySize = 1;
 		historyChoise[turns] = ((2 * historyChoise[turns - 1]) + ((currentChoise[turns - 1] > 0) ? 1 : 0)) % P;
-
+		//System.out.println("historyChoise"+historyChoise[turns]);
 	}
 
 	private void releaseHistory() {
@@ -112,70 +172,7 @@ public class Game implements Strategy,Runnable {
 	public void stop() {
 		gameThread = null;
 	}
-	
-	public void playGame() {
 		
-		//create sockets
-		SocketServer mgSocket=new SocketServer();
-		mgSocket.startServer(Constant.port);
-		
-		turns = 0;
-		boolean keepPlaying = true;//when keeplay == false ,we end the game.
-		
-		while (keepPlaying) {
-			currentChoise[turns] = 0;
-			for (int i = 0; i < agent.length; ++i) {
-//				 System.out.print("i:"+i);
-//				 System.out.println(agent[i]);
-				if (agent[i].agentAct(historyChoise[turns]) != true) { // Each agent acts. They
-					// have the choice
-					keepPlaying = false; // to return false and end the game.
-					break;
-				}
-				// TODO As all the MGAgents' action are 0. so A[t] would be -1
-				// or 1
-				currentChoise[turns] += agent[i].getAction();
-			}
-
-			//t=1600 
-			//System.out.println("[t]:"+t);
-			 //System.out.println("A[t]:"+A[t]);
-
-			if (!keepPlaying) // If any agent wanted out, we get out.
-				break;
-
-			//System.out.println("********************"+agent.length);
-			for (int i = 0; i < agent.length; ++i) {
-				agent[i].setGain(agent[i].getGain() - agent[i].getAction()
-						* currentChoise[turns]);
-				//System.out.println("getgain"+agent[i].getGain());
-				if (agent[i].feedback(currentChoise[turns], historyChoise[turns]) != true) { // Each agent
-					// gets
-					// feedback.
-					keepPlaying = false; // Again, they can return false and
-					// end things!
-					break;
-				}
-			}
-
-			if ((++turns) < tmax) {
-				updateHistory(historyChoise, currentChoise);
-				//historyChoise[turns] = ((2 * historyChoise[turns - 1]) + ((currentChoise[turns - 1] > 0) ? 1 : 0)) % P; 
-				// We update the history.
-				if (turns == ttrans) {
-					for (int i = 0; i < agent.length; ++i)
-						agent[i].setGain(0); // If we've finished the
-					// transient period, we set
-					// agents' gain to 0.
-				}
-			} else
-				keepPlaying = false;
-		}
-		
-		
-		
-	}
-	
 	public int[] getCurrentChoise() {
 		return currentChoise;
 	}
