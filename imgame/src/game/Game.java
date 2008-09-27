@@ -53,12 +53,15 @@ public void playGame() {
 			for (int i = 0; i < agent.length; ++i) {
 //				 System.out.print("i:"+i);
 //				 System.out.println(agent[i]);
+				
+				//agentAct根据历史来决定这轮的选择
 				if (agent[i].agentAct(historyChoise[turns]) != true) { 
 					// Each agent acts. They have the choice
 					keepPlaying = false; // to return false and end the game.
 					break;
 				}
-				// TODO As all the MGAgents' action are 0. so A[t] would be -1 or 1
+				// TODO As all the MGAgents' action are 0. so currentChoise[turns] would be -1 or 1
+				//currentChoise base on lastest three history choise
 				currentChoise[turns] += agent[i].getAction();
 			}
 			//
@@ -74,6 +77,8 @@ public void playGame() {
 			for (int i = 0; i < agent.length; ++i) {
 				agent[i].setGain(agent[i].getGain() - agent[i].getAction() * currentChoise[turns]);
 				//System.out.println("getgain"+agent[i].getGain());
+				
+				//feedback set the higher viture score's agent as determing[0]
 				if (agent[i].feedback(currentChoise[turns], historyChoise[turns]) != true) { // Each agent
 					// gets
 					// feedback.
@@ -84,7 +89,11 @@ public void playGame() {
 			}
 
 			if ((++turns) < tmax) {
+				
+				//updata history
 				updateHistory(historyChoise, currentChoise);
+				
+				
 				//historyChoise[turns] = ((2 * historyChoise[turns - 1]) + ((currentChoise[turns - 1] > 0) ? 1 : 0)) % P; 
 				// We update the history.
 				if (turns == ttrans) {
