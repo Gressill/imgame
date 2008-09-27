@@ -34,12 +34,12 @@ public class SocketServer {
 	 * @param args
 	 */
 	
-	public static void main(String[] args) {
-		// TODO 自动生成方法存根
-		SocketServer server=new SocketServer();
-		server.startServer(Constant.port);
-	}
-	
+//	public static void main(String[] args) {
+//		// TODO 自动生成方法存根
+//		SocketServer server=new SocketServer();
+//		server.startServer(Constant.port);
+//	}
+//	
 	class KBBCom_Thread extends Thread
 	{
 		Socket socket;

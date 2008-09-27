@@ -1,24 +1,13 @@
 package game;
 
-import java.applet.Applet;
-import java.awt.AWTEvent;
-import java.awt.Color;
-import java.awt.Event;
-import java.awt.Frame;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import util.Constant;
 import game.Game;
 import agent.Agent;
 import agent.MGAgent;
 import agent.MGHuman;
 
-public class Img extends Applet {
-
+public class Img {
+/*
 	Game game;
 
 	Agent[] agents;
@@ -27,7 +16,6 @@ public class Img extends Applet {
 
 	public void init() {
 
-		setLayout(null);
 		try {
 			//用户没填m,s,n的时候用默认数据3，2，95
 			Constant.memorySize = Integer
@@ -106,20 +94,20 @@ public class Img extends Applet {
 		}
 	}
 
-	public static void main(String args[]) {
-		Frame f = new Frame("ImgTest");
-		Img ImgTest = new Img();
-
-		ImgTest.init();
-		ImgTest.start();
-
-		f.add("Center", ImgTest);
-		f.setSize(1000, 800);
-		f.show();
-	}
-
 	public String getAppletInfo() {
 		return "Title: Interactive Minority Game \nAuthor: <f>";
 	}
+*/
+	
 
+
+	public static void main(String[] args) {
+
+//		Img ImgTest = new Img();
+	//
+//		ImgTest.init();
+//		ImgTest.start();
+
+		System.out.print("yayayayaya");
+	}
 }
