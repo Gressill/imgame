@@ -50,13 +50,15 @@ public class MGAgent extends Agent {
 	}
 
 	/**
-	 * (non-Javadoc)
+	 * 根据历史来决定这轮的选择
 	 * 
+	 * @param historyChoise: historyChoise.
 	 * @see agent.Agent#act(int)
+	 * @param action: this turn agent's choice should be 0 or 1;
 	 */
-	public boolean agentAct(int mu) {
+	public boolean agentAct(int historyChoise) {
 		//
-		action = strategiesArray[determining[0]][mu % historySize];
+		action = strategiesArray[determining[0]][historyChoise % historySize];
 		return true;
 	}
 
