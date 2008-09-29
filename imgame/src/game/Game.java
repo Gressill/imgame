@@ -1,7 +1,19 @@
 package game;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.io.*;
+import java.util.*;
+
+import org.dom4j.*;
+import org.dom4j.io.*;
+
 import agents.Agent;
 import util.Constant;
+import util.FileOperate;
 import agents.Strategy;
 import server.SocketServer;
 
@@ -21,14 +33,14 @@ public class Game implements Strategy,Runnable {
 	private int P = 8;//1 << 16;
 	
 	private int[] historyChoise;
+	
+	private ArrayList<Integer> historyPrice;
 
 	private int[] currentChoise;
 
 	private Thread gameThread;
 
 	private Agent[] agent;
-
-	//tTrans make nosence
 	//
 	public Game(Agent[] agents, int tTrans, int tMax) {
 		this.agent = agents; //agents[95]
@@ -46,73 +58,50 @@ public void playGame() {
 		//mgSocket.startServer(Constant.port);
 		
 		turns = 0;
-		boolean keepPlaying = true;//when keepPlaying == false ,we end the game.
-		
+		boolean keepPlaying = false;//when keepPlaying == false ,we end the game.
+		loadHistory();
 		while (keepPlaying) {
 			currentChoise[turns] = 0;
-			for (int i = 0; i < agent.length; ++i) {
-//				 System.out.print("i:"+i);
-//				 System.out.println(agent[i]);
-				
-				//agentAct根据历史来决定这轮的选择
-				if (agent[i].agentAct(historyChoise[turns]) != true) { 
-					// Each agent acts. They have the choice
-					keepPlaying = false; // to return false and end the game.
-					break;
-				}
-				// TODO As all the MGAgents' action are 0. so currentChoise[turns] would be -1 or 1
-				//currentChoise base on lastest three history choise
-				currentChoise[turns] += agent[i].getAction();
-			}
-			//
 			
-			/////////////////////////////////////////////////////////////////////////////////
-//			 System.out.println("[turns]:"+turns);
-//			 System.out.println("currentChoise[turns]:"+currentChoise[turns]);			 
-
-			if (!keepPlaying) // If any agent wanted out, we get out.
-				break;
-
-			//System.out.println("********************"+agent.length);
-			for (int i = 0; i < agent.length; ++i) {
-				agent[i].setGain(agent[i].getGain() - agent[i].getAction() * currentChoise[turns]);
-				//System.out.println("getgain"+agent[i].getGain());
-				
-				//feedback set the higher viture score's agent as determing[0]
-				if (agent[i].feedback(currentChoise[turns], historyChoise[turns]) != true) { // Each agent
-					// gets
-					// feedback.
-					keepPlaying = false; // Again, they can return false and
-					// end things!
-					break;
-				}
+			for (int i = 0; i < agent.length; i++) {
+				agent[i].agentAct(historyChoise[turns]);//根据历史来决定买和卖，也就是action的值，为0或者1
+				//currentChoise[i] = (int)agent[i].getAction();
+				//Arrays.fill(currentChoise, historyPrice.length);
 			}
-
-			if ((++turns) < tmax) {
-				
-				//updata history
-				updateHistory(historyChoise, currentChoise);
-				
-				
-				//historyChoise[turns] = ((2 * historyChoise[turns - 1]) + ((currentChoise[turns - 1] > 0) ? 1 : 0)) % P; 
-				// We update the history.
-				if (turns == ttrans) {
-					for (int i = 0; i < agent.length; ++i)
-						agent[i].setGain(0); // If we've finished the
-					// transient period, we set
-					// agents' gain to 0.
-				}
-			} else
-				keepPlaying = false;
+			//historyPrice.add(currentChoise[turns]);
 		}
 		
 	}
-	/*
+
+	/**
+	 * 
 	 * loading history price
 	 */
 	public void loadHistory() {
-
-	}
+		
+		
+		// File historyFile = new File(Constant.HISTORY_PRICE_FILE);
+		// if (historyFile.canRead())
+		
+		long lasting = System.currentTimeMillis();
+		try {
+			File historyFile = new File(Constant.HISTORY_PRICE_FILE);
+			SAXReader reader = new SAXReader();
+			Document doc = reader.read(historyFile);
+			Element root = doc.getRootElement();
+			Element foo;
+			//System.out.println(" test:" + root.elementText("value"));
+			for (Iterator i = root.elementIterator(); i.hasNext();) {
+				foo = (Element) i.next();
+				System.out.println(foo.getData());
+				//System.out.print("price:" + foo.elementText("price"));
+				//System.out.println(" avg:" + foo.elementText("avg"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				}
+			System.out.println("运行时间：" + (System.currentTimeMillis() - lasting) + " 毫秒");
+		}
 
 	/**
 	 * Initialize the agent strategy
@@ -122,6 +111,20 @@ public void playGame() {
 		return null;
 	}
 
+	/**
+	 * 计算该轮的价格
+	 * 
+	 * @param currentChoise：储存该轮的所有agent的决定（买或者卖,1/0）
+	 * @return currentPrice：每一轮的价格
+	 */
+	private double caculatePrice(int[] currentChoise) {
+		
+		double currentPrice = 0;
+		for (int i = 0; i < currentChoise.length; i++) {
+			currentPrice += currentChoise[i];
+		}
+		return currentPrice;
+	}
 	/*
 	 * lock the history
 	 */
