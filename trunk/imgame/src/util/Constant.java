@@ -35,6 +35,7 @@ public class Constant {
 	public static int strategySize = 2;
 	
 	public static int port = 8888;
+	
 //
 //	final public static double postionWidthStartMarginScale = 0.05;
 //
@@ -43,6 +44,8 @@ public class Constant {
 //	final public static double postionHeightStartMarginScale = 0.10;
 //
 //	final public static double postionHeightEndMarginScale = 0.40;
+	
+	final public static String HISTORY_PRICE_FILE = "src/xmlfile/history.xml";
 
 	final public static int HUMAN_PLAYER_EXIT = 999;
 

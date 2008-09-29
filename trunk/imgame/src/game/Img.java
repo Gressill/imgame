@@ -25,16 +25,7 @@ public class Img {
 //			Constant.memorySize = Integer
 //					.parseInt((this.getParameter("memory") == null) ? String
 //							.valueOf(Constant.memorySize) : this
-//							.getParameter("memory"));
-//			Constant.strategySize = Integer.parseInt((this
-//					.getParameter("strategy") == null) ? String
-//					.valueOf(Constant.strategySize) : this
-//					.getParameter("strategy"));
-//			Constant.agentNumber = Integer.parseInt((this
-//					.getParameter("agents") == null) ? String
-//					.valueOf(Constant.agentNumber) : this
-//					.getParameter("agents"));
-			
+//							.getParameter("memory"));			
 			Constant.memorySize = Integer.parseInt(String.valueOf(Constant.memorySize) );
 			Constant.strategySize = Integer.parseInt( String.valueOf(Constant.strategySize));
 			Constant.agentNumber = Integer.parseInt(String.valueOf(Constant.agentNumber));
@@ -77,7 +68,7 @@ public class Img {
 		agents[agents.length - 1] = new MGHuman(agents);
 
 		for (int i = 0; i < agents.length; ++i) {
-			agents[i].setGain(0);
+			//agents[i].setGain(0);
 		}
 
 		game = new Game(agents, 0, 100);
