@@ -54,21 +54,34 @@ public class Game implements Strategy,Runnable {
 public void playGame() {
 		
 		//create sockets
-		//SocketServer mgSocket=new SocketServer();
-		//mgSocket.startServer(Constant.port);
+		SocketServer mgSocket=new SocketServer();
+		mgSocket.startServer(Constant.port);
 		
 		turns = 0;
-		boolean keepPlaying = false;//when keepPlaying == false ,we end the game.
-		loadHistory();
+		boolean keepPlaying = true;//when keepPlaying == false ,we end the game.
+		//loadHistory();
 		while (keepPlaying) {
 			currentChoise[turns] = 0;
 			
 			for (int i = 0; i < agent.length; i++) {
 				agent[i].agentAct(historyChoise[turns]);//根据历史来决定买和卖，也就是action的值，为0或者1
-				//currentChoise[i] = (int)agent[i].getAction();
+				currentChoise[i] = (int)agent[i].getAction();
+				//System.out.println(currentChoise[i]);
 				//Arrays.fill(currentChoise, historyPrice.length);
+				
 			}
-			//historyPrice.add(currentChoise[turns]);
+			//得到该轮的价格 feedback to client
+			int currentPrice = caculatePrice(currentChoise);
+			System.out.println(currentPrice);
+			//historyPrice.add(currentPrice);
+			if (keepPlaying = false) {
+				break;
+			} else {
+				
+
+			}
+			
+			// historyPrice.add(currentChoise[turns]);
 		}
 		
 	}
@@ -79,7 +92,7 @@ public void playGame() {
 	 */
 	public void loadHistory() {
 		
-		
+		//check file exist
 		// File historyFile = new File(Constant.HISTORY_PRICE_FILE);
 		// if (historyFile.canRead())
 		
@@ -100,8 +113,8 @@ public void playGame() {
 				//System.out.println("size = "+nodes.size());
 
 				for (Iterator it = nodes.iterator(); it.hasNext();) {
-				   Element elm = (Element) it.next();
-				   System.out.println(elm.getData());
+				   Element priceElm = (Element) it.next();
+				   System.out.println(priceElm.getData());
 				}
 				
 			} catch (Exception e) {
@@ -124,9 +137,9 @@ public void playGame() {
 	 * @param currentChoise：储存该轮的所有agent的决定（买或者卖,1/0）
 	 * @return currentPrice：每一轮的价格
 	 */
-	private double caculatePrice(int[] currentChoise) {
+	private int caculatePrice(int[] currentChoise) {
 		
-		double currentPrice = 0;
+		int currentPrice = 0;
 		for (int i = 0; i < currentChoise.length; i++) {
 			currentPrice += currentChoise[i];
 		}

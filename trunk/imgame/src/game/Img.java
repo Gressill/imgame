@@ -46,7 +46,7 @@ public class Img {
 		
 		// game plays once to initialize the Graph
 		//game = new Game(agents, 0, 200 * (1 << 3));
-		game = new Game(agents, 0, 59);
+		game = new Game(agents, 0, 100);//third pram will be the number of agents
 		game.playGame();
 		
 		
