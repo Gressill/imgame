@@ -85,18 +85,25 @@ public void playGame() {
 		
 		long lasting = System.currentTimeMillis();
 		try {
-			File historyFile = new File(Constant.HISTORY_PRICE_FILE);
-			SAXReader reader = new SAXReader();
-			Document doc = reader.read(historyFile);
-			Element root = doc.getRootElement();
-			Element foo;
-			//System.out.println(" test:" + root.elementText("value"));
-			for (Iterator i = root.elementIterator(); i.hasNext();) {
-				foo = (Element) i.next();
-				System.out.println(foo.getData());
-				//System.out.print("price:" + foo.elementText("price"));
-				//System.out.println(" avg:" + foo.elementText("avg"));
+				File historyFile = new File(Constant.HISTORY_PRICE_FILE);
+				SAXReader reader = new SAXReader();
+				Document doc = reader.read(historyFile);
+				Element root = doc.getRootElement();
+				Element foo;
+				//System.out.println(" test:" + root.elementText("value"));
+				for (Iterator i = root.elementIterator(); i.hasNext();) {
+					foo = (Element) i.next();
+					//System.out.println(foo.getData());
 				}
+				//get price
+				List nodes = root.elements("price");
+				//System.out.println("size = "+nodes.size());
+
+				for (Iterator it = nodes.iterator(); it.hasNext();) {
+				   Element elm = (Element) it.next();
+				   System.out.println(elm.getData());
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 				}
