@@ -21,7 +21,7 @@ public class Game implements Strategy,Runnable {
 
 	private int price;
 	
-	private int turns; //turns
+	private int turns = 0; //turns
 
 	//?
 	private int ttrans = 0;
@@ -37,6 +37,8 @@ public class Game implements Strategy,Runnable {
 	private ArrayList<Integer> historyPrice;
 
 	private int[] currentChoise;
+	
+	private int currentPrice;
 
 	private Thread gameThread;
 
@@ -46,82 +48,45 @@ public class Game implements Strategy,Runnable {
 		this.agent = agents; //agents[95]
 		ttrans = tTrans;
 		tmax = tMax;		//59
-		currentChoise = new int[tmax];
-		historyChoise = new int[tmax];
-		historyChoise[0] = (int) (P * Math.random());
+		currentChoise = new int[agents.length];
+		historyChoise = new int[agents.length];
+		for (int i = 0; i < agents.length; i++)
+		{
+			historyChoise[i] = (int) (P * Math.random());//random number between 0 to p:8
+		}
+		
 	}
 	
-public void playGame() {
+	public void playGame() {
 		
-		//create sockets
-		SocketServer mgSocket=new SocketServer();
-		mgSocket.startServer(Constant.port);
-		
-		turns = 0;
-		boolean keepPlaying = true;//when keepPlaying == false ,we end the game.
+		//turns = 0;
+		//boolean keepPlaying = Constant.keepPlaying;//when keepPlaying == false ,we end the game.
 		//loadHistory();
-		while (keepPlaying) {
-			currentChoise[turns] = 0;
+		//while (Constant.keepPlaying) {
+			//currentChoise[turns] = 0;
 			
 			for (int i = 0; i < agent.length; i++) {
-				agent[i].agentAct(historyChoise[turns]);//根据历史来决定买和卖，也就是action的值，为0或者1
+				agent[i].agentAct(historyChoise[i]);//根据历史来决定买和卖，也就是action的值，为0或者1
 				currentChoise[i] = (int)agent[i].getAction();
-				//System.out.println(currentChoise[i]);
-				//Arrays.fill(currentChoise, historyPrice.length);
+				updateHistory(historyChoise,currentChoise,i);
+				//System.out.println("current"+i+"Choise"+currentChoise[i]);
 				
 			}
 			//得到该轮的价格 feedback to client
-			int currentPrice = caculatePrice(currentChoise);
-			System.out.println(currentPrice);
-			//historyPrice.add(currentPrice);
-			if (keepPlaying = false) {
-				break;
-			} else {
-				
-
-			}
+			currentPrice = caculatePrice(currentChoise)+Constant.userChoise;
+			//System.out.println("currentPrice"+currentPrice);
+			//Constant.keepPlaying = false;
+//			if (Constant.keepPlaying == false) {
+//				break;
+//			} else {
+//			}
 			
 			// historyPrice.add(currentChoise[turns]);
-		}
+		//}
+		System.out.println("currentPrice"+currentPrice);
+		turns ++;
 		
 	}
-
-	/**
-	 * 
-	 * loading history price
-	 */
-	public void loadHistory() {
-		
-		//check file exist
-		// File historyFile = new File(Constant.HISTORY_PRICE_FILE);
-		// if (historyFile.canRead())
-		
-		long lasting = System.currentTimeMillis();
-		try {
-				File historyFile = new File(Constant.HISTORY_PRICE_FILE);
-				SAXReader reader = new SAXReader();
-				Document doc = reader.read(historyFile);
-				Element root = doc.getRootElement();
-				Element foo;
-				//System.out.println(" test:" + root.elementText("value"));
-				for (Iterator i = root.elementIterator(); i.hasNext();) {
-					foo = (Element) i.next();
-					//System.out.println(foo.getData());
-				}
-				//get price
-				List nodes = root.elements("price");
-				//System.out.println("size = "+nodes.size());
-
-				for (Iterator it = nodes.iterator(); it.hasNext();) {
-				   Element priceElm = (Element) it.next();
-				   System.out.println(priceElm.getData());
-				}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-				}
-			System.out.println("运行时间：" + (System.currentTimeMillis() - lasting) + " 毫秒");
-		}
 
 	/**
 	 * Initialize the agent strategy
@@ -145,12 +110,6 @@ public void playGame() {
 		}
 		return currentPrice;
 	}
-	/*
-	 * lock the history
-	 */
-	private void lockHistory() {
-
-	}
 
 	/**
 	 * strategiesArray = new int[strategiesNum][historySize];<br>
@@ -167,22 +126,14 @@ public void playGame() {
      *  
 	 * @param currentChoise: this turns agents choice.
 	 */
-	private void updateHistory(int historyChoise[],int currentChoise[]) {
+	private void updateHistory(int historyChoise[],int currentChoise[],int i) {
 		
-		int historySize = 1;
-		historyChoise[turns] = ((2 * historyChoise[turns - 1]) + ((currentChoise[turns - 1] > 0) ? 1 : 0)) % P;
-		//System.out.println("historyChoise"+historyChoise[turns]);
-	}
-
-	private void releaseHistory() {
-
+		System.out.println("history["+i+"]Choise"+historyChoise[i]);
+		historyChoise[i] = ((2 * historyChoise[i]) + currentChoise[i]) % P;
 	}
 
 	public void gainAction() {
 
-		lockHistory();
-		updateHistory(historyChoise,currentChoise);
-		releaseHistory();
 	}
 	
 	public void run() {
@@ -207,6 +158,11 @@ public void playGame() {
 		
 	public int[] getCurrentChoise() {
 		return currentChoise;
+	}
+	
+	public int getCurrentPrice()
+	{
+		return this.currentPrice;
 	}
 
 }

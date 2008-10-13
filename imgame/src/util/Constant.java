@@ -36,6 +36,15 @@ public class Constant {
 	
 	public static int port = 8888;
 	
+	public static boolean keepPlaying = true;
+	
+	public static int userChoise = 0;
+	
+	public static int buyChoise = 1;
+	public static int sellChoise = -1;
+	public static int holdChoise = 0;
+	
+	
 //
 //	final public static double postionWidthStartMarginScale = 0.05;
 //
