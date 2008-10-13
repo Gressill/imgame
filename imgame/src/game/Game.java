@@ -68,6 +68,7 @@ public class Game implements Strategy,Runnable {
 			for (int i = 0; i < agent.length; i++) {
 				agent[i].agentAct(historyChoise[i]);//根据历史来决定买和卖，也就是action的值，为0或者1
 				currentChoise[i] = (int)agent[i].getAction();
+				
 				updateHistory(historyChoise,currentChoise,i);
 				//System.out.println("current"+i+"Choise"+currentChoise[i]);
 				
@@ -128,7 +129,7 @@ public class Game implements Strategy,Runnable {
 	 */
 	private void updateHistory(int historyChoise[],int currentChoise[],int i) {
 		
-		System.out.println("history["+i+"]Choise"+historyChoise[i]);
+		System.out.println("agent["+i+"]Choise = "+historyChoise[i]);
 		historyChoise[i] = ((2 * historyChoise[i]) + currentChoise[i]) % P;
 	}
 
