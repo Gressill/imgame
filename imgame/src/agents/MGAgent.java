@@ -16,10 +16,10 @@ public class MGAgent extends Agent {
 
 	private int[] determining; // Array determining active strategy
 
-	public MGAgent(int MEMORY, int STRATEGIES) {
+	public MGAgent(int memorySize, int strategySize) {
 
-		historySize = 1 << MEMORY; // Size of history space
-		strategiesNum = STRATEGIES;
+		historySize = 1 << memorySize; // Size of history space
+		strategiesNum = strategySize;
 
 		strategiesArray = new int[strategiesNum][historySize]; // The strategies: an (strategiesNum*historySize) array
 
@@ -67,14 +67,14 @@ public class MGAgent extends Agent {
 	 * 
 	 * @see agent.Agent#feedback(double, int)
 	 * @param A:
-	 * @param mu:   History choice array
+	 * @param historyChoise:   History choice array
 	 */
 
-	public boolean feedback(double A, int mu) {
+	public boolean feedback(double A, int historyChoise) {
 
 		for (int i = 0; i < strategiesNum; ++i) {
 
-			virtualScores[i] = virtualScores[i] - strategiesArray[i][mu % historySize] * A;
+			virtualScores[i] = virtualScores[i] - strategiesArray[i][historyChoise % historySize] * A;
 
 		}
 
