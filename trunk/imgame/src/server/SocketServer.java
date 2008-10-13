@@ -41,8 +41,14 @@ public class SocketServer {
         public static void main(String[] args) {
         	Img ImgTest = new Img();
         	ImgTest.init();
-            SocketServer server=new SocketServer(ImgTest);
-            server.startServer(Constant.port);
+        	int i=1;
+        	while (i<10)
+			{
+        		ImgTest.playGame();
+				i++;
+			}
+            //SocketServer server=new SocketServer(ImgTest);
+            //server.startServer(Constant.port);
         }
         class GameThread extends Thread  //与客户机进行通信的线程累
         {
@@ -91,14 +97,14 @@ public class SocketServer {
                                 	System.out.println(msg);
                                 	//System.out.println("pice="+imgGame.getPrice());
                                         //向所有客户机传送信息
-                                    bMan.sendToAll(String.valueOf(Constant.userChoise));
+                                    //bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
                                 }
                         }catch(Exception e)
                         {
                                
                         }finally
                         {
-                                try {//从消息广播者立标中删除socket
+                                try {//从消息广播者中删除socket
                                         bMan.remove(socket);
                                         if(reader !=null) reader.close();
                                         if(writer !=null) writer.close();
