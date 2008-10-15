@@ -22,7 +22,6 @@ public class MGAgent extends Agent {
 		strategiesNum = strategySize;
 
 		strategiesArray = new int[strategiesNum][historySize]; // The strategies: an (strategiesNum*historySize) array
-
 		virtualScores = new double[strategiesNum];
 		determining = new int[strategiesNum];
 
@@ -59,7 +58,7 @@ public class MGAgent extends Agent {
 	public boolean agentAct(int historyChoise) {
 		//
 		action = strategiesArray[determining[0]][historyChoise];
-		System.out.println("strategiesArray[1][" + historyChoise + "]");
+		//System.out.println("strategiesArray[1][" + historyChoise + "]");
 		return true;
 	}
 
@@ -71,14 +70,16 @@ public class MGAgent extends Agent {
 	 * @param historyChoise:   History choice array
 	 */
 
-	public boolean feedback(double action, int historyChoise, int currentPrice) {
-		if ((currentPrice < 0) && (this.action > 0)) {
-
-		}
+	public boolean feedback(int historyChoise, int currentPrice) {
+//		if ((currentPrice < 0) && (this.action > 0)) {
+//
+//		}
 		int ns = 1;
+		//System.out.println("historyChoise="+historyChoise);
 		for (int i = 0; i < strategiesNum; ++i) {
 			virtualScores[i] = virtualScores[i]
 					- strategiesArray[i][historyChoise % historySize] * action;
+			System.out.println("v["+i+"]="+virtualScores[i]);
 
 		}
 
@@ -101,6 +102,7 @@ public class MGAgent extends Agent {
 
 			determining[0] = determining[(int) (ns * Math.random())];//第一次在 0 and 1 中随机选择一个策略
 		}
+		System.out.println("determining="+determining[0]);
 		return true;
 	}
 
