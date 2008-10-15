@@ -4,7 +4,7 @@ public abstract class Agent {
 
 	protected double action = 0;//
 	protected double gain = 0;//
-	protected int[][] determin;//
+	protected int[][] determining;//
 
 	public void setGain(double gain) {
 		
@@ -18,13 +18,13 @@ public abstract class Agent {
 
 	public void setDetermin(int[][] det) {
 		
-		this.determin = det;
+		this.determining = det;
 
 	}
 
 	public int[][] getDetermin() {
 
-		return determin;
+		return determining;
 	}
 
 	public boolean agentAct(int historyChoise) {
@@ -41,7 +41,7 @@ public abstract class Agent {
 	 * receive feedback message such as maxprice,maxgain,minprice,mingain,avgprice,avgain
 	 * 
 	 */
-	public boolean feedback(int historyChoise,int currentChoise) {
+	public boolean feedback(int historyChoise,int thisTurnPrice,int i) {
 
 		return true;
 	}
