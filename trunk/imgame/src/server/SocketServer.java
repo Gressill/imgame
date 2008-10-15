@@ -41,14 +41,8 @@ public class SocketServer {
         public static void main(String[] args) {
         	Img ImgTest = new Img();
         	ImgTest.init();
-        	int i=1;
-        	while (i<10)
-			{
-        		ImgTest.playGame();
-				i++;
-			}
-            //SocketServer server=new SocketServer(ImgTest);
-            //server.startServer(Constant.port);
+            SocketServer server=new SocketServer(ImgTest);
+            server.startServer(Constant.port);
         }
         class GameThread extends Thread  //与客户机进行通信的线程累
         {
@@ -67,7 +61,7 @@ public class SocketServer {
                                 reader=new BufferedReader(new InputStreamReader(socket.getInputStream(),"utf8"));
                                 writer=new PrintWriter(socket.getOutputStream(),true);
                                 String msg;
-                                //writer.println(imgGame.getPrice());
+                                writer.println(imgGame.getPrice());
                                 //System.out.println("pice="+imgGame.getPrice());
                                 //从输出流获取信息
                                 while((msg=reader.readLine())!=null)
@@ -94,10 +88,10 @@ public class SocketServer {
                                 		//
 									}
                                 	//Constant.keepPlaying = true; 
-                                	System.out.println(msg);
-                                	//System.out.println("pice="+imgGame.getPrice());
+                                	//System.out.println(msg);
+                                	//System.out.println("pice="+imgGame.getCurrentPrice());
                                         //向所有客户机传送信息
-                                    //bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
+                                    bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
                                 }
                         }catch(Exception e)
                         {

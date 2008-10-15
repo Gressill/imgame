@@ -41,7 +41,7 @@ public abstract class Agent {
 	 * receive feedback message such as maxprice,maxgain,minprice,mingain,avgprice,avgain
 	 * 
 	 */
-	public boolean feedback(int currentChoise,int historyChoise) {
+	public boolean feedback(int historyChoise,int currentChoise) {
 
 		return true;
 	}

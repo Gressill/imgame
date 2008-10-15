@@ -150,7 +150,7 @@ public class Img {
 				} catch (Exception e) {
 					e.printStackTrace();
 					}
-				System.out.println("运行时间：" + (System.currentTimeMillis() - lasting) + " 毫秒");
+				//System.out.println("运行时间：" + (System.currentTimeMillis() - lasting) + " 毫秒");
 		}
 		return priceList;
 	}

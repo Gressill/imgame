@@ -17,7 +17,7 @@ import util.FileOperate;
 import agents.Strategy;
 import server.SocketServer;
 
-public class Game implements Strategy,Runnable {
+public class Game implements Strategy {
 
 	private int price;
 	
@@ -38,7 +38,7 @@ public class Game implements Strategy,Runnable {
 
 	private int[] currentChoise;
 	
-	private int currentPrice;
+	private int currentPrice = 0;
 
 	private Thread gameThread;
 
@@ -66,9 +66,10 @@ public class Game implements Strategy,Runnable {
 			//currentChoise[turns] = 0;
 			
 			for (int i = 0; i < agent.length; i++) {
+				//System.out.println(historyChoise[i]);
 				agent[i].agentAct(historyChoise[i]);//根据历史来决定买和卖，也就是action的值，为0或者1
 				currentChoise[i] = (int)agent[i].getAction();
-				
+				agent[i].feedback(historyChoise[i], currentChoise[i]);
 				updateHistory(historyChoise,currentChoise,i);
 				//System.out.println("current"+i+"Choise"+currentChoise[i]);
 				
@@ -77,12 +78,6 @@ public class Game implements Strategy,Runnable {
 			currentPrice = caculatePrice(currentChoise)+Constant.userChoise;
 			//System.out.println("currentPrice"+currentPrice);
 			//Constant.keepPlaying = false;
-//			if (Constant.keepPlaying == false) {
-//				break;
-//			} else {
-//			}
-			
-			// historyPrice.add(currentChoise[turns]);
 		//}
 		System.out.println("currentPrice"+currentPrice);
 		turns ++;
@@ -97,15 +92,25 @@ public class Game implements Strategy,Runnable {
 		return null;
 	}
 
+	
+	public int[] getCurrentChoise() {
+		return currentChoise;
+	}
+	
+	public int getCurrentPrice()
+	{
+		return this.currentPrice;
+	}
+
 	/**
 	 * 计算该轮的价格
 	 * 
-	 * @param currentChoise：储存该轮的所有agent的决定（买或者卖,1/0）
+	 * @param currentChoise：储存该轮的所有agent的决定（买或者卖,1/-1）
 	 * @return currentPrice：每一轮的价格
 	 */
 	private int caculatePrice(int[] currentChoise) {
 		
-		int currentPrice = 0;
+		//int currentPrice = 0;
 		for (int i = 0; i < currentChoise.length; i++) {
 			currentPrice += currentChoise[i];
 		}
@@ -129,41 +134,21 @@ public class Game implements Strategy,Runnable {
 	 */
 	private void updateHistory(int historyChoise[],int currentChoise[],int i) {
 		
-		System.out.println("agent["+i+"]Choise = "+historyChoise[i]);
-		historyChoise[i] = ((2 * historyChoise[i]) + currentChoise[i]) % P;
-	}
-
-	public void gainAction() {
-
-	}
-	
-	public void run() {
-		Thread me = Thread.currentThread();
-		// game continues to play
-		while (me == gameThread && Constant.playingFlagOfHumanPlayer) {
-			//play();
+		//System.out.println("agent["+i+"]Choise = "+historyChoise[i]);
+		int tempCurrentChoise = 1;
+		if(currentChoise[i]==-1)
+		{
+			tempCurrentChoise = 0;
 		}
-
-		me = null;
-
-	}
-
-	public void start() {
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
-
-	public void stop() {
-		gameThread = null;
-	}
-		
-	public int[] getCurrentChoise() {
-		return currentChoise;
+		historyChoise[i] = ((2 * historyChoise[i]) + tempCurrentChoise) % P;
 	}
 	
-	public int getCurrentPrice()
-	{
-		return this.currentPrice;
+	private void caculateVolatility() {
+		
+	}
+	
+	private void caciulatePlayerScore() {
+		
 	}
 
 }
