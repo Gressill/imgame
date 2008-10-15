@@ -54,10 +54,6 @@ public class Img {
 	public void init() {
 
 		try {
-
-			//create sockets
-		    //SocketServer mgServer=new SocketServer();
-		    //mgServer.startServer(Constant.port);
 		    
 			//用户没填m,s,n的时候用默认数据3，2，95
 //			Constant.memorySize = Integer

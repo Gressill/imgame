@@ -62,23 +62,21 @@ public class Game implements Strategy {
 		//turns = 0;
 		//boolean keepPlaying = Constant.keepPlaying;//when keepPlaying == false ,we end the game.
 		//loadHistory();
-		//while (Constant.keepPlaying) {
-			//currentChoise[turns] = 0;
 			
 			for (int i = 0; i < agent.length; i++) {
 				//System.out.println(historyChoise[i]);
 				agent[i].agentAct(historyChoise[i]);//根据历史来决定买和卖，也就是action的值，为0或者1
 				currentChoise[i] = (int)agent[i].getAction();
-				agent[i].feedback(historyChoise[i], currentChoise[i]);
-				updateHistory(historyChoise,currentChoise,i);
 				//System.out.println("current"+i+"Choise"+currentChoise[i]);
-				
+			}
+			for (int i = 0; i < agent.length; i++) {
+				agent[i].feedback(historyChoise[i], caculateThisTurnPrice(currentChoise),i);
+				updateHistory(historyChoise,currentChoise,i);
 			}
 			//得到该轮的价格 feedback to client
 			currentPrice = caculatePrice(currentChoise)+Constant.userChoise;
 			//System.out.println("currentPrice"+currentPrice);
 			//Constant.keepPlaying = false;
-		//}
 		System.out.println("currentPrice"+currentPrice);
 		turns ++;
 		
@@ -104,6 +102,23 @@ public class Game implements Strategy {
 
 	/**
 	 * 计算该轮的价格
+	 * 
+	 * @param currentChoise：储存该轮的所有agent的决定（买或者卖,1/-1）
+	 * @return currentPrice：每一轮的价格
+	 */
+	private int caculateThisTurnPrice(int[] currentChoise) {
+		
+		int thisTurnPrice = 0;
+		for (int i = 0; i < currentChoise.length; i++) {
+			thisTurnPrice += currentChoise[i];
+		}
+		return thisTurnPrice;
+	}
+	
+
+
+	/**
+	 * 计算历史的价格
 	 * 
 	 * @param currentChoise：储存该轮的所有agent的决定（买或者卖,1/-1）
 	 * @return currentPrice：每一轮的价格
