@@ -32,6 +32,8 @@ public class Constant {
 	public static int dVolatility = 5;
 	
 	final public static String HISTORY_PRICE_FILE = "src/xmlfile/history.xml";
+	
+	final public static String AGENT_INFO_FILE = "src/xmlfile/AgentInfo.xml";
 
 	final public static int HUMAN_PLAYER_EXIT = 999;
 

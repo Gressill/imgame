@@ -4,10 +4,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.io.FileWriter;
 
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.io.XMLWriter;
 
 import server.SocketServer;
 import util.Constant;
@@ -150,6 +154,43 @@ public class Img {
 		}
 		return priceList;
 	}
+	
+	 public void writeAgentFile(int best,double avg,int worse) {
+		/**//*
+			 * 产生 一个document对象AGENT_INFO_FILE
+			 */
+		try {
+			File historyFile = new File(Constant.AGENT_INFO_FILE);
+			SAXReader reader = new SAXReader();
+			Document doc = reader.read(historyFile);
+			Element root = doc.getRootElement();
+			
+			root.element("best").setText(String.valueOf(best));
+			root.element("avg").setText(String.valueOf(avg));
+			root.element("worse").setText(String.valueOf(worse));
+			//System.out.println(asaString);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	 
+	 public void writePriceFile(int thisTurnPrice) {
+			/**//*
+				 * 产生 一个document对象AGENT_INFO_FILE
+				 */
+			try {
+				File historyFile = new File(Constant.HISTORY_PRICE_FILE);
+				SAXReader reader = new SAXReader();
+				Document doc = reader.read(historyFile);
+				Element root = doc.getRootElement();
+				root.addElement("price").setText(String.valueOf(thisTurnPrice));
+				XMLWriter writer = new XMLWriter(new FileWriter(new File(Constant.HISTORY_PRICE_FILE)));
+				writer.write(doc);
+				writer.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
 
 	public void destroy() {
 		initCurrentChoise = null;
