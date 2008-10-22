@@ -36,13 +36,15 @@ public class Game implements Strategy {
 	
 	private ArrayList<Integer> historyPrice;
 
-	private int[] currentChoise;
+	private int[] currentChoise;//存放每个agent的选择的数组
 	
 	private int currentPrice = 0;
 
 	private Thread gameThread;
 
 	private Agent[] agent;
+	
+	private int[] lastDturnA;
 	//
 	public Game(Agent[] agents, int tTrans, int tMax) {
 		this.agent = agents; //agents[95]
@@ -159,7 +161,7 @@ public class Game implements Strategy {
 	}
 	
 	private void caculateVolatility() {
-		
+		 
 	}
 	
 	private void caciulatePlayerScore() {
