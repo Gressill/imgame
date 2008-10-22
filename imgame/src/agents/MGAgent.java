@@ -67,6 +67,7 @@ public class MGAgent extends Agent {
 		//
 		action = strategiesArray[determining[0]][historyChoise];
 		// System.out.println("strategiesArray[1][" + historyChoise + "]");
+
 		return true;
 	}
 
@@ -80,12 +81,14 @@ public class MGAgent extends Agent {
 	 * @param num:just for test,meanness
 	 */
 
+
 	public boolean feedback(int historyChoise, int thisTurnPrice,int num) {
 		//update virtuakScore
 		if (thisTurnPrice * action < 0) {
 			virtualScores[determining[0]]++;
 		} else if (thisTurnPrice * action > 0) {
 			virtualScores[determining[0]]--;
+
 		}
 		//// 根据历史虚分值选择策略
 		for (int i = 0; i < strategiesNum; ++i) {
@@ -94,7 +97,9 @@ public class MGAgent extends Agent {
 				determining[0] = i;
 
 			}
+
 			//System.out.println("agent["+num+"]v[" + i + "]=" + virtualScores[i]);
+
 
 		}
 		return true;

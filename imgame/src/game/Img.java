@@ -87,23 +87,18 @@ public class Img {
 
 		//price.set(0,0);
 		//
-		for (int i = 0; i < price.size() - 1; ++i) {
-			int tempPrice = price.get(i) + initCurrentChoise[(initCurrentChoise.length - price.size() - 1) + i];
-			price.set(i+1, tempPrice);
-			//System.out.println("price["+i+"]"+price[i]);
-			//System.out.println((initCurrentChoise.length - price.length - 1) + i);
-		}
+//		for (int i = 0; i < price.size() - 1; ++i) {
+//			//int tempPrice = price.get(i) + initCurrentChoise[(initCurrentChoise.length - price.size() - 1) + i];
+//			//int tempPrice = price.get(i) + game.getCurrentPrice();
+//			//price.set(i+1, tempPrice);
+//			//System.out.println("price["+i+"]"+price[i]);
+//			//System.out.println((initCurrentChoise.length - price.length - 1) + i);
+//		}
 		
 //		price = null;
 //		initCurrentChoise = null;
 //
 //		agents[agents.length - 1] = new MGHuman(agents);
-//
-//		for (int i = 0; i < agents.length; ++i) {
-//			//agents[i].setGain(0);
-//		}
-//
-//		game = new Game(agents, 0, 100);
 
 	}
 	
@@ -111,7 +106,8 @@ public class Img {
 	{
 		price = loadHistory(price);
 		game.playGame();
-		this.currentPrice = game.getCurrentPrice();		
+		this.currentPrice = game.getCurrentPrice();
+		price.set(price.size()+1, price.get(price.size())+currentPrice);
 	}
 	
 	/**
@@ -199,9 +195,9 @@ public class Img {
 		game = null;
 
 	}
-
-	public String getAppletInfo() {
-		return "Title: Interactive Minority Game \nAuthor: <f>";
+	
+	private void caculateVolatility(List price) {
+		 
 	}
 
 	
