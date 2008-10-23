@@ -125,28 +125,34 @@ public class Img {
 		if (priceList.isEmpty())
 		{
 			long lasting = System.currentTimeMillis();
-			try {
-					File historyFile = new File(Constant.HISTORY_PRICE_FILE);
-					SAXReader reader = new SAXReader();
-					Document doc = reader.read(historyFile);
-					Element root = doc.getRootElement();
-					//get price
-					//List nodes = root.elements("price");
-					//System.out.println("size = "+nodes.size());
-					if(priceList.size()>50)
-					{
-						priceList = root.elements("price").subList((priceList.size()-50), priceList.size());
-					}
+			try
+			{
+				File historyFile = new File(Constant.HISTORY_PRICE_FILE);
+				SAXReader reader = new SAXReader();
+				Document doc = reader.read(historyFile);
+				Element root = doc.getRootElement();
+				// get price
+				// List nodes = root.elements("price");
+				// System.out.println("size = "+nodes.size());
+				if (priceList.size() > 50)
+				{
+					priceList = root.elements("price").subList(
+							(priceList.size() - 50), priceList.size());
+				}
 
-					for (Iterator it = priceList.iterator(); it.hasNext();) {
-					   Element priceElm = (Element) it.next();
-					   System.out.println("priceElm.getData()"+priceElm.getData());
-					}
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-					}
-				//System.out.println("运行时间：" + (System.currentTimeMillis() - lasting) + " 毫秒");
+				for (Iterator it = priceList.iterator(); it.hasNext();)
+				{
+					Element priceElm = (Element) it.next();
+					System.out.println("priceElm.getData()"
+							+ priceElm.getData());
+				}
+
+			} catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			// System.out.println("运行时间：" + (System.currentTimeMillis() -
+			// lasting) + " 毫秒");
 		}
 		return priceList;
 	}
@@ -172,7 +178,7 @@ public class Img {
 	 
 	 public void writePriceFile(int thisTurnPrice) {
 			/**//*
-				 * 产生 一个document对象AGENT_INFO_FILE
+				 * 产生 一个document对象AGENT_PRICE_FILE
 				 */
 			try {
 				File historyFile = new File(Constant.HISTORY_PRICE_FILE);
@@ -197,16 +203,15 @@ public class Img {
 	}
 	
 	private void caculateVolatility(List price) {
-		 
+		int lastDTurnA = 0; 
+		if(price.size()<=Constant.dVolatility)
+		 {}
+		 else {
+			 for (int j = 0; j < price.size(); j++)
+			{
+				 lastDTurnA = lastDTurnA + Integer.valueOf(price.get(j));
+			}
+			
+		}
 	}
-
-	
-
-
-//	public static void main(String[] args) {
-//
-//		Img ImgTest = new Img();
-//	
-//		ImgTest.init();
-//	}
 }
