@@ -27,7 +27,7 @@ public class SocketServer {
         {
                 try{
                         server=new ServerSocket(port); //创建服务器套接字
-                        System.out.println("服务器套接字建立完毕");
+                        System.out.println("server socket created...");
                         while(true)
                         {
                                 Socket socket=server.accept();//若客户机提请求，socket连接
@@ -124,7 +124,7 @@ public class SocketServer {
                                         reader=null;
                                         writer=null;
                                         socket=null;
-                                        System.out.println("客户机离开");
+                                        System.out.println("clients disconnect..");
                                         //向所有客户机传送当前连接数
                                         bMan.sendClientInfo();
                                 } catch (Exception e) {}
@@ -182,7 +182,7 @@ class BManager extends Vector
         //向所有客户机发送当前连接人数
         synchronized void sendClientInfo()
         {
-                String info="当前连接人数："+size();
+                String info="The number of clients："+size();
                 System.out.println(info);
                 sendToAll(info);
         }

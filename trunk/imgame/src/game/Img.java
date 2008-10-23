@@ -13,6 +13,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.XMLWriter;
 
+import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
+
 import server.SocketServer;
 import util.Constant;
 import game.Game;
@@ -202,16 +204,24 @@ public class Img {
 
 	}
 	
-	private void caculateVolatility(List price) {
-		int lastDTurnA = 0; 
-		if(price.size()<=Constant.dVolatility)
-		 {}
-		 else {
-			 for (int j = 0; j < price.size(); j++)
-			{
-				 lastDTurnA = lastDTurnA + Integer.valueOf(price.get(j));
-			}
-			
+	private double caculateVolatility(List price) {
+		double lastDTurnA = 0;
+		double sqrtLastDTurnA = 0;
+		double volatility = 0;
+		List tempPriceList = null;
+		if (price.size() >= Constant.dVolatility) {
+			tempPriceList = price.subList(price.size()-5, price.size());
 		}
+		if (price.size() == Constant.dVolatility) {
+			for (int j = 0; j < tempPriceList.size(); j++) {
+				lastDTurnA = lastDTurnA
+						+ Integer.parseInt(tempPriceList.get(j).toString());
+				sqrtLastDTurnA = sqrtLastDTurnA + Double.parseDouble(tempPriceList.get(j).toString())*Double.parseDouble(tempPriceList.get(j).toString());
+			}
+		}
+		//caculateVolatility
+		volatility = (sqrtLastDTurnA/Constant.dVolatility)-(lastDTurnA/Constant.dVolatility)*(lastDTurnA/Constant.dVolatility);
+		return volatility;
 	}
+	
 }
