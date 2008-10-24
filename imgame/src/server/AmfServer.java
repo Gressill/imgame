@@ -56,10 +56,10 @@ public class AmfServer
 	  
 	   //创建Map对象、Double对象数组
 	   HashMap map=new HashMap();
-	   map.put("Event", "人物移动");
-	   map.put("user", "闪刀浪子");
-	   map.put("x", 100);
-	   map.put("y", 100);  
+	   map.put("Event", "PRICE");
+	   map.put("Best", 100);
+	   map.put("Avg", 50);
+	   map.put("Worse", 10);  
 	  
 	   try {
 	    amfout.writeObject(map);//实际上是将map对象写入到dataoutstream流中
@@ -90,7 +90,7 @@ public class AmfServer
 	   
 	    socket.getOutputStream().write(messageBytes);//向流中写入二进制数据
 	    socket.getOutputStream().flush();
-	    socket.getOutputStream().close();
+	    //socket.getOutputStream().close();
 	   
 	   } catch (FileNotFoundException e) {
 	    e.printStackTrace();
@@ -98,5 +98,14 @@ public class AmfServer
 	   catch (IOException e) {
 	    e.printStackTrace();
 	   }
+//	   finally
+//	   {
+//		   try {
+//			socket.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	   }
 	}
 }
