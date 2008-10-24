@@ -37,7 +37,7 @@ public class SocketServer {
 				//AmfServer amfServer1 = new AmfServer(socket);
 				//amfServer1.sentSerializationMeg();
 				bMan.sendClientInfo();//使用套接字输出当前连接人数
-				bMan.sendToAll();
+				//bMan.sendToAll();
 			}
 		} catch (Exception e) {
 			System.out.println(e);
@@ -111,7 +111,7 @@ public class SocketServer {
 					//imgGame.writePriceFile(1212);
 					//bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
 					//bMan.sendToAll(imgGame.getPrice());
-					bMan.sendToAll();
+					//bMan.sendToAll();
 				}
 			} catch (Exception e) {
 
