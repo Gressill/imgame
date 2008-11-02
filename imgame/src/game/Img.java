@@ -109,7 +109,7 @@ public class Img {
 		price = loadHistory(price);
 		game.playGame();
 		this.currentPrice = game.getCurrentPrice();
-		price.set(price.size()+1, price.get(price.size())+currentPrice);
+		//price.set(price.size()+1, price.get(price.size())+currentPrice);
 	}
 	
 	/**
