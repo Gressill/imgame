@@ -93,30 +93,30 @@ public class SocketServer
 				//System.out.println("pice="+imgGame.getPrice());
 				//从输出流获取信息
 				amfServer.receiveSerializationMeg();
-				while ((msg = reader.readLine()) != null) {
-					//
-					System.out.println(msg);
-					imgGame.playGame();
-					if (msg.equals("buy")) {
-						Constant.userChoise = Constant.buyChoise;
-					}
-					if (msg.equals("sell")) {
-						Constant.userChoise = Constant.sellChoise;
-					}
-					if (msg.equals("hold")) {
-						Constant.userChoise = Constant.holdChoise;
-					} else {
-						//
-					}
-					
-					amfServer.sentSerializationMeg();
-					//System.out.println("pice="+imgGame.getCurrentPrice());
-					//向所有客户机传送信息
-					//imgGame.writePriceFile(1212);
-					//bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
-					//bMan.sendToAll(imgGame.getPrice());
-					//bMan.sendToAll();
-				}
+//				while ((msg = reader.readLine()) != null) {
+//					//
+//					System.out.println(msg);
+//					//imgGame.playGame();
+//					if (msg.equals("buy")) {
+//						Constant.userChoise = Constant.buyChoise;
+//					}
+//					if (msg.equals("sell")) {
+//						Constant.userChoise = Constant.sellChoise;
+//					}
+//					if (msg.equals("hold")) {
+//						Constant.userChoise = Constant.holdChoise;
+//					} else {
+//						//
+//					}
+//					
+//					amfServer.sentSerializationMeg();
+//					//System.out.println("pice="+imgGame.getCurrentPrice());
+//					//向所有客户机传送信息
+//					//imgGame.writePriceFile(1212);
+//					//bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
+//					//bMan.sendToAll(imgGame.getPrice());
+//					//bMan.sendToAll();
+//				}
 			} catch (Exception e) {
 				e.printStackTrace();
 
