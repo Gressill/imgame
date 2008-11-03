@@ -18,6 +18,7 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import util.Constant;
 
 import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.*;
@@ -85,8 +86,6 @@ public class AmfServer
 	public ASObject ReceiveMsg()
 	{
 		ASObject object = null;
-		while (true)
-		{
 			try
 			{
 				object = (ASObject) amfin.readObject();
@@ -104,64 +103,79 @@ public class AmfServer
 				e.printStackTrace();
 			}
 			return object;
-		}
 	}
 
-	public void receiveSerializationMeg()
-	{
+	public void receiveSerializationMeg() {
 		HashMap map;
-		try
-		{
-			//Init();
-			ASObject message = ReceiveMsg();
+		try {
+			// Init();
+			while (true) {
+				ASObject message = ReceiveMsg();
+				//System.out.println("message=" + message);
 
-			if (message != null)
-			{
-				String event = (String) message.get("event");
+				if (message != null) {
+					String event = (String) message.get("event");
+					//System.out.println("message111=" + message);
 
-				if (event != null)
-				{
-					if (event.equals("cookie"))
-					{
-						map = new HashMap();
-						map.put("event", "checkMsg");
-						map.put("checkRuesult", "true");
-						map.put("session", "thisissession");
-
-						amfout.writeObject(map);//实际上是将map对象写入到dataoutstream流中
-						dataoutstream.flush();//清空缓存
-
-						map = null;
-
-						byte[] messageBytes1 = byteoutStream.toByteArray();//amf3数据
-						socket.getOutputStream().write(messageBytes1);//向流中写入二进制数据    
-						socket.getOutputStream().flush();
-					} else if (event.equals("requestRoleInit"))
-					{
-						if (message.get("requestMsg").equals("roleInit"))
-						{
+					if (event != null) {
+						if (event.equals("gameInit")) {
+							Constant.memorySize = Integer.parseInt((String)message.get("m"));
+							Constant.strategySize = Integer.parseInt((String)message.get("s"));
+							Constant.agentNumber = Integer.parseInt((String)message.get("n"));
+						}
+						if (event.equals("buy")) {
 							map = new HashMap();
-							map.put("event", "roleInit");
-							map.put("session", "thisissession");
-							map.put("roleName", "estone");
-							map.put("sceneInfo", "map.gif");
-							map.put("roleLocation", "100/100");
+							map.put("event", "buyAction");
+							map.put("playerName", "zhangliang");
+							map.put("best", 100);
+							map.put("avg", 50);
+							map.put("worse", 10);
+							map.put("price", 2);
 
-							amfout.writeObject(map);//实际上是将map对象写入到 dataoutstream流中
-							dataoutstream.flush();//清空缓存
+							amfout.writeObject(map);// 实际上是将map对象写入到dataoutstream流中
+							dataoutstream.flush();// 清空缓存
 
 							map = null;
 
-							byte[] messageBytes2 = byteoutStream.toByteArray();//amf3数据
-							socket.getOutputStream().write(messageBytes2);//向流中写入二进制数据    
+							byte[] messageBytes = byteoutStream.toByteArray();// amf3数据
+							socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
 							socket.getOutputStream().flush();
+						} else if (event.equals("requestRoleInit"))
+						{
+							// if (message.get("requestMsg").equals("roleInit"))
+							if (message.get("userAction").equals("sell")) {
+								map = new HashMap();
+								map.put("event", "buyAction");
+								map.put("playerName", "zhangliang");
+								map.put("best", 100);
+								map.put("avg", 50);
+								map.put("worse", 10);
+								map.put("price", 2);
+
+								amfout.writeObject(map);// 实际上是将map对象写入到
+														// dataoutstream流中
+								dataoutstream.flush();// 清空缓存
+
+								map = null;
+
+								byte[] messageBytes = byteoutStream
+										.toByteArray();// amf3数据
+								socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
+								socket.getOutputStream().flush();
+							}
 						}
 					}
 				}
 			}
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
+		}finally{
+			try {
+
+				socket.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -186,15 +200,17 @@ public class AmfServer
 
 		//创建Map对象、Double对象数组
 		HashMap map = new HashMap();
-		map.put("Event", "PRICE");
-		map.put("Best", 100);
-		map.put("Avg", 50);
-		map.put("Worse", 10);
+		map.put("event", "buyAction");
+		map.put("playerName", "zhangliang");
+		map.put("best", 100);
+		map.put("avg", 50);
+		map.put("worse", 10);
 
 		try
 		{
 			amfout.writeObject(map);//实际上是将map对象写入到dataoutstream流中
 			dataoutstream.flush();//清空缓存
+			map = null;
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -202,6 +218,7 @@ public class AmfServer
 
 		//将ByteArrayOutputStream流中转化成字节数组
 		byte[] messageBytes = byteoutStream.toByteArray();//amf3数据
+		//messageBytes = null;
 
 		//OutputStreamWriter outputStreamWriter;//使用amf3格式将写入流中的数据编码成字节
 		//BufferedWriter bufferedWriter;//用来封装OutputStreamWriter，以提高效率
