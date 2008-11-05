@@ -19,12 +19,12 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import util.Constant;
+import game.Img;
 
 import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.*;
 
-public class AmfServer
-{
+public class AmfServer {
 	private SerializationContext serializationContext = new SerializationContext();//序列化输入输出流
 
 	private Amf3Output amfout = new Amf3Output(serializationContext);//格式化输出流
@@ -53,21 +53,19 @@ public class AmfServer
 
 	private Socket socket;
 
-	public AmfServer(Socket socket)
-	{
+	private Img iGame;
+
+	public AmfServer(Socket socket) {
 		this.socket = socket;
 		this.Init();
 		//this.outputObject = object;
 	}
 
-	public AmfServer()
-	{
+	public AmfServer() {
 	}
 
-	public void Init()
-	{
-		try
-		{
+	public void Init() {
+		try {
 			amfin.setInputStream(socket.getInputStream());
 			amfout.setOutputStream(dataoutstream);
 
@@ -77,60 +75,62 @@ public class AmfServer
 			outputStreamWriter = new OutputStreamWriter(socket
 					.getOutputStream());//将字符流转化为字节流
 			bufferedWriter = new BufferedWriter(outputStreamWriter);//封装osw对象，提高写入的效率
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public ASObject ReceiveMsg()
-	{
+	public ASObject ReceiveMsg() {
 		ASObject object = null;
-			try
-			{
-				object = (ASObject) amfin.readObject();
-				System.out.println();
-				System.out.println("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>");
-				System.out.println(object);
-				System.out.println("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>");
-				System.out.println();
+		try {
+			object = (ASObject) amfin.readObject();
+			//System.out.println();
+			//System.out.println("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>");
+			System.out.println(object);
+			//System.out.println("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>");
+			//System.out.println();
 
-			} catch (ClassNotFoundException e)
-			{
-				e.printStackTrace();
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			return object;
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return object;
 	}
 
-	public void receiveSerializationMeg() {
+	public synchronized void receiveSerializationMeg() {
 		HashMap map;
 		try {
 			// Init();
-			while (true) {
-				ASObject message = ReceiveMsg();
+			//ASObject message = ReceiveMsg();
+			while (socket.isConnected()) {
 				//System.out.println("message=" + message);
-
+				ASObject message = ReceiveMsg();
 				if (message != null) {
 					String event = (String) message.get("event");
 					//System.out.println("message111=" + message);
 
 					if (event != null) {
 						if (event.equals("gameInit")) {
-							Constant.memorySize = Integer.parseInt((String)message.get("m"));
-							Constant.strategySize = Integer.parseInt((String)message.get("s"));
-							Constant.agentNumber = Integer.parseInt((String)message.get("n"));
+							Constant.memorySize = Integer
+									.parseInt((String) message.get("m"));
+							Constant.strategySize = Integer
+									.parseInt((String) message.get("s"));
+							Constant.agentNumber = Integer
+									.parseInt((String) message.get("n"));
+							iGame = new Img(Constant.memorySize,
+									Constant.strategySize, Constant.agentNumber);
+							iGame.init();
 						}
 						if (event.equals("buy")) {
+							iGame.playGame();
+							int tempPrice = iGame.getCurrentPrice();
 							map = new HashMap();
 							map.put("event", "buyAction");
-							map.put("playerName", "zhangliang");
+							map.put("price", tempPrice);
 							map.put("best", 100);
 							map.put("avg", 50);
 							map.put("worse", 10);
-							map.put("price", 2);
 
 							amfout.writeObject(map);// 实际上是将map对象写入到dataoutstream流中
 							dataoutstream.flush();// 清空缓存
@@ -140,36 +140,38 @@ public class AmfServer
 							byte[] messageBytes = byteoutStream.toByteArray();// amf3数据
 							socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
 							socket.getOutputStream().flush();
-						} else if (event.equals("requestRoleInit"))
-						{
+							System.out.println("sent message Succeed");
+						} else if (event.equals("sell")) {
 							// if (message.get("requestMsg").equals("roleInit"))
-							if (message.get("userAction").equals("sell")) {
-								map = new HashMap();
-								map.put("event", "buyAction");
-								map.put("playerName", "zhangliang");
-								map.put("best", 100);
-								map.put("avg", 50);
-								map.put("worse", 10);
-								map.put("price", 2);
+							iGame.playGame();
+							map = new HashMap();
+							map.put("event", "sellAction");
+							map.put("best", 100);
+							map.put("avg", 50);
+							map.put("worse", 10);
+							//map.put("price", 2);
 
-								amfout.writeObject(map);// 实际上是将map对象写入到
-														// dataoutstream流中
-								dataoutstream.flush();// 清空缓存
+							amfout.writeObject(map);// 实际上是将map对象写入到
+							// dataoutstream流中
+							dataoutstream.flush();// 清空缓存
 
-								map = null;
+							map = null;
 
-								byte[] messageBytes = byteoutStream
-										.toByteArray();// amf3数据
-								socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
-								socket.getOutputStream().flush();
-							}
+							byte[] messageBytes = byteoutStream.toByteArray();// amf3数据
+							socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
+							socket.getOutputStream().flush();
+							//}
+						} else if (event.equals("hold")) {
+							iGame.playGame();
+						} else {
+							System.out.println(event);
 						}
 					}
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 
 				socket.close();
@@ -179,8 +181,7 @@ public class AmfServer
 		}
 	}
 
-	public void sentSerializationMeg()
-	{
+	public synchronized void sentSerializationMeg() {
 		//	   SerializationContext serializationContext=new SerializationContext();
 		//	  
 		//	   //序列化amf3对象
@@ -206,13 +207,11 @@ public class AmfServer
 		map.put("avg", 50);
 		map.put("worse", 10);
 
-		try
-		{
+		try {
 			amfout.writeObject(map);//实际上是将map对象写入到dataoutstream流中
 			dataoutstream.flush();//清空缓存
 			map = null;
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
@@ -223,8 +222,7 @@ public class AmfServer
 		//OutputStreamWriter outputStreamWriter;//使用amf3格式将写入流中的数据编码成字节
 		//BufferedWriter bufferedWriter;//用来封装OutputStreamWriter，以提高效率
 
-		try
-		{
+		try {
 
 			System.out.println("输出数组长度" + messageBytes.length);
 
@@ -235,11 +233,9 @@ public class AmfServer
 			socket.getOutputStream().flush();
 			//socket.getOutputStream().close();
 
-		} catch (FileNotFoundException e)
-		{
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		//	   finally
