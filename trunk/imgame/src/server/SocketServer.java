@@ -44,30 +44,30 @@ public class SocketServer
 		}
 	}
 
-	public static void main(String[] args) {
-		Img iGame = new Img();
-		iGame.init();
-		///////////////////////////
-//		        	try
-//					{
-//		        		ServerSocket server1=new ServerSocket(8888);
-//		            	while(true)
-//		            	{
-//		            		System.out.println("socket created....!");
-//		            		Socket socket=server1.accept();
-//		                    AmfServer amfServer = new AmfServer(socket);
-//		                	amfServer.sentSerializationMeg();
-//		                	System.out.println("connect....!");
-//		            	}
-//					} catch (Exception e)
-//					{
-//						e.printStackTrace();
-//						// TODO: handle exception
-//					}
-		///////////////////////////
-		SocketServer server = new SocketServer(iGame);
-		server.startServer(Constant.port);
-	}
+//	public static void main(String[] args) {
+//		Img iGame = new Img();
+//		iGame.init();
+//		///////////////////////////
+////		        	try
+////					{
+////		        		ServerSocket server1=new ServerSocket(8888);
+////		            	while(true)
+////		            	{
+////		            		System.out.println("socket created....!");
+////		            		Socket socket=server1.accept();
+////		                    AmfServer amfServer = new AmfServer(socket);
+////		                	amfServer.sentSerializationMeg();
+////		                	System.out.println("connect....!");
+////		            	}
+////					} catch (Exception e)
+////					{
+////						e.printStackTrace();
+////						// TODO: handle exception
+////					}
+//		///////////////////////////
+//		SocketServer server = new SocketServer(iGame);
+//		server.startServer(Constant.port);
+//	}
 
 	class GameThread extends Thread //与客户机进行通信的线程累
 	{
