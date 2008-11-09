@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<game>
+	<priceseries>
+	    <price>12</price>
+	    <price>12</price>
+	    <price>12</price>
+	</priceseries><!--价格序列-->
+	<turninfo>
+	    <turnnum>11</turnnum><!--本轮论数-->
+	    <score>332</score><!--本轮得分-->
+	    <avgscore>-12</avgscore><!--本轮平均得分-->
+	</turninfo><!--本轮相关信息-->
+	<agents>
+		<best>45</best>
+		<avg>6</avg>
+		<worst>-56</worst>
+	</agents><!--agent相关信息-->
+</game>

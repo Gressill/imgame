@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	width="100%" height="100%" themeColor="#0A6CAA" backgroundColor="#93ACDF"
+	>
+	<mx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import net.imggame.model.ModelLocator;
+			import net.imggame.command.ImgBuyCommand;
+			
+			import mx.controls.Alert;
+			import flash.events.*;
+			
+			import flash.net.Socket;			//导入类包
+			import flash.utils.ByteArray;		//ByteArray在读取数据时使用
+			
+			public var model:ModelLocator = ModelLocator.getInstance();
+			
+			private function validate():void {
+				if(mermoryNumber.text==null || int(mermoryNumber.text)<0 || int(mermoryNumber.text)>20)
+				{
+					mermoryNumber.errorString = "mermoryNumber must between 0~20";
+				}
+				else
+				{
+					mermoryNumber.errorString = null;
+				}
+			
+			}
+			
+			private function enterGame( e:MouseEvent ): void {
+				
+				//Alert.show(model.ImgPriceData.toString());	
+				model.ImgLevel = mermoryNumber.text;
+				model.ImgAgentsNum = agentsNumber.text;
+				model.workflowState = 0;
+				
+				model.ImgTuennum= 0;
+				model.ImgScore = 0;
+				model.ImgAvgScore = "";
+				
+				//mg agents
+				model.ImgBest = 0;
+				model.ImgWorst = 0;
+				model.ImgAvg = 0;
+				
+				//initSocket();
+				
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Panel title="Begin Game" width="75%" height="75%" x="134" y="54">
+	  <mx:Canvas height="382" width="682">
+	  	<mx:Text text="Interactive minority game" width="225" fontWeight="bold" horizontalCenter="17" top="91" enabled="false" fontSize="14"/>
+		<mx:Button y="272" label="Enter" width="84" click="enterGame(event)" horizontalCenter="0"/>
+		<mx:Label text="Memory, M:" x="178" y="131"/>
+		<mx:Label x="178" y="177" text="Number of strategies, S:"/>
+		<mx:Label text="Number of agents, N:" x="178" y="214"/>
+		<mx:TextInput x="402" y="129" text="3" id="mermoryNumber" width="113"/>
+		<mx:TextInput x="402" y="175" text="2" id="starategiesNumber" width="113"/>
+		<mx:TextInput x="402" y="212" text="94" id="agentsNumber" width="113"/>
+	  </mx:Canvas>
+		
+	</mx:Panel>
+	
+</mx:Canvas>
