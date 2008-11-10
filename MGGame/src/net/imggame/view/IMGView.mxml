@@ -2,9 +2,7 @@
 <mx:Canvas 
 	xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:control="net.imggame.control.*"
-	width="100%" height="100%" backgroundColor="#74A1B6"
-	show="InitImg()" 
->
+	width="100%" height="100%" backgroundColor="#74A1B6">
 	<!--IMG Game Controller-->
 	<control:ImgController id="ImgController"/>
 	
@@ -16,114 +14,237 @@
 			import net.imggame.factory.WorkflowChange;
 			import net.imggame.event.*;
 			import mx.collections.ArrayCollection;
-			import net.imggame.event.LoadXml;
+			import net.imggame.event.LoadXml;        
+			import mx.collections.ArrayCollection;
+			import flash.display.Sprite;
 						
 			[Bindable]
 			public var model:ModelLocator = ModelLocator.getInstance();
+	        //private var obj:Object;
+	        private var sessions:String;
+	        private var requestObj:Object;
+			private var obj:Object=new Object();
+
+	        [Bindable]
+	        private var medalsAC:ArrayCollection = new ArrayCollection( [
+	            { Score: "Player", bestScore: 35, avgScore:39, worseScore: 29 },
+	            { Score: "Agents", bestScore: 32, avgScore:17, worseScore: 14 },
+	            { Score: "others", bestScore: 27, avgScore:27, worseScore: 38 } ]);
 			
 			public function InitImg(): void {
 				
 				model.ImgPriceData.removeAll();
 				model.ImgPriceData.addItem(ModelLocator.INIT_PRICE_DATA);
-				//mx.controls.Alert.show(model.ImgPriceData.toString());
-				
+				initSocket();
+			}
+			
+			
+			
+			internal function initSocket():void
+			{
+			        model.socket.connect(ModelLocator.serverIp,ModelLocator.serverPort);//执行连接
+			        //监听连接成功事件
+			        model.socket.addEventListener(Event.CONNECT,funConnect);
+			        //监听关闭事件
+			        model.socket.addEventListener(Event.CLOSE,funClose);
+			        //监听服务器新信息
+			        model.socket.addEventListener(ProgressEvent.SOCKET_DATA,socketDataHandler);
+			        
+					model.socket.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+					
+					model.socket.addEventListener(SecurityErrorEvent.SECURITY_ERROR, securityErrorHandler);
+					
+					//addEventListener("recieved",recievedData);
+			        
+			        //cl.addEventListener("onSendMessage",function (e:Event) {sendMessage("test")} );
+			}
+			
+			internal function funConnect(event:Event):void
+			{
+	            Alert.show("连接成功"+"\n");
+	            requestObj = new Object();
+	            requestObj = {event:"gameInit",m:model.mermoryNumber,s:model.starategiesNumber,n:model.ImgAgentsNum};
+	            model.socket.writeObject(requestObj);
+	            model.socket.flush();
+			}
+			internal function funClose(event:Event):void
+			{
+			        //myText.text+="连接已关闭 \n";
+			        Alert.show("连接已关闭 \n");
+			}
+			//接受服务器信息
+			//internal function recievedData(evt:Event):void
+			private function recievedData()
+			{
+//			    switch (obj.event) {
+//				   case "buyAction" :
+//				    Alert.show("let"+obj.playerName+":"+obj.best+"move to"+obj.avg+","+obj.worse);
+//				    model.ImgAvg = obj.x;
+//				    model.ImgBest = obj.y;
+//				    break;
+//				   case "worse" :
+//				    Alert.show("worse");
+//				    break;
+//				   case "score" :
+//				    Alert.show("score");
+//				    break;
+//				   default :
+//				    break;
+//				}
+                Alert.show("aaaaa");
+                var a:int = model.ImgPriceData[model.ImgPriceData.length-1];
+                model.ImgPriceData.addItem( obj.price );
+                model.ImgPriceData.addItem( obj.price );
+                if( int(obj.price)>0 )
+                {
+                	model.ImgScore -= ((int)(obj.price)-a);
+                }else
+                {
+                	model.ImgScore += ((int)(obj.price)-a);
+                }
+                obj = null;
+               //Alert.show(obj.price);
+			}
+			
+			public function ioErrorHandler(event:IOErrorEvent):void {
+				trace("ioErrorHandler信息： " + event);
+			}
+			
+			public function securityErrorHandler(event:SecurityErrorEvent):void {
+				trace("securityErrorHandler信息: " + event);
+			}
+			
+			public function socketDataHandler(event:ProgressEvent):void {
+				//Alert.show("接收数据");
+				obj=model.socket.readObject();
+				for(var k in obj)
+				{
+				    Alert.show(k+":"+obj[k]);
+				}
+				trace("----------------------------------");
+				recievedData();
+
+				//model.ImgPriceData.addItem( obj.price );
+				//this.dispatchEvent(new Event("recieved"));
 			}
 			
 			public function getBack( e:MouseEvent ): void {
 				
 				//model.workflowState = ModelLocator.CHOOSE_MODEL;
 				WorkflowChange.goBackToChoose(e);
-			
+			}
+			public function goBack(): void {
+				
+				//model.workflowState = ModelLocator.CHOOSE_MODEL;
+				//WorkflowChange.goBackToChoose(e);
 			}
 			
 			// Buy Action
 			public function ImgBuyAction( e:MouseEvent ): void {
+			    model.low++;
+			    //linearAxis.minimum = model.low;
 				var ImgBuy:ImgBuyEvent = new ImgBuyEvent();
 				ImgBuy.dispatch();
 			}
 			// Sell Action
 			public function ImgSellAction( e:MouseEvent ): void {
+				model.low++;
 				var ImgSell:ImgSellEvent = new ImgSellEvent();
 				ImgSell.dispatch();
+			}
+			
+			private function startBtnAction():void{
+				buyBtn.enabled=true;
+				sellBtn.enabled=true;
+//				backBtn.enabled=false;
+				startBtn.enabled=false;
+				endBtn.enabled=true;
+				InitImg();
+			}
+			
+			private function endBtnAction():void{
+				buyBtn.enabled=false;
+				sellBtn.enabled=false;
+			//	backBtn.enabled=true;
+				endBtn.enabled=false;
+				startBtn.enabled=true;
+				model.socket.close();
 			}
 		
 		]]>
 		
 	</mx:Script>
-	<mx:Stroke id = "s1" color="blue" weight="2"/>
+	<!-- Define custom colors and effect. -->			
+	<mx:SeriesSlide id="slideer"  direction="up" duration="1000"/>  
+	<mx:SeriesInterpolate id="seriesInterpolate" duration="1000" />
+    <mx:Stroke id="s1" color="blue" weight="2"/>
+    <mx:Stroke id="s2" color="green" weight="2"/>
+    <mx:Stroke id="s3" color="0xFFCC66" weight="2"/>
 	<mx:SeriesZoom id="zoomIn" duration="1000"/>
     <mx:SeriesZoom id="zoomOut" duration="1000"/>
+     <!-- Define custom colors for use as fills. -->
+    <mx:SolidColor id="sc1" color="yellow" alpha=".8"/>
+    <mx:SolidColor id="sc2" color="0xCCCCCC" alpha=".6"/>
+    <mx:SolidColor id="sc3" color="0xFFCC66" alpha=".6"/>
 
-	<mx:Panel title="Interactive minorarity game:" width="910" height="75%" x="85.5" y="69" horizontalAlign="center" verticalAlign="middle">
+	<mx:Panel title="Interactive minorarity game:" width="869.5" height="424" x="47.7" y="72" horizontalAlign="center" verticalAlign="middle">
 		<mx:HBox >
-		<mx:LineChart id="priceLineChar" height="277"  showDataTips="true" dataProvider="{model.ImgPriceData}">
-			
+		
+		<mx:VBox height="100%" >
+		<mx:LineChart id="priceLineChar" height="277" showDataTips="true" dataProvider="{model.ImgPriceData}" width="573">
 			<mx:horizontalAxis>
-				<mx:LinearAxis interval="1" minorInterval="1" />
+				<mx:LinearAxis id="linearAxis" interval="1"/>
 			</mx:horizontalAxis>
-			
 			<mx:verticalAxis>
-				<mx:LinearAxis interval="1" minorInterval="1" />
+				<mx:LinearAxis interval="1"  title="prices" minorInterval="1" />
 			</mx:verticalAxis>
-			
 			<mx:series>
-				<mx:LineSeries  displayName="Price" yField=""  lineStroke="{s1}" />
+				<mx:LineSeries  displayName="Price" showDataEffect="{seriesInterpolate}" yField=""  lineStroke="{s1}" />
 			</mx:series>
+			<mx:secondSeries>
+				<mx:LineSeries  displayName="volity" showDataEffect="{seriesInterpolate}" yField="" lineStroke="{s2}" />
+			</mx:secondSeries>
+			<mx:secondVerticalAxis>
+				<mx:LinearAxis title="volity"/>
+			</mx:secondVerticalAxis>
 		</mx:LineChart>
 		
-			<mx:Legend dataProvider="{priceLineChar}" id="socre"/>
-			<mx:VBox height="100%" >
-			           
-			<mx:Form>
-			
-			<mx:FormHeading label="SCORE"  themeColor="#009DFF" color="#0F0B3C"/>
-			
-				<mx:FormItem label="SCORE:">
-                <mx:Label id="Score"  text="{model.ImgScore}" width="200"/>
-            </mx:FormItem>
-
-            <mx:FormItem label="PERTURN:">
-                <mx:Label id="perturn"  text="{model.ImgAvgScore}" width="200"/>
-            </mx:FormItem>
-
-            <mx:FormItem label="Level:">
-                <mx:Label id="level"  text="{model.ImgLevel}" width="200"/>
-             </mx:FormItem>
-            <mx:FormItem label="players:">
-            	<mx:Label text="{model.playerNum}" width="199" id="playerNum"/>
-            </mx:FormItem>
-			</mx:Form>
-			
-			<mx:Form >
-			<mx:FormHeading label="agents /turns:{model.ImgAgentsNum}/{model.ImgTuennum}"  themeColor="#009DFF" color="#0F0B3C" textAlign="left"/>
-			<mx:FormHeading label="COMPARISON:"  themeColor="#009DFF" color="#0F0B3C" textAlign="left"/>
-
-            <mx:FormItem label="Best:">
-                <mx:Label id="Best"  text="{model.ImgBest}" width="200"/>
-            </mx:FormItem>
-
-            <mx:FormItem label="Avg:">
-                <mx:Label id="Avg"  text="{model.ImgAvg}" width="200"/>
-            </mx:FormItem>
-
-            <mx:FormItem label="Worst:">
-                <mx:Label id="Worst"  text="{model.ImgWorst}" width="200"/>
-            </mx:FormItem>
- 
-			</mx:Form>
-		</mx:VBox>
-		
-	
-			
-		</mx:HBox>
-				
 		<mx:HBox>
-			<mx:Button label="BUY" width="104" click="ImgBuyAction(event)"/>
-			<!--mx:Button label="BUY" width="104" click="LoadXml(event)"/-->
-			<mx:Button label="SELL" width="103" click="ImgSellAction(event)"/>
+			<mx:Legend dataProvider="{priceLineChar}" id="socre" direction="horizontal"/>
+			<mx:Label id="Score"  text="Score:{model.ImgScore}" width="73.48039" height="17.990196"/>
+			<mx:Label id="perturn"  text="perturn:{model.ImgAvgScore}" width="100.04902" height="17.990196"/>
+			<mx:Label id="level"  text="level:{model.ImgLevel}" width="100.98039" height="17.990196"/>
+			<mx:Label text="{model.playerNum}online" width="72.54902" id="playerNum" height="17.009804"/>
+		</mx:HBox>
+		
+		</mx:VBox>
+			<mx:VBox height="100%" >
+			
+            <mx:ColumnChart id="agentScoreChart" showDataTips="true" height="276" width="217" dataProvider="{medalsAC}" type="clustered">
+            	<mx:horizontalAxis>
+            		<mx:CategoryAxis categoryField="Score"/>
+            	</mx:horizontalAxis>
+            	<mx:series>
+            		<mx:ColumnSeries xField="Score" yField="bestScore" displayName="best" fill="{sc1}" stroke="{s1}"/>
+            		<mx:ColumnSeries xField="Score" yField="avgScore"  displayName="avg" fill="{sc2}" stroke="{s2}"/>
+            		<mx:ColumnSeries xField="Score" yField="worseScore" displayName="worse" fill="{sc3}" stroke="{s3}"/>
+            	</mx:series>
+            </mx:ColumnChart>
+            
+            <mx:HBox>
+	            <mx:Legend dataProvider="{agentScoreChart}" direction="horizontal" id="agentScore"/>
+	        </mx:HBox>
+	        
+        </mx:VBox>
+        
+		</mx:HBox>
+		
+		<mx:HBox>
+			<mx:Button label="START" id="startBtn" width="104" click="startBtnAction()"/>
+			<mx:Button label="BUY" id="buyBtn" width="104"  enabled="false" click="ImgBuyAction(event)"/>
+			<mx:Button label="SELL" id="sellBtn" width="103" enabled="false" click="ImgSellAction(event)"/>
+			<mx:Button label="END" id="endBtn" width="104" enabled="false" click="endBtnAction()"/>
+			<mx:Button label="Go Back" id="backBtn" click="getBack(event)"/>
 		</mx:HBox>	
 	</mx:Panel>
-	<mx:Button label="Go Back" click="getBack(event)"/>
-	
-	
 </mx:Canvas>
