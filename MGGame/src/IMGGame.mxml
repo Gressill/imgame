@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:view="net.imggame.view.*"
-	layout="absolute" >
+	layout="absolute">
 	<mx:Script>
 		<![CDATA[
 			import net.imggame.model.ModelLocator;
-						
+			import net.imggame.event.SocketConnect;
+			
 			[Bindable]
 			public var model:ModelLocator = ModelLocator.getInstance();
-			
 		]]>
 	</mx:Script>
 	
 	<mx:ViewStack width="100%" height="100%" selectedIndex="{model.workflowState}">
+	<!--mx:Button label="socket" click="net.imggame.event.SocketConnect" /-->
 		<view:IMGView />
+		<!--view:OtherView /-->
 		<view:ChooseView />
 	</mx:ViewStack>
 	

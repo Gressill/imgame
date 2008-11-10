@@ -5,10 +5,6 @@ package net.imggame.command {
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.*;
-    import flash.display.Sprite;
-    import flash.events.*;
-	
-	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	
 	import net.imggame.model.ModelLocator;
@@ -19,11 +15,7 @@ package net.imggame.command {
 	public class ImgBuyCommand extends EventDispatcher implements ICommand	{
 		
 		public var model:ModelLocator = ModelLocator.getInstance();
-        
-        private var requestObj:Object;
-        private var obj:Object;
-        private var sessions:String;
-        
+		
 		public function ImgBuyCommand()	{
 			//TODO: implement function
 		}
@@ -54,46 +46,30 @@ package net.imggame.command {
 		        var message:ByteArray=new ByteArray();
 		        //写入数据，使用writeUTFBytes以utf8格式传数据，避免中文乱码
 		        message.writeUTFBytes(msg+"\n");
-		        //message.writeObject(msg+"\n");
 		        //写入socket的缓冲区
 		        model.socket.writeBytes(message);
-				//调用flush方法发送信息
+		//调用flush方法发送信息
 		        model.socket.flush();
 		        //清空消息框
 		        //myInput.text="";
 		}
-        
-        private function RequestFun():void
-        {
-            requestObj = new Object();
-            requestObj = {event:"requestRoleInit",session:sessions,userName:"zhangfan",requestMsg:"roleInit"};
-            model.socket.writeObject(requestObj);
-            model.socket.flush();
-        }
-		
-		private function sendSocket(msg:String):void{
-			    var message:ByteArray=new ByteArray();
-			    var userMsg:ArrayCollection = new ArrayCollection([
-	            { Score: "Player", bestScore: 35, avgScore:39, worseScore: 29 },
-	            { Score: "Agents", bestScore: 32, avgScore:17, worseScore: 14 },
-	            { Score: "others", bestScore: 27, avgScore:27, worseScore: 38 } ]);
-			    //var amf:Amf = new Amf();
-			    //amf.name = "123";
-                message.writeObject(userMsg);
-                model.socket.writeBytes(message);
-                model.socket.flush();
-   		}
 		
 		public function execute(event:CairngormEvent):void	{
 			//TODO: implement function
+			//Alert.show("Img Good Game");
 			//IMGGame(Application.application).sendMessage("buy");
 			sendMessage("buy");
+							
+			
 			var last_price:uint  = model.ImgPriceData.getItemAt(model.ImgPriceData.length-1) as uint;
-			//var loader:URLLoader = new URLLoader( );
+			
+//			var loader:URLLoader = new URLLoader( );
 //			//loader.dataFormat = DataFormat.TEXT;
 //			loader.dataFormat = URLLoaderDataFormat.TEXT;
 //			loader.addEventListener( Event.COMPLETE, handleComplete );
 //			loader.load( new URLRequest( "F:\\文档\\MyProjects\\IMGGame\\src\\net\\imggame\\file1.xml" ) );
+			
+			
 		}
 		
 		private function handleComplete( event:Event ):void {

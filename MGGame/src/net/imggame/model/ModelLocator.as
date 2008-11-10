@@ -54,7 +54,6 @@ package net.imggame.model {
 		public var ImgBest:int = new int;
 		public var ImgAvg:int = new int;
 		public var ImgWorst:int = new int;
-		public var low:int = new int;
 		
 		
 		public static const serverIp:String = "127.0.0.1";
