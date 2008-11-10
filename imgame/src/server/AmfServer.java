@@ -18,6 +18,8 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
+
 import util.Constant;
 import game.Img;
 
@@ -125,13 +127,13 @@ public class AmfServer {
 						if (event.equals("buy")) {
 							iGame.playGame();
 							int tempPrice = iGame.getCurrentPrice();
-							sentSerializationMeg(String.valueOf(tempPrice));
-//							map = new HashMap();
-//							map.put("event", "buyAction");
-//							map.put("price", 35);
-//							map.put("best", 100);
-//							map.put("avg", 50);
-//							map.put("worse", 10);
+							map = new HashMap<String, Object>();
+							map.put("event", "buyAction");
+							map.put("price", tempPrice);
+							map.put("best", 100);
+							map.put("avg", 50);
+							map.put("worse", 10);
+							sentSerializationMeg(map);
 //
 //							amfout.writeObject(map);// 实际上是将map对象写入到dataoutstream流中
 //							dataoutstream.flush();// 清空缓存
@@ -182,7 +184,7 @@ public class AmfServer {
 		}
 	}
 
-	public synchronized void sentSerializationMeg(String tempPrice) {
+	public synchronized void sentSerializationMeg(HashMap<String, Object> map) {
 		//	   SerializationContext serializationContext=new SerializationContext();
 		//	  
 		//	   //序列化amf3对象
@@ -201,13 +203,13 @@ public class AmfServer {
 		amfout.setOutputStream(dataoutstream);
 
 		//创建Map对象、Double对象数组
-		HashMap map = new HashMap();
-		map.put("event", "buyAction");
-		map.put("playerName", "zhangliang");
-		map.put("price", tempPrice);
-		map.put("best", 100);
-		map.put("avg", 50);
-		map.put("worse", 10);
+//		HashMap map = new HashMap();
+//		map.put("event", "buyAction");
+//		map.put("playerName", "zhangliang");
+//		map.put("price", tempPrice);
+//		map.put("best", 100);
+//		map.put("avg", 50);
+//		map.put("worse", 10);
 
 		try {
 			amfout.writeObject(map);//实际上是将map对象写入到dataoutstream流中
@@ -233,6 +235,8 @@ public class AmfServer {
 
 			socket.getOutputStream().write(messageBytes);//向流中写入二进制数据
 			socket.getOutputStream().flush();
+			byteoutStream.reset();
+			System.out.println("数组长度" + byteoutStream.size());
 			//socket.getOutputStream().close();
 
 		} catch (FileNotFoundException e) {
