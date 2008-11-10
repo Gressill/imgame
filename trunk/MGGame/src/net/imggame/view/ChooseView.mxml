@@ -4,7 +4,6 @@
 	>
 	<mx:Script>
 		<![CDATA[
-			import mx.collections.ArrayCollection;
 			import net.imggame.model.ModelLocator;
 			import net.imggame.command.ImgBuyCommand;
 			
@@ -16,24 +15,12 @@
 			
 			public var model:ModelLocator = ModelLocator.getInstance();
 			
-			private function validate():void {
-				if(mermoryNumber.text==null || int(mermoryNumber.text)<0 || int(mermoryNumber.text)>20)
-				{
-					mermoryNumber.errorString = "mermoryNumber must between 0~20";
-				}
-				else
-				{
-					mermoryNumber.errorString = null;
-				}
-			
-			}
-			
 			private function enterGame( e:MouseEvent ): void {
 				
 				//Alert.show(model.ImgPriceData.toString());	
 				model.ImgLevel = mermoryNumber.text;
 				model.ImgAgentsNum = agentsNumber.text;
-				model.workflowState = 0;
+				model.workflowState = gameName.selectedIndex;
 				
 				model.ImgTuennum= 0;
 				model.ImgScore = 0;
@@ -44,16 +31,103 @@
 				model.ImgWorst = 0;
 				model.ImgAvg = 0;
 				
-				//initSocket();
+				initSocket();
 				
+				
+				//cl.addEventListener("onSendMessage",addEvent);
+			}
+			
+//			public function addEvent(e:Event):void{
+//					trace("asdads");
+//			}
+				
+			//public var cl:ImgBuyCommand = new ImgBuyCommand();
+			//private var socket:Socket=new Socket();//定义socket
+			
+			internal function initSocket():void
+			{
+			        model.socket.connect(ModelLocator.serverIp,ModelLocator.serverPort);//执行连接
+			        //监听连接成功事件
+			        model.socket.addEventListener(Event.CONNECT,funConnect);
+			        //监听关闭事件
+			        model.socket.addEventListener(Event.CLOSE,funClose);
+			        //监听服务器新信息
+			        model.socket.addEventListener(ProgressEvent.SOCKET_DATA,funSocket);
+			        
+			        //cl.addEventListener("onSendMessage",function (e:Event) {sendMessage("test")} );
+			}
+			internal function funConnect(event:Event):void
+			{
+			        //myText.text+="连接已建立 \n";
+			        Alert.show("连接已建立 \n");
+			}
+			internal function funClose(event:Event):void
+			{
+			        //myText.text+="连接已关闭 \n";
+			        Alert.show("连接已关闭 \n");
+			}
+//			public function sendMessage(msg:String):void //发送数据到服务器
+//			{
+//			        //新建一个ByteArray来存放数据
+//			        var message:ByteArray=new ByteArray();
+//			        //写入数据，使用writeUTFBytes以utf8格式传数据，避免中文乱码
+//			        message.writeUTFBytes(msg+"\n");
+//			        //写入socket的缓冲区
+//			        socket.writeBytes(message);
+//			        Alert.show("连接message \n");
+//			//调用flush方法发送信息
+//			        socket.flush();
+//			        //清空消息框
+//			        //myInput.text="";
+//			}
+			//接受服务器信息
+			internal function funSocket(event:ProgressEvent):void
+			{
+			        var msg:String="";
+			//循环读取数据，socket的bytesAvailable对象存放了服务器传来的所有数据
+			        while(model.socket.bytesAvailable)
+			        {
+			                //强制使用utf8格式，避免中文乱码
+			                msg+=model.socket.readMultiByte(model.socket.bytesAvailable,"utf8");
+			                //使用\n换行符号把信息切开
+			                var arr:Array=msg.split('\n');
+			                for(var i:int=0;i<arr.length;i++)
+			                {
+			                        if(arr[i].length>1)
+			                        {
+			                                //正则表达式，回车符
+			                                var myPattern:RegExp=/\r/;
+			                                //删除回车符
+			                                arr[i]=arr[i].replace(myPattern,'');
+			                                //在聊天框中输出
+			                                //myText.text+=arr[i]+"\n";
+			                                //Alert.show(arr[i]);
+			                                var a:int = model.ImgPriceData[model.ImgPriceData.length-1];
+			                                model.ImgPriceData.addItem( arr[i] );
+			                                if( int(arr[i])>0 )
+			                                {
+			                                	model.ImgScore -= ((int)(arr[i])-a);
+			                                }else
+			                                {
+			                                	model.ImgScore += ((int)(arr[i])-a);
+			                                }
+			                        }
+			                }
+			        }
+			                   
 			}
 			
 		]]>
 	</mx:Script>
+	<mx:XMLList id="imgname" xmlns="">
+		<model>Interactive minority game</model>
+		<!--model>Other game</model-->
+	</mx:XMLList>
 	<mx:Panel title="Begin Game" width="75%" height="75%" x="134" y="54">
 	  <mx:Canvas height="382" width="682">
-	  	<mx:Text text="Interactive minority game" width="225" fontWeight="bold" horizontalCenter="17" top="91" enabled="false" fontSize="14"/>
-		<mx:Button y="272" label="Enter" width="84" click="enterGame(event)" horizontalCenter="0"/>
+	  	<mx:Text x="178" y="91" text="Please choose game:" width="141" fontWeight="bold"/>
+		<mx:ComboBox x="291" y="96" dataProvider="{imgname}" id="gameName"></mx:ComboBox>
+		<mx:Button x="246" y="271" label="Enter" width="84" click="enterGame(event)"/>
 		<mx:Label text="Memory, M:" x="178" y="131"/>
 		<mx:Label x="178" y="177" text="Number of strategies, S:"/>
 		<mx:Label text="Number of agents, N:" x="178" y="214"/>
