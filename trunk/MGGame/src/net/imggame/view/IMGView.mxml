@@ -93,9 +93,7 @@
 //				   default :
 //				    break;
 //				}
-                Alert.show("aaaaa");
                 var a:int = model.ImgPriceData[model.ImgPriceData.length-1];
-                model.ImgPriceData.addItem( obj.price );
                 model.ImgPriceData.addItem( obj.price );
                 if( int(obj.price)>0 )
                 {
@@ -121,7 +119,7 @@
 				obj=model.socket.readObject();
 				for(var k in obj)
 				{
-				    Alert.show(k+":"+obj[k]);
+				    //Alert.show(k+":"+obj[k]);
 				}
 				trace("----------------------------------");
 				recievedData();
