@@ -70,7 +70,9 @@
 			internal function funClose(event:Event):void
 			{
 			        //myText.text+="连接已关闭 \n";
-			        Alert.show("连接已关闭 \n");
+				endBtn.enabled=false;
+				startBtn.enabled=true;
+			    Alert.show("连接已关闭 \n");
 			}
 			//接受服务器信息
 			//internal function recievedData(evt:Event):void
@@ -156,7 +158,7 @@
 			private function startBtnAction():void{
 				buyBtn.enabled=true;
 				sellBtn.enabled=true;
-//				backBtn.enabled=false;
+				backBtn.enabled=false;
 				startBtn.enabled=false;
 				endBtn.enabled=true;
 				InitImg();
@@ -165,7 +167,7 @@
 			private function endBtnAction():void{
 				buyBtn.enabled=false;
 				sellBtn.enabled=false;
-			//	backBtn.enabled=true;
+				backBtn.enabled=true;
 				endBtn.enabled=false;
 				startBtn.enabled=true;
 				model.socket.close();
