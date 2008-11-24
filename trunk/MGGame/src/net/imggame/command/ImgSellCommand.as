@@ -10,12 +10,24 @@ package net.imggame.command {
 	public class ImgSellCommand implements ICommand {
 		
 		public var model:ModelLocator = ModelLocator.getInstance();
+        
+        private var requestObj:Object;
+        private var obj:Object;
 		
 		public function ImgSellCommand() {
 			
 			//TODO: implement function
 		
 		}
+        
+        private function RequestFun():void
+        {
+            requestObj = new Object();
+            //requestObj = {event:"buy",userName:"yufaye",userAction:"haha"};
+            requestObj = {event:"sell"};
+            model.socket.writeObject(requestObj);
+            model.socket.flush();
+        }
 
 		public function execute11(event:CairngormEvent):void
 		{
@@ -46,27 +58,28 @@ package net.imggame.command {
 		{
 			//TODO: implement function
 			//sendMessage("sell");
-			var random_minus:uint = Math.round(Math.random());
-			
-			model.ImgTempData = 0;
-			var i:int=new int;
-			while(i<100)
-			{
-				var random_add:uint = Math.round(Math.random());
-				if(random_add == 0)
-				{
-					model.ImgTempData--;
-				}
-				else
-				{
-					model.ImgTempData++;
-				}
-				i++;
-			}
+//			var random_minus:uint = Math.round(Math.random());
+//			
+//			model.ImgTempData = 0;
+//			var i:int=new int;
+//			while(i<100)
+//			{
+//				var random_add:uint = Math.round(Math.random());
+//				if(random_add == 0)
+//				{
+//					model.ImgTempData--;
+//				}
+//				else
+//				{
+//					model.ImgTempData++;
+//				}
+//				i++;
+//			}
+			RequestFun();
 			var last_price:uint  = model.ImgPriceData.getItemAt(model.ImgPriceData.length-1) as uint;
 			
 			//Alert.show(model.ImgTempData.toString());
-			model.ImgPriceData.addItem( last_price + model.ImgTempData );
+			//model.ImgPriceData.addItem( last_price + model.ImgTempData );
 			
 		}
 		

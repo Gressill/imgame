@@ -2,6 +2,7 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:view="net.imggame.view.*"
 	layout="absolute" >
+	<mx:Style source="../../libs/yflexskin.css"/>
 	<mx:Script>
 		<![CDATA[
 			import net.imggame.model.ModelLocator;

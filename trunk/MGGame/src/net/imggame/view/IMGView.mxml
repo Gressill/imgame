@@ -93,6 +93,7 @@
 //				   default :
 //				    break;
 //				}
+				//medalsAC.setItemAt(obj.price,2);
                 var a:int = model.ImgPriceData[model.ImgPriceData.length-1];
                 model.ImgPriceData.addItem( obj.price );
                 if( int(obj.price)>0 )
@@ -117,11 +118,11 @@
 			public function socketDataHandler(event:ProgressEvent):void {
 				//Alert.show("接收数据");
 				obj=model.socket.readObject();
-				for(var k in obj)
-				{
-				    //Alert.show(k+":"+obj[k]);
-				}
-				trace("----------------------------------");
+//				for(var k in obj)
+//				{
+//				    //Alert.show(k+":"+obj[k]);
+//				}
+//				trace("----------------------------------");
 				recievedData();
 
 				//model.ImgPriceData.addItem( obj.price );
