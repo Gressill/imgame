@@ -1,21 +1,10 @@
 package game;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.*;
-import java.util.*;
 
-import org.dom4j.*;
-import org.dom4j.io.*;
-
-import agents.Agent;
 import util.Constant;
-import util.FileOperate;
+import agents.Agent;
 import agents.Strategy;
-import server.SocketServer;
 
 public class Game implements Strategy {
 
