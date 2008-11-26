@@ -1,30 +1,24 @@
 package server;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Map;
 
 import util.Constant;
-import game.Img;
-
 import flex.messaging.io.SerializationContext;
-import flex.messaging.io.amf.*;
+import flex.messaging.io.amf.ASObject;
+import flex.messaging.io.amf.Amf3Input;
+import flex.messaging.io.amf.Amf3Output;
+import game.Img;
 
 public class AmfServer {
 	private SerializationContext serializationContext = new SerializationContext();//序列化输入输出流
@@ -147,22 +141,23 @@ public class AmfServer {
 						} else if (event.equals("sell")) {
 							// if (message.get("requestMsg").equals("roleInit"))
 							iGame.playGame();
+							int tempPrice = iGame.getCurrentPrice();
 							map = new HashMap();
 							map.put("event", "sellAction");
 							map.put("best", 100);
 							map.put("avg", 50);
 							map.put("worse", 10);
-							//map.put("price", 2);
+							sentSerializationMeg(map);
 
-							amfout.writeObject(map);// 实际上是将map对象写入到
+							//amfout.writeObject(map);// 实际上是将map对象写入到
 							// dataoutstream流中
-							dataoutstream.flush();// 清空缓存
+							//dataoutstream.flush();// 清空缓存
 
-							map = null;
+							//map = null;
 
-							byte[] messageBytes = byteoutStream.toByteArray();// amf3数据
-							socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
-							socket.getOutputStream().flush();
+							//byte[] messageBytes = byteoutStream.toByteArray();// amf3数据
+							//socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
+							//socket.getOutputStream().flush();
 							//}
 						} else if (event.equals("hold")) {
 							iGame.playGame();
@@ -172,7 +167,8 @@ public class AmfServer {
 					}
 				}
 			}
-		} catch (IOException e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
