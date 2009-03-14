@@ -19,6 +19,8 @@ public class Constant {
 	
 	public static int strategySize = 2;
 	
+	public static int differetnHumNum = 0;
+	
 	public static int port = 8888;
 	
 	public static boolean keepPlaying = true;
