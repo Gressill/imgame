@@ -2,33 +2,99 @@ package agents;
 
 import util.Constant;
 
-public class MGHuman extends Agent {
+public class MGHuman extends Agent
+{
 
 	private Agent[] agents;
 
-	//private Agent agent[] = new Agent[number];
+	private int memoryNum;
 
-	public MGHuman(Agent[] agent) {
+	private int strategyNum;
 
-		this.agents = agent;
+	private int agentNum;
 
+	// private Agent agent[] = new Agent[number];
+
+	public MGHuman(int m, int s, int n)
+	{
+
+		// this.agents = agent;
+
+		this.memoryNum = m;
+		this.strategyNum = s;
+		this.agentNum = n;
 	}
-	
+
+	public void setMemoryNum(int m)
+	{
+		this.memoryNum = m;
+	}
+
+	public int getMemoryNum()
+	{
+		return memoryNum;
+	}
+
+	public void setStrategyNum(int s)
+	{
+		this.strategyNum = s;
+	}
+
+	public int getStrategyNum()
+	{
+		return strategyNum;
+	}
+
+	public void seAgentNum(int n)
+	{
+		this.agentNum = n;
+	}
+
+	public int getAgentNum()
+	{
+		return agentNum;
+	}
+
+	/**
+	 * compare two mghunmen have the same m,n,s,ormaybe could extend to compare they are from the same place..
+	 * @param mghuman
+	 * @return
+	 */
+	public boolean isTheSame(MGHuman mghuman)
+	{
+		if (!(mghuman instanceof MGHuman))
+		{
+			return false;
+		} else if ((this.agentNum == mghuman.agentNum)
+				&& (this.strategyNum == mghuman.strategyNum)
+				&& (this.memoryNum == mghuman.memoryNum))
+		{
+			return true;
+		} else
+		{
+			return false;
+		}
+	}
+
 	/**
 	 * 
 	 */
-	public boolean agentAct(int mu) {
+	public boolean agentAct(int mu)
+	{
 
-		while (!Constant.isInterfaceToGame()) {
+		while (!Constant.isInterfaceToGame())
+		{
 			// DO NOTHING
 		}
 
 		Constant.setInterfaceToGame(false);
 
-		if (Constant.interfaceToGameAction == Constant.HUMAN_PLAYER_EXIT) {
+		if (Constant.interfaceToGameAction == Constant.HUMAN_PLAYER_EXIT)
+		{
 			action = 0;
 			return false;
-		} else {
+		} else
+		{
 			action = Constant.interfaceToGameAction;
 			return true;
 		}
@@ -39,29 +105,33 @@ public class MGHuman extends Agent {
 	 * @param agent
 	 * @return
 	 */
-	public boolean feedback(Agent[] agent) {
+	public boolean feedback(Agent[] agent)
+	{
 
 		double agentsMaxGain = agents[0].getGain();
 		double agentsMinGain = agents[0].getGain();
 		double agentsAvgGain = agents[0].getGain();
 
-		for (int i = 1; i < (agent.length - 1); i++) {
-			if (agents[i].getGain() < agentsMinGain) {
+		for (int i = 1; i < (agent.length - 1); i++)
+		{
+			if (agents[i].getGain() < agentsMinGain)
+			{
 
 				agentsMinGain = agents[i].getGain();
 
 			}
 
-			if (agents[i].getGain() > agentsMaxGain) {
+			if (agents[i].getGain() > agentsMaxGain)
+			{
 
 				agentsMaxGain = agents[i].getGain();
 			}
-			
+
 			agentsAvgGain = agentsAvgGain + agents[i].getGain();
 		}
-		
-		agentsAvgGain = agentsAvgGain/(agent.length-1);
-		
+
+		agentsAvgGain = agentsAvgGain / (agent.length - 1);
+
 		Constant.agentGainMax = agentsMaxGain;
 		Constant.agentGainMin = agentsMinGain;
 		Constant.agentGainAv = agentsAvgGain;
