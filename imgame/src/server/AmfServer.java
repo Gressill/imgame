@@ -124,7 +124,9 @@ public class AmfServer
 					{
 						String event = (String) message.get("event");
 						// System.out.println("message111=" + message);
-
+						//now we need we identify the differentes between players
+						// same player put in the same group
+						
 						if (event != null)
 						{
 							if (event.equals("gameInit"))
@@ -139,6 +141,7 @@ public class AmfServer
 										Constant.strategySize,
 										Constant.agentNumber);
 								iGame.init();
+								//iGame.init(m,n,s);
 							}
 							if (event.equals("buy"))
 							{

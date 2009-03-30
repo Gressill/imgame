@@ -37,6 +37,9 @@ public class Img
 
 	// double[] price = new double[Constant.timeStepNumber + 1];
 	List<Integer> price = new ArrayList<Integer>();
+	
+	//this is a list to store human agent
+	List<ArrayList<MGHuman>> mgHumanList = new ArrayList<ArrayList<MGHuman>>();
 
 	public Img()
 	{
@@ -84,12 +87,16 @@ public class Img
 
 		try
 		{
-
 			// 用户没填m,s,n的时候用默认数据3，2，95
 			// Constant.memorySize = Integer
 			// .parseInt((this.getParameter("memory") == null) ? String
 			// .valueOf(Constant.memorySize) : this
 			// .getParameter("memory"));
+			if (mgHumanList.exist(msn))) {
+				//add to the exsit game
+			} else {
+				//begin a new game
+			}
 		} catch (Exception e)
 		{
 

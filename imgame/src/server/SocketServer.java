@@ -177,6 +177,8 @@ class BManager extends Vector {
 
 	synchronized void sendToAll() {
 		PrintWriter writer = null; //输出流
+		ThreadGroup group;
+		
 		Socket sock; //套接字
 		for (int i = 0; i < size(); i++) //执行循环
 		{
