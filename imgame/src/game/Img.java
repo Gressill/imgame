@@ -30,6 +30,8 @@ public class Img
 	Agent[] agents;
 
 	MGHuman[] mghuman;
+	
+	ArrayList<ArrayList<MGHuman>> mgList;// = new ArrayList<ArrayList<MGHuman>>;
 
 	private int[] initCurrentChoise;
 
