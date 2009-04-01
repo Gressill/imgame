@@ -60,14 +60,14 @@ public class MGHuman extends Agent
 	 * @param mghuman
 	 * @return
 	 */
-	public boolean isTheSame(MGHuman mghuman)
+	public boolean isTheSame(MGHuman mgHuman)
 	{
-		if (!(mghuman instanceof MGHuman))
+		if (!(mgHuman instanceof MGHuman))
 		{
 			return false;
-		} else if ((this.agentNum == mghuman.agentNum)
-				&& (this.strategyNum == mghuman.strategyNum)
-				&& (this.memoryNum == mghuman.memoryNum))
+		} else if ((this.agentNum == mgHuman.agentNum)
+				&& (this.strategyNum == mgHuman.strategyNum)
+				&& (this.memoryNum == mgHuman.memoryNum))
 		{
 			return true;
 		} else

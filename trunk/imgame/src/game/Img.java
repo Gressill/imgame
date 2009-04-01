@@ -94,11 +94,11 @@ public class Img
 			// .parseInt((this.getParameter("memory") == null) ? String
 			// .valueOf(Constant.memorySize) : this
 			// .getParameter("memory"));
-			if (mgHumanList.exist(msn))) {
-				//add to the exsit game
-			} else {
-				//begin a new game
-			}
+//			if (mgHumanList.exist(msn))) {
+//				//add to the exsit game
+//			} else {
+//				//begin a new game
+//			}
 		} catch (Exception e)
 		{
 
