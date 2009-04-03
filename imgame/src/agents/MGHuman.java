@@ -65,9 +65,9 @@ public class MGHuman extends Agent
 		if (!(mgHuman instanceof MGHuman))
 		{
 			return false;
-		} else if ((this.agentNum == mgHuman.agentNum)
-				&& (this.strategyNum == mgHuman.strategyNum)
-				&& (this.memoryNum == mgHuman.memoryNum))
+		} else if ((this.agentNum == mgHuman.getAgentNum())
+				&& (this.strategyNum == mgHuman.getStrategyNum())
+				&& (this.memoryNum == mgHuman.getMemoryNum()))
 		{
 			return true;
 		} else
