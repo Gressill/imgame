@@ -9,11 +9,15 @@ import agents.MGHuman;
 public class GameList {
 	private static MGHuman[] humanlist;
 	private static ArrayList<ArrayList<MGHuman>> humanAgentList = new ArrayList<ArrayList<MGHuman>>();
+	private static GameList gameList = new GameList(); 
 
 	private GameList() {
 
 	}
 
+	public static GameList getInstance() {
+		return gameList;
+	}
 	/**
 	 * add human agent to the human agent list
 	 * 
@@ -31,6 +35,10 @@ public class GameList {
 
 		}
 	}
+	
+	public int size() {
+		return gameList.humanAgentList.size();
+	}
 
 	/**
 	 * check the param weather exist
@@ -38,7 +46,7 @@ public class GameList {
 	 * @param mgHuman
 	 * @return array[0] could be 0 or 1,0 means is exist and 1 means not,if exist then array[1] is the index of that list
 	 */
-	public int[] isExist(MGHuman mgHuman) {
+	private int[] isExist(MGHuman mgHuman) {
 		ArrayList<MGHuman> tempHumanList = new ArrayList<MGHuman>();
 		int[] existStatue = new int[2];
 		existStatue[0] = 0;

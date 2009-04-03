@@ -13,6 +13,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.XMLWriter;
 
+import com.sun.java_cup.internal.internal_error;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 import server.SocketServer;
@@ -31,7 +32,7 @@ public class Img
 
 	MGHuman[] mghuman;
 	
-	ArrayList<ArrayList<MGHuman>> mgList;// = new ArrayList<ArrayList<MGHuman>>;
+	//ArrayList<ArrayList<MGHuman>> mgList;// = new ArrayList<ArrayList<MGHuman>>;
 
 	private int[] initCurrentChoise;
 
@@ -41,7 +42,8 @@ public class Img
 	List<Integer> price = new ArrayList<Integer>();
 	
 	//this is a list to store human agent
-	List<ArrayList<MGHuman>> mgHumanList = new ArrayList<ArrayList<MGHuman>>();
+	//List<ArrayList<MGHuman>> mgHumanList = new ArrayList<ArrayList<MGHuman>>();
+	private GameList gameList = GameList.getInstance();
 
 	public Img()
 	{
@@ -51,18 +53,19 @@ public class Img
 	public Img(int m, int s, int n)
 	{
 
-		Constant.memorySize = m;
-		Constant.strategySize = s;
-		Constant.agentNumber = n;
+		//Constant.memorySize = m;
+		//Constant.strategySize = s;
+		//Constant.agentNumber = n;
 
-		if (mghuman.length == 0)
+		if (gameList.size() == 0)
 		{
-			mghuman[Constant.differetnHumNum] = new MGHuman(m, s, n);
+			gameList.addHumenAgent(new MGHuman(m,s,n));
+			//mghuman[Constant.differetnHumNum] = new MGHuman(m, s, n);
 		} else
 		{
 			for (int i = 0,j=mghuman.length; i < j; i++)
 			{
-				if (mghuman[i].getMemoryNum() == m && mghuman[i].getStrategyNum() == s && mghuman[i].getAction() == n)
+				if (mghuman[i].getMemoryNum() == m && mghuman[i].getStrategyNum() == s && mghuman[i].getAgentNum() == n)
 				{
 					//add this human agent to the same group
 					break;
@@ -83,8 +86,12 @@ public class Img
 	{
 		return price;
 	}
+	
+	public void init() {
+		
+	}
 
-	public void init()
+	public void init(int m,int s,int n)
 	{
 
 		try

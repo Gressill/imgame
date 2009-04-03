@@ -140,8 +140,8 @@ public class AmfServer
 								iGame = new Img(Constant.memorySize,
 										Constant.strategySize,
 										Constant.agentNumber);
-								iGame.init();
-								//iGame.init(m,n,s);
+								//iGame.init();
+								iGame.init(Constant.memorySize,Constant.strategySize,Constant.agentNumber);
 							}
 							if (event.equals("buy"))
 							{
