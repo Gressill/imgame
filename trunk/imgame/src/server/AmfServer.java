@@ -51,7 +51,7 @@ public class AmfServer
 	private Socket socket;
 
 	private Img iGame;
-	
+
 	private Img[] gameListImgs;
 
 	public AmfServer(Socket socket)
@@ -78,7 +78,7 @@ public class AmfServer
 			outputStreamWriter = new OutputStreamWriter(socket
 					.getOutputStream());// 将字符流转化为字节流
 			bufferedWriter = new BufferedWriter(outputStreamWriter);// 封装osw对象，
-																	// 提高写入的效率
+			// 提高写入的效率
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -124,9 +124,10 @@ public class AmfServer
 					{
 						String event = (String) message.get("event");
 						// System.out.println("message111=" + message);
-						//now we need we identify the differentes between players
+						// now we need we identify the differentes between
+						// players
 						// same player put in the same group
-						
+
 						if (event != null)
 						{
 							if (event.equals("gameInit"))
@@ -140,13 +141,15 @@ public class AmfServer
 								iGame = new Img(Constant.memorySize,
 										Constant.strategySize,
 										Constant.agentNumber);
-								//iGame.init();
-								iGame.init(Constant.memorySize,Constant.strategySize,Constant.agentNumber);
+								// iGame.init();
+								iGame.init(Constant.memorySize,
+										Constant.strategySize,
+										Constant.agentNumber);
 							}
 							if (event.equals("buy"))
 							{
 								iGame.playGame();
-								//gameListImgs[1].playGame();
+								// gameListImgs[1].playGame();
 								int tempPrice = iGame.getCurrentPrice();
 								map = new HashMap<String, Object>();
 								map.put("event", "buyAction");
@@ -214,7 +217,6 @@ public class AmfServer
 		{
 			try
 			{
-
 				socket.close();
 			} catch (Exception e)
 			{

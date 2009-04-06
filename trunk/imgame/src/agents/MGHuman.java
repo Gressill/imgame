@@ -1,5 +1,7 @@
 package agents;
 
+import java.net.Socket;
+
 import util.Constant;
 
 public class MGHuman extends Agent
@@ -12,6 +14,8 @@ public class MGHuman extends Agent
 	private int strategyNum;
 
 	private int agentNum;
+	
+	private Socket socket;
 
 	// private Agent agent[] = new Agent[number];
 
@@ -23,6 +27,16 @@ public class MGHuman extends Agent
 		this.memoryNum = m;
 		this.strategyNum = s;
 		this.agentNum = n;
+	}
+	
+	public void setSocket(Socket socket)
+	{
+		this.socket = socket;
+	}
+	
+	public Socket getSocket()
+	{
+		return socket;
 	}
 
 	public void setMemoryNum(int m)

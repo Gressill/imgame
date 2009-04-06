@@ -13,7 +13,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.io.XMLWriter;
 
-import com.sun.java_cup.internal.internal_error;
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
 import server.SocketServer;
@@ -56,25 +55,26 @@ public class Img
 		//Constant.memorySize = m;
 		//Constant.strategySize = s;
 		//Constant.agentNumber = n;
-
-		if (gameList.size() == 0)
-		{
-			gameList.addHumenAgent(new MGHuman(m,s,n));
-			//mghuman[Constant.differetnHumNum] = new MGHuman(m, s, n);
-		} else
-		{
-			for (int i = 0,j=mghuman.length; i < j; i++)
-			{
-				if (mghuman[i].getMemoryNum() == m && mghuman[i].getStrategyNum() == s && mghuman[i].getAgentNum() == n)
-				{
-					//add this human agent to the same group
-					break;
-				}
-				//different m,n,s,begin a new game. game number +1
-				if(i==j)
-					Constant.differetnHumNum++;
-			}
-		}
+		gameList.addHumenAgent(new MGHuman(m,s,n));
+//
+//		if (gameList.size() == 0)
+//		{
+//			gameList.addHumenAgent(new MGHuman(m,s,n));
+//			//mghuman[Constant.differetnHumNum] = new MGHuman(m, s, n);
+//		} else
+//		{
+//			for (int i = 0,j=mghuman.length; i < j; i++)
+//			{
+//				if (mghuman[i].getMemoryNum() == m && mghuman[i].getStrategyNum() == s && mghuman[i].getAgentNum() == n)
+//				{
+//					//add this human agent to the same group
+//					break;
+//				}
+//				//different m,n,s,begin a new game. game number +1
+//				if(i==j)
+//					Constant.differetnHumNum++;
+//			}
+//		}
 	}
 
 	public int getCurrentPrice()
