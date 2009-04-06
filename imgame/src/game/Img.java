@@ -94,23 +94,23 @@ public class Img
 	public void init(int m,int s,int n)
 	{
 
-		try
-		{
-			// 用户没填m,s,n的时候用默认数据3，2，95
-			// Constant.memorySize = Integer
-			// .parseInt((this.getParameter("memory") == null) ? String
-			// .valueOf(Constant.memorySize) : this
-			// .getParameter("memory"));
-//			if (mgHumanList.exist(msn))) {
-//				//add to the exsit game
-//			} else {
-//				//begin a new game
-//			}
-		} catch (Exception e)
-		{
-
-			e.printStackTrace();
-		}
+//		try
+//		{
+//			// 用户没填m,s,n的时候用默认数据3，2，95
+//			// Constant.memorySize = Integer
+//			// .parseInt((this.getParameter("memory") == null) ? String
+//			// .valueOf(Constant.memorySize) : this
+//			// .getParameter("memory"));
+////			if (mgHumanList.exist(msn))) {
+////				//add to the exsit game
+////			} else {
+////				//begin a new game
+////			}
+//		} catch (Exception e)
+//		{
+//
+//			e.printStackTrace();
+//		}
 
 		// TODO change the agentNumber to configured value
 		agents = new Agent[Constant.agentNumber + 1]; // number of
