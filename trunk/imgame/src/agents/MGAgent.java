@@ -10,7 +10,7 @@ public class MGAgent extends Agent {
 								// looks default as 27
 	// at last M time steps
 
-	private int strategiesNum; // Number of strategies default as 2
+	private int strategySize; // Number of strategies default as 2
 
 	private int[][] strategiesArray; // The strategies: an
 										// (strategiesNum*historySize) array
@@ -22,15 +22,15 @@ public class MGAgent extends Agent {
 	public MGAgent(int memorySize, int strategySize) {
 
 		historySize = 1 << memorySize; // Size of history space
-		strategiesNum = strategySize;
+		this.strategySize = strategySize;
 
-		strategiesArray = new int[strategiesNum][historySize]; // The
+		strategiesArray = new int[strategySize][historySize]; // The
 																// strategies:
 																// an
 																// (strategiesNum*historySize)
 																// array
-		virtualScores = new double[strategiesNum];
-		determining = new int[strategiesNum];
+		virtualScores = new double[strategySize];
+		determining = new int[strategySize];
 		determining[0] = (Math.random() < 0.5) ? 0 : 1;
 
 		this.InitStrategy();
@@ -43,7 +43,7 @@ public class MGAgent extends Agent {
 	 */
 	public int[][] InitStrategy() {
 
-		for (int i = 0; i < strategiesNum; i++) {
+		for (int i = 0; i < strategySize; i++) {
 			// virtualScores[i] = 0;
 			for (int j = 0; j < historySize; j++) {
 				// this is how the game works,use random num to simulate the
@@ -91,7 +91,7 @@ public class MGAgent extends Agent {
 
 		}
 		//// 根据历史虚分值选择策略
-		for (int i = 0; i < strategiesNum; ++i) {
+		for (int i = 0; i < strategySize; ++i) {
 			if (virtualScores[i] > virtualScores[determining[0]]) {
 
 				determining[0] = i;

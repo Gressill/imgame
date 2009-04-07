@@ -33,12 +33,13 @@ public class GameList
 		{
 			int[] tempCheckStatue = new int[2];
 			tempCheckStatue = isExist(mgHuman);
+			System.out.println("******************************\n"+tempCheckStatue[0]+"^^^^^^^^"+tempCheckStatue[1]);
 			// add human agent to the human list
-			if (tempCheckStatue[0] == 0)
-			{
+			if (tempCheckStatue[0] == 1)
+			{//exist
 				humanAgentList.get(tempCheckStatue[1]).add(mgHuman);
-			} else if (tempCheckStatue[0] == 1)
-			{
+			} else if (tempCheckStatue[0] == 0)
+			{//not exist,then all a new list
 				ArrayList<MGHuman> tempMGHumanList = new ArrayList<MGHuman>();
 				tempMGHumanList.add(mgHuman);
 				humanAgentList.add(tempMGHumanList);
@@ -58,7 +59,7 @@ public class GameList
 	 * check the param weather exist
 	 * 
 	 * @param mgHuman
-	 * @return array[0] could be 0 or 1,0 means is exist and 1 means not,if
+	 * @return array[0] could be 0 or 1,1 means is exist and 0 means not,if
 	 *         exist then array[1] is the index of that list
 	 */
 	private int[] isExist(MGHuman mgHuman)
@@ -66,7 +67,7 @@ public class GameList
 		ArrayList<MGHuman> tempHumanList = new ArrayList<MGHuman>();
 		int[] existStatue = new int[2];
 		existStatue[0] = 0;
-		existStatue[1] = 0;
+		existStatue[1] = humanAgentList.size()+1;
 		if (mgHuman instanceof MGHuman)
 		{
 			for (int i = 0, size = humanAgentList.size(); i < size; i++)
