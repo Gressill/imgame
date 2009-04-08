@@ -132,12 +132,15 @@ public class AmfServer
 						{
 							if (event.equals("gameInit"))
 							{
-								Constant.memorySize = Integer
-										.parseInt((String) message.get("m"));
-								Constant.strategySize = Integer
-										.parseInt((String) message.get("s"));
-								Constant.agentNumber = Integer
-										.parseInt((String) message.get("n"));
+								// Constant.memorySize = Integer
+								// .parseInt((String) message.get("m"));
+								// Constant.strategySize = Integer
+								// .parseInt((String) message.get("s"));
+								// Constant.agentNumber = Integer
+								// .parseInt((String) message.get("n"));
+								Constant.memorySize =  (Integer)message.get("m");
+								Constant.strategySize = (Integer)message.get("s");
+								Constant.agentNumber = (Integer)message.get("n");
 								iGame = new Img(Constant.memorySize,
 										Constant.strategySize,
 										Constant.agentNumber);
