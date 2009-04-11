@@ -90,12 +90,9 @@ public class AmfServer
 		ASObject object = null;
 		try
 		{
+			// this line throw a exception
 			object = (ASObject) amfin.readObject();
-			// System.out.println();
-			// System.out.println("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>");
 			System.out.println(object);
-			// System.out.println("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>");
-			// System.out.println();
 
 		} catch (ClassNotFoundException e)
 		{
@@ -132,12 +129,12 @@ public class AmfServer
 						{
 							if (event.equals("gameInit"))
 							{
-								// Constant.memorySize = Integer
-								// .parseInt((String) message.get("m"));
-								// Constant.strategySize = Integer
-								// .parseInt((String) message.get("s"));
-								// Constant.agentNumber = Integer
-								// .parseInt((String) message.get("n"));
+//								 Constant.memorySize = Integer
+//								 .parseInt((String) message.get("m"));
+//								 Constant.strategySize = Integer
+//								 .parseInt((String) message.get("s"));
+//								 Constant.agentNumber = Integer
+//								 .parseInt((String) message.get("n"));
 								Constant.memorySize =  (Integer)message.get("m");
 								Constant.strategySize = (Integer)message.get("s");
 								Constant.agentNumber = (Integer)message.get("n");
@@ -183,6 +180,7 @@ public class AmfServer
 								int tempPrice = iGame.getCurrentPrice();
 								map = new HashMap();
 								map.put("event", "sellAction");
+								map.put("price", tempPrice);
 								map.put("best", 100);
 								map.put("avg", 50);
 								map.put("worse", 10);
@@ -286,7 +284,7 @@ public class AmfServer
 			socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
 			socket.getOutputStream().flush();
 			byteoutStream.reset();
-			System.out.println("数组长度" + byteoutStream.size());
+			//System.out.println("数组长度" + byteoutStream.size());
 			// socket.getOutputStream().close();
 
 		} catch (FileNotFoundException e)

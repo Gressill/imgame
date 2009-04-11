@@ -4,6 +4,11 @@ import java.util.ArrayList;
 
 import agents.MGHuman;
 
+/**
+ * this class used to manage the game
+ * @author yufei
+ *
+ */
 public class GameList
 {
 	private static MGHuman[] humanlist;
@@ -15,6 +20,7 @@ public class GameList
 	private GameList()
 	{
 
+		
 	}
 
 	public static GameList getInstance()
