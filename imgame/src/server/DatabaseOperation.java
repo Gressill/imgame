@@ -18,7 +18,7 @@ public class DatabaseOperation {
 			//执行SQL语句
 			stmt = conn.createStatement();
 			//res = stmt.executeQuery(sqlStr);
-			stmt.executeUpdate(sqlStr);
+			int executeUpdate = stmt.executeUpdate(sqlStr);
 			res = stmt.executeQuery("select * from mgtest");
 			//处理结果集
 			while (res.next()) {
