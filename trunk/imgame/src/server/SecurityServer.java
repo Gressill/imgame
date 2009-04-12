@@ -45,21 +45,12 @@ public class SecurityServer {
 				if (head.equals("<policy-file-request/>")) {
 					System.out.println("连接服务器");
 					writer.print(corssDomain + "\0");
+					System.out.println(corssDomain);
 					writer.flush();
-					reader.close();
-					writer.close();
 				} else {
 					// 自己的正常请求处理逻辑
 					System.out.println("自己的正常请求处理逻辑");
 				}
-				//if((msg = reader.readLine()) == "<policy-file-request/>\n"){
-//				System.out.println("Get message: " + reader.readLine());
-//				//No matter send what, we just return the security policy file. 
-//				writer.print(corssDomain);
-//				System.out.println("Send message: "+ corssDomain);
-//				writer.write(corssDomain);
-//				writer.flush();
-				//}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
