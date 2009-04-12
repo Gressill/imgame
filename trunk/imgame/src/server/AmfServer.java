@@ -83,12 +83,17 @@ public class AmfServer {
 		ASObject object = null;
 		try {
 			// this line throw a exception
-			object = (ASObject) amfin.readObject();
-			System.out.println(object);
+			if(!socket.isClosed())
+			{
+				object = (ASObject) amfin.readObject();
+				System.out.println(object);
+			}
 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return object;
@@ -99,8 +104,8 @@ public class AmfServer {
 		try {
 			// Init();
 			// ASObject message = ReceiveMsg();
-			while (true) {
-				if (socket.isConnected()) {
+			if (true) {
+				while (socket.isConnected()) {
 					// System.out.println(socket.isConnected());
 					ASObject message = ReceiveMsg();
 					if (message != null) {
@@ -139,7 +144,8 @@ public class AmfServer {
 								map.put("worseAgentScore", 10);
 								map.put("bestHumanScore", 111);
 								map.put("avGHumanScore", 222);
-								map.put("worseHumanScore", 333);
+								map.put("worseHumanScore", 333
+										);
 								sentSerializationMeg(map);
 
 							} else if (event.equals("sell")) {
@@ -158,6 +164,8 @@ public class AmfServer {
 								iGame.playGame();
 							} else if (event.equals("close")) {
 								//close game and write database
+								socket.close();
+								break;
 							} else {
 								System.out.println(event);
 								// break;
