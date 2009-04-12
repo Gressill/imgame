@@ -37,6 +37,7 @@ package net.imggame.business {
 		        
 	        if(ModelLocator.XML_SERIALIZE_TAG == "XML")
 			{
+				Alert.show("XML");
 				this.addEventListener(ProgressEvent.SOCKET_DATA,socketDataHandlerXml);
 			}
 			else if(ModelLocator.XML_SERIALIZE_TAG == "SERIALIZE")
@@ -51,11 +52,11 @@ package net.imggame.business {
 		}
 		
 		protected function securityErrorHandler( e:SecurityErrorEvent ):void {
-			Alert.show( "SecurityErrorEvent"+e.toString() );
+			Alert.show( "SecurityErrorEvent: \n"+e.toString() );
 		}
 		
 		protected function onConnect(event:Event):void{
-			//Alert.show("onConnect\n");
+			Alert.show("onConnect\n");
             //requestObj = new Object();
             //requestObj = {event:"gameInit",m:model.mermoryNumber,s:model.starategiesNumber,n:model.ImgAgentsNum};
            	// modellocator._socket.writeObject(requestObj);

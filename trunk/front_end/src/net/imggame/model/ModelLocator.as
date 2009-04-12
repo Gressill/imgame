@@ -24,8 +24,6 @@ package net.imggame.model {
 			}
 			
 			instance = this;
-			
-			Security.loadPolicyFile("xmlsocket://localhost:843");
 		
 		}
 		 
