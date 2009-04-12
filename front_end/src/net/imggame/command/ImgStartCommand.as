@@ -31,7 +31,7 @@ package net.imggame.command {
 			else if(ModelLocator.XML_SERIALIZE_TAG == "SERIALIZE"){
 				requestObj = new Object();
             	//requestObj = {event:"buy",userName:"yufaye",userAction:"haha"};
-            	requestObj = {event:"gameInit",m:model.gameParam.m,s:model.gameParam.s,n:model.gameParam.n};
+            	requestObj = {event:"gameInit",m:model.gameParam.m,s:model.gameParam.s,n:model.gameParam.n,user:model.username};
             	model._socket.writeObject(requestObj);
 			}
 			

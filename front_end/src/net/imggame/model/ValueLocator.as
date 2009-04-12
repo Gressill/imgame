@@ -6,6 +6,7 @@ package net.imggame.model {
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
+	import mx.controls.DataGrid;
 	
 	[Bindable]
 	public final class ValueLocator implements IModelLocator {
@@ -39,24 +40,24 @@ package net.imggame.model {
         	model.action_active = true;
 		}
 		
-		public function parseResultSerialize(obj:Object):void
+		public function parseResultSerialize(returnObj:Object):void
 		{
-			try{
-				ValueLocator.ImgPriceData.addItem({"price":obj.price});
-					            
-	            /*
-	            //var a:int = this.ImgPriceData[this.ImgPriceData.length-1];
-	            if( int(obj.price)>0 )
-	            {
-	            	this.score = this.score - ((int)(obj.price)-a);
-	            }else
-	            {
-	            	this.score = this.score + ((int)(obj.price)-a);
-	            }
-	            //this.obj = null;
-	            //Alert.show("ImgPriceData="+ImgPriceData.toString());
-	            */
-	            //Alert.show("obj price"+obj.price);
+			try{//according to the returnObj.event to make different 
+				switch (returnObj.event){
+				case "startAction":
+					//Alert.show(returnObj.historyPrice as DataGrid);
+					ValueLocator.ImgPriceData.removeAll();
+					for(var i:uint=0; i<returnObj.historyPrice.length; i++){
+						ValueLocator.ImgPriceData.addItem({"price":returnObj.historyPrice[i]});
+					}
+					break;
+				case "buyAction":
+					ValueLocator.ImgPriceData.addItem({"price":returnObj.price});break;
+				case "sellAction":
+					ValueLocator.ImgPriceData.addItem({"price":returnObj.price});break;
+				default:
+				    break;
+				}
 			}catch(e:Error){
 				Alert.show("Price display error is:"+e.getStackTrace()+e.toString());
 			}finally
