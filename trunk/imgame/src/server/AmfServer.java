@@ -153,6 +153,7 @@ public class AmfServer {
 								map.put("bestHumanScore", 111);
 								map.put("avGHumanScore", 222);
 								map.put("worseHumanScore", 333);
+								map.put("isEnd", "true");
 								sentSerializationMeg(map);
 
 							} else if (event.equals("sell")) {
@@ -165,6 +166,7 @@ public class AmfServer {
 								map.put("bestHumanScore", 111);
 								map.put("avGHumanScore", 222);
 								map.put("worseHumanScore", 333);
+								map.put("isEnd", "true");
 								sentSerializationMeg(map);
 
 							} else if (event.equals("hold")) {
@@ -258,6 +260,7 @@ public class AmfServer {
 		map.put("bestHumanScore", 111);
 		map.put("avGHumanScore", 222);
 		map.put("worseHumanScore", 333);
+		map.put("isEnd", "true");
 
 		try {
 			amfout.writeObject(map);// 实际上是将map对象写入到dataoutstream流中
