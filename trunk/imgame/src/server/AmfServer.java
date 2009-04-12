@@ -134,19 +134,24 @@ public class AmfServer {
 								int tempPrice = iGame.getCurrentPrice();
 								map.put("event", "buyAction");
 								map.put("price", tempPrice);
-								map.put("best", 100);
-								map.put("avg", 50);
-								map.put("worse", 10);
+								map.put("bestAgentScore", 100);
+								map.put("avgAgentScore", 50);
+								map.put("worseAgentScore", 10);
+								map.put("bestHumanScore", 111);
+								map.put("avGHumanScore", 222);
+								map.put("worseHumanScore", 333);
 								sentSerializationMeg(map);
 
 							} else if (event.equals("sell")) {
 								iGame.playGame();
 								int tempPrice = iGame.getCurrentPrice();
 								map.put("event", "sellAction");
-								map.put("price", tempPrice);
-								map.put("best", 100);
-								map.put("avg", 50);
-								map.put("worse", 10);
+								map.put("bestAgentScore", 100);
+								map.put("avgAgentScore", 50);
+								map.put("worseAgentScore", 10);
+								map.put("bestHumanScore", 111);
+								map.put("avGHumanScore", 222);
+								map.put("worseHumanScore", 333);
 								sentSerializationMeg(map);
 
 							} else if (event.equals("hold")) {
@@ -232,9 +237,12 @@ public class AmfServer {
 		map.put("event", "buyAction");
 		map.put("playerName", "zhangliang");
 		map.put("price", 7777);
-		map.put("best", 100);
-		map.put("avg", 50);
-		map.put("worse", 10);
+		map.put("bestAgentScore", 100);
+		map.put("avgAgentScore", 50);
+		map.put("worseAgentScore", 10);
+		map.put("bestHumanScore", 111);
+		map.put("avGHumanScore", 222);
+		map.put("worseHumanScore", 333);
 
 		try {
 			amfout.writeObject(map);// 实际上是将map对象写入到dataoutstream流中
