@@ -27,7 +27,7 @@ public class DatabaseOperation {
 	public DatabaseOperation() {
 		//From System.xml
 		ClassString = "com.mysql.jdbc.Driver";//"oracle.jdbc.driver.OracleDriver";
-		ConnectionString = "jdbc:mysql://localhost:3306/test";//"jdbc:oracle:thin:@192.168.103.171:1521:jstrd";
+		ConnectionString = "jdbc:mysql://localhost:3306/imgame";//"jdbc:oracle:thin:@192.168.103.171:1521:jstrd";
 		UserName = Constant.DB_USER_NAME;
 		PassWord = Constant.DB_PASSWORD;
 

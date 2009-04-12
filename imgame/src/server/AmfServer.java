@@ -141,9 +141,7 @@ public class AmfServer {
 								iGame.init(Constant.memorySize,
 										Constant.strategySize,
 										Constant.agentNumber);
-								for (int i = 0; i < 60; i++) {
-									hisPriceList.add(Math.random()*100);
-								}
+								hisPriceList = iGame.getHistoryPrice(60);
 								map.put("event", "startAction");
 								map.put("historyPrice", hisPriceList);
 								sentSerializationMeg(map);

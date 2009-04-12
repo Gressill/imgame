@@ -1,6 +1,7 @@
 package game;
 
 import java.io.File;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.dom4j.io.XMLWriter;
 
 import com.sun.org.apache.xalan.internal.xsltc.compiler.Parser;
 
+import server.DatabaseOperation;
 import server.SocketServer;
 import util.Constant;
 import game.Game;
@@ -25,17 +27,17 @@ import agents.MGHuman;
 public class Img
 {
 
-	Game game;
+	private Game game;
 
-	Agent[] agents;
+	private Agent[] agents;
 
-	MGHuman[] mghuman;
+	private MGHuman[] mghuman;
 	
 	private int[] initCurrentChoise;
 
 	private int currentPrice;
 
-	List<Integer> price = new ArrayList<Integer>();
+	private static ArrayList<Double> hisPriceList = new ArrayList<Double>();
 	
 	private GameList gameList = GameList.getInstance();
 
@@ -56,7 +58,7 @@ public class Img
 
 	public List getPrice()
 	{
-		return price;
+		return hisPriceList;
 	}
 	
 	public void init() {
@@ -83,6 +85,7 @@ public class Img
 //
 //			e.printStackTrace();
 //		}
+		//from database to get historypeice
 
 		// TODO change the agentNumber to configured value
 		agents = new Agent[Constant.agentNumber + 1]; // number of
@@ -124,10 +127,38 @@ public class Img
 
 	public void playGame()
 	{
-		price = loadHistory(price);
+		hisPriceList = loadHistory(hisPriceList);
 		game.playGame();
 		this.currentPrice = game.getCurrentPrice();
 		// price.set(price.size()+1, price.get(price.size())+currentPrice);
+	}
+	
+	/**
+	 * load history from database
+	 * @param indexNum: number of price,default is 60
+	 * @return history price list
+	 */
+	public ArrayList<Double> getHistoryPrice(int indexNum) {
+		String sqlString = "select price from price order by price_id desc limit "+indexNum;
+		ResultSet res;
+		DatabaseOperation databaseOperation = new DatabaseOperation();
+		if(databaseOperation.OpenConnection())
+		{
+			hisPriceList.clear();
+			res = databaseOperation.ExecuteQuery(sqlString);
+			//处理结果集
+			try {
+				while (res.next()) {
+					double tempPrice = res.getDouble("price");
+					hisPriceList.add(tempPrice);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally{
+				databaseOperation.CloseConnection();
+			}
+		}
+		return hisPriceList;
 	}
 
 	/**
@@ -137,13 +168,13 @@ public class Img
 	 *            : price list
 	 * @return priceList: price list
 	 */
-	private List loadHistory(List price)
+	private ArrayList<Double> loadHistory(ArrayList<Double> price)
 	{
 
 		// check file exist
 		// File historyFile = new File(Constant.HISTORY_PRICE_FILE);
 		// if (historyFile.canRead())
-		List priceList = price;
+		ArrayList<Double> priceList = price;
 
 		if (priceList.isEmpty())
 		{
@@ -159,7 +190,7 @@ public class Img
 				// System.out.println("size = "+nodes.size());
 				if (priceList.size() > 50)
 				{
-					priceList = root.elements("price").subList(
+					priceList = (ArrayList<Double>) root.elements("price").subList(
 							(priceList.size() - 50), priceList.size());
 				}
 
