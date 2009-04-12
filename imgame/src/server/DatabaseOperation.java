@@ -2,8 +2,10 @@ package server;
 
 import java.sql.*;
 
+import util.Constant;
+
 public class DatabaseOperation {
-	
+
 	public void sqlTest(String sqlStr) {
 		try {
 			Connection conn;
@@ -32,4 +34,11 @@ public class DatabaseOperation {
 		}
 
 	}
-} 
+
+	public void exeuSql() {
+
+		String sqlStr = "INSERT INTO mgtest VALUES ('23ee','34','89')";
+		DatabaseOperation databaseOperation = new DatabaseOperation();
+		databaseOperation.sqlTest(sqlStr);
+	}
+}
