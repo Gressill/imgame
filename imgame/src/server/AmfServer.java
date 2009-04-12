@@ -86,7 +86,7 @@ public class AmfServer {
 			// this line throw a exception
 			if (!socket.isClosed()) {
 				object = (ASObject) amfin.readObject();
-				System.out.println(object);
+				System.out.println("System Message: Get event call from client: " + object);
 			}
 
 		} catch (ClassNotFoundException e) {
@@ -96,7 +96,7 @@ public class AmfServer {
 			System.out.println("IOException is "+e.toString());
 			try {
 				socket.close();
-				System.out.println("Client disconnect by unexcept closed line 99 file amf server.java.......");
+				System.out.println("Message : Client disconnected in unexcept mode at line 99 file amfserver.java.");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -115,14 +115,10 @@ public class AmfServer {
 			// ASObject message = ReceiveMsg();
 			if (true) {
 				while (socket.isConnected()) {
-					// System.out.println(socket.isConnected());
+					
 					ASObject message = ReceiveMsg();
 					if (message != null) {
 						String event = (String) message.get("event");
-						// System.out.println("message111=" + message);
-						// now we need we identify the differentes between
-						// players
-						// same player put in the same group
 
 						if (event != null) {
 							if (event.equals("gameInit")) {
@@ -148,10 +144,8 @@ public class AmfServer {
 							}
 							if (event.equals("buy")) {
 								iGame.playGame();
-								// gameListImgs[1].playGame();
-								int tempPrice = iGame.getCurrentPrice();
 								map.put("event", "buyAction");
-								map.put("price", tempPrice);
+								map.put("price", iGame.getCurrentPrice());
 								map.put("bestAgentScore", 100);
 								map.put("avgAgentScore", 50);
 								map.put("worseAgentScore", 10);
@@ -163,9 +157,8 @@ public class AmfServer {
 
 							} else if (event.equals("sell")) {
 								iGame.playGame();
-								int tempPrice = iGame.getCurrentPrice();
 								map.put("event", "sellAction");
-								map.put("price", tempPrice);
+								map.put("price", iGame.getCurrentPrice());
 								map.put("bestAgentScore", 100);
 								map.put("avgAgentScore", 50);
 								map.put("worseAgentScore", 10);
@@ -182,12 +175,11 @@ public class AmfServer {
 								if(socket.isConnected())
 								{
 									socket.close();
-									System.out.print("client is closeed in line 187 file amf server.java place.");
+									System.out.print("Message: Client disconnected in line 187 file amfserver.java place.");
 								}
 								break;
 							} else {
 								System.out.println(event);
-								// break;
 							}
 						}
 					}
@@ -198,7 +190,7 @@ public class AmfServer {
 		} finally {
 			try {
 				socket.close();
-				System.out.print("client is closeed in line 203 file amf server.java place..");
+				System.out.print("client is closeed in line 193 of amfserver.java.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -226,7 +218,8 @@ public class AmfServer {
 
 		try {
 
-			System.out.println("输出数组长度" + messageBytes.length);
+			System.out.println("The message length is: " + messageBytes.length);
+			//System.out.println("The message is: " + messageBytes);
 
 			// outputStreamWriter=new
 			// OutputStreamWriter(socket.getOutputStream());//将字符流转化为字节流

@@ -88,8 +88,9 @@ public class Constant {
 	public static int sellers = 0;
 	
 	//database string
-	public final static String DB_USER_NAME = "root";
-	public final static String DB_PASSWORD = "uestc";
+	public final static String DB__DATABASE = "imgame";
+	public final static String DB_USER_NAME = "ctottrunsql";
+	public final static String DB_PASSWORD = "ctottruningsql";
 
 
 }
