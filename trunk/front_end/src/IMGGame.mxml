@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:view="net.imggame.view.*"
+	xmlns:business="net.imggame.business.*"
+ 	layout="absolute">
+	<!--mx:Style source="asset/imgstyle.css" /-->	
+	<mx:Style source="asset/osx/flex_skins.css" />
+	<mx:Style>
+		Application{
+			/* set modal transparency to 0 if you want to use the background fade */
+			modal-transparency: 0;
+			background-image: Embed(source="/asset/background.jpg");
+			background-size: "100%";
+		}
+	</mx:Style>
+	<mx:Script>
+		<![CDATA[
+			import mx.validators.ValidationResult;
+			import net.imggame.model.ModelLocator;
+			import net.imggame.model.ValueLocator;
+
+			[Bindable]
+			public var model:ModelLocator = ModelLocator.getInstance();
+//			[Bindable]
+//			public var value:ValueLocator = ValueLocator.getInstance();
+			
+		]]>
+	</mx:Script>
+	
+	<business:Imgservice id="imgService" />
+	
+	<mx:ViewStack width="100%" height="100%" selectedIndex="{model.workflowState}">
+		<view:IMGView />
+	</mx:ViewStack>
+	
+</mx:Application>

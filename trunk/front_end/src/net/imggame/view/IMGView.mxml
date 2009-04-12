@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:control="net.imggame.control.*"
+	width="100%" height="100%">	
+	<!--mx:Style>
+		Canvas{
+			/* set modal transparency to 0 if you want to use the background fade */
+			modal-transparency: 0;
+			background-image: Embed(source="../../../asset/background.jpg"); 
+			background-size: "100%";
+		}
+	</mx:Style-->
+	<!--IMG Game Controller-->
+	<control:ImgController id="ImgController"/>
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import net.imggame.model.ModelLocator;
+			import net.imggame.factory.WorkflowChange;
+			import net.imggame.event.*;
+			import mx.collections.ArrayCollection;
+			import net.imggame.model.ValueLocator;
+			import net.imggame.business.Imgsocket;
+			
+			import mx.events.ItemClickEvent;
+			import mx.managers.PopUpManager;
+			import mx.styles.StyleManager;
+			
+			import net.imggame.vo.*;
+			import net.imggame.business.Imgsocket;
+			
+			import xsive.managers.CocoaPopUpManager;		
+			import xsive.controls.*;
+			
+			[Bindable]
+			public var model:ModelLocator = ModelLocator.getInstance();
+			[Bindable]
+			public var value:ValueLocator = ValueLocator.getInstance();
+			
+	        private var medalsAC:ArrayCollection = new ArrayCollection( [
+	            { Score: "Player", bestScore: 35, avgScore:-39, worseScore: -29 },
+	            { Score: "Agents", bestScore: -32, avgScore:-17, worseScore: 14 },
+	            { Score: "others", bestScore: 27, avgScore:-27, worseScore: 38 } ]);
+			
+			public function startGame(e:MouseEvent):void {
+				//Security.loadPolicyFile("");
+				model.start_active 			= false;
+				model.action_active 		= true;
+				model.stop_active  			= true;
+				stage.focus = this;
+				addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				model._socket =  new Imgsocket("127.0.0.1",8888);
+				const UL:URLLoader = new URLLoader();
+				UL.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function(e:SecurityErrorEvent):void{
+					Alert.show('\n\nSECURITY: ' + e);
+				});
+				UL.load(new URLRequest("http://localhost/crossdomain.xml"));
+				//model._socket.
+				CocoaAlert.show("Setting the game param", "IMGGame", 0x4, this.popbutton, true);
+				//model._socket =  new Imgsocket("222.35.140.178",51313);
+				//model._socket =  new Imgsocket("218.194.47.135",8888);
+				//var ImgStart:ImgStartEvent 	= new ImgStartEvent();
+				//ImgStart.dispatch();
+			}
+						
+			public function getBack( e:MouseEvent ): void {
+				model.start_active 			= true;
+				model.action_active 		= false;
+				model.stop_active 			= false;
+				//model.workflowState = ModelLocator.CHOOSE_MODEL;
+				//WorkflowChange.goBackToChoose(e);
+				model._socket.close();
+			}
+			
+			// Buy Action
+			public function ImgBuyAction( e:Event ): void {
+				model.action_active = false;
+				var ImgBuy:ImgBuyEvent = new ImgBuyEvent();
+				ImgBuy.dispatch();
+			}
+			
+			// Sell Action
+			public function ImgSellAction( e:Event ): void {
+				model.action_active = false;
+				var ImgSell:ImgSellEvent = new ImgSellEvent();
+				ImgSell.dispatch();
+			}
+			
+//			public function clickHandler( e:ItemClickEvent ):void {
+//				if( e.index == 0){
+//					vdivid.getDividerAt(0).y = 285;
+//				}
+//				else if( e.index == 1){
+//					vdivid.getDividerAt(0).y = 130;
+//				}
+//				else if( e.index == 2){
+//					accordion.selectedIndex = 1;
+//				}
+//				else if( e.index == 3){
+//					accordion.selectedIndex = 2;
+//				}
+//				else if( e.index == 4){
+//					accordion.selectedIndex = 3;
+//				}
+//				
+//			}
+			
+			private function onKeyDown(event:KeyboardEvent):void {
+				//Alert.show("key down: " + event.keyCode);
+				if(event.keyCode == 38)
+				{
+					ImgBuyAction(event);
+				}
+				if(event.keyCode == 40)
+				{
+					ImgSellAction(event);
+				}
+			}
+
+            private function loadStyles(styleURL:String):void {
+                StyleManager.loadStyleDeclarations(styleURL);
+            }
+			 //  title="Interactive Minority Game" 
+		]]>
+	</mx:Script>
+	
+	<mx:Resize id="Resize1" heightFrom="333" heightTo="500" widthFrom="1004" widthTo="1280" duration="1000"  />
+   	<mx:Resize id="Resize2" heightFrom="500" heightTo="333" widthFrom="1280" widthTo="1004" duration="1000"  />
+	<mx:Stroke id = "linestyle_price" color="red" joints="round"  caps="square" weight="2"/>
+	<mx:Stroke id = "ma5linestyle" color="yellow" weight="1"/>
+	<mx:Stroke id = "vollinestyle" color="green" weight="1"/>
+    <mx:Stroke id="s1" color="blue" weight="2"/>
+    <mx:Stroke id="s2" color="green" weight="2"/>
+    <mx:Stroke id="s3" color="0xFFCC66" weight="2"/>
+	<mx:SeriesZoom id="zoomIn" duration="1000"/>
+    <mx:SeriesZoom id="zoomOut" duration="1000"/>
+     <!-- Define custom colors for use as fills. -->
+    <mx:SolidColor id="sc1" color="yellow" alpha=".8"/>
+    <mx:SolidColor id="sc2" color="0xCCCCCC" alpha=".6"/>
+    <mx:SolidColor id="sc3" color="0xFFCC66" alpha=".6"/>
+	
+	<mx:Model id="mystates">
+		  <states>
+		  	<intro label="how to start game?" />
+		  	<intro label="how to play  game?" />
+		  	<intro label="how to stop  game?" />
+		    <turn  label="This is the          {value.turn} turn" data="{value.turn}" />
+		    <turn  label="Best:                {value.b_wealth}" data="{value.b_wealth}"/>
+		    <turn  label="Worst:               {value.w_wealth}" data="value.w_wealth"/>
+		    <agent label="Your score:          {value.score}" data="{value.score}" />
+		    <agent label="Best Agent:          {value.b_wealth}" data="{value.b_wealth}"/>
+		    <agent label="Worst Agent:         {value.w_wealth}" data="{value.w_wealth"/>
+		    <param label="Strategy:            {value.s}" data="{value.s}"/>
+		    <param label="Memory:              {value.m}" data="{value.m}"/>
+		    <param label="Agent number:        {value.n}" data="{value.n}"/>
+		    <param label="Class:               {value.cl}" data="{value.cl}"/>
+		  </states>
+	</mx:Model>
+				
+		
+	<mx:Panel id="popbutton" width="80%" height="80%" title="Interactive Minority Game" fontSize="15" horizontalAlign="center" verticalAlign="middle" horizontalCenter="0" verticalCenter="0">
+		
+		<mx:ApplicationControlBar id="ApplicationControlBar1">
+			<mx:HBox id = "mainHbox">
+			<mx:Text text="User Name" width="80"/>
+			<mx:TextInput/>
+			<mx:Button label="Login"/>
+			</mx:HBox>
+		</mx:ApplicationControlBar>
+		
+		<mx:HBox horizontalAlign="center" width="100%">
+		<mx:HDividedBox id="hdivid_1" label="price" width="100%">
+		   <mx:VDividedBox  id="vdivid" label="twolinechardbox" width="60%" liveDragging="true" height="100%" horizontalAlign="left">
+			<mx:LineChart id="priceLineChar" height="280"  dataProvider="{ValueLocator.ImgPriceData}" showDataTips="true"  scaleX="1" scaleY="1" fontSize="12" width="100%">
+			<mx:horizontalAxis>
+				<mx:LinearAxis interval="5" minorInterval="1"  minimum="{value.turn}" maximum="{value.turn + 100}"/>
+			</mx:horizontalAxis>
+			
+			<mx:verticalAxis>
+				<mx:LinearAxis minorInterval="1" title="Price"/>
+			</mx:verticalAxis>
+			
+			<mx:series>
+				<mx:LineSeries form="curve"  yField="price" displayName="Price" lineStroke="{linestyle_price}"/>
+				<mx:LineSeries form="curve" yField="ma5" displayName="Moving Average 10" lineStroke="{ma5linestyle}"/>
+				<!--mx:LineSeries form="curve" displayName="Volatility" lineStroke="{vollinestyle}" dataProvider="{value.ImgVolatility}"/-->
+			</mx:series>
+		    <!--mx:backgroundElements>  
+    			<mx:GridLines direction="both">  
+       				<mx:horizontalStroke>  
+           			<mx:Stroke weight="1"/>  
+       				</mx:horizontalStroke>
+       				<mx:verticalStroke>
+       					<mx:Stroke weight="1" />
+       				</mx:verticalStroke>
+       				<mx:horizontalFill>  
+           				<mx:SolidColor color="#000" alpha=".66"/>  
+       				</mx:horizontalFill>
+   				</mx:GridLines>  
+   			</mx:backgroundElements-->  
+			</mx:LineChart>
+		</mx:VDividedBox>
+		<mx:VBox fontSize="12" width="35%" height="100%">	
+		<!--mx:VDividedBox  id="vdivid1" label="top" height="100%" width="20%"-->
+			<mx:Accordion  id="accordion" width="100%" height="100%" fontWeight="bold" fontSize="16" fontStyle="italic">
+				<mx:VBox label="game infomation" width="100%" height="100%">
+					<!--mx:List dataProvider="{mystates.intro}" backgroundColor="#060000" borderColor="#000000"></mx:List-->
+					<mx:TextArea text="{ModelLocator.GAME_INFO}" height="100%" width="100%" fontSize="9" editable="false"></mx:TextArea>
+				</mx:VBox>
+				<mx:VBox label="your score statistics" width="100%" height="100%" >
+					<mx:List dataProvider="{mystates.agent}" width="100%" height="100%"></mx:List>	
+				</mx:VBox>
+				<mx:VBox label="last turn feedback" width="100%" height="100%">
+					<mx:List dataProvider="{mystates.turn}" height="100%" width="100%"></mx:List>
+				</mx:VBox>
+				<mx:VBox label="game parameter" width="100%" height="100%">
+					<mx:List dataProvider="{mystates.param}" width="100%" height="100%"></mx:List>
+				</mx:VBox>
+			</mx:Accordion>
+			
+				<!--mx:ColumnChart id="agentScoreChart" showDataTips="true" dataProvider="{medalsAC}" type="clustered" width="172" height="400">
+	            	<mx:horizontalAxis>
+	            		<mx:CategoryAxis categoryField="Score"/>
+	            	</mx:horizontalAxis>
+	            	<mx:series>
+	            		<mx:ColumnSeries xField="Score" yField="bestScore" displayName="best" fill="{sc1}" stroke="{s1}"/>
+	            		<mx:ColumnSeries xField="Score" yField="avgScore"  displayName="avg" fill="{sc2}" stroke="{s2}"/>
+	            		<mx:ColumnSeries xField="Score" yField="worseScore" displayName="worse" fill="{sc3}" stroke="{s3}"/>
+	            	</mx:series>
+	            </mx:ColumnChart>
+	            
+	            <mx:HBox>
+		            <mx:Legend dataProvider="{agentScoreChart}" direction="horizontal" id="agentScore" width="159" height="20"/>
+		        </mx:HBox-->
+		 
+		<!--/mx:VDividedBox-->
+		</mx:VBox>
+		</mx:HDividedBox>
+		</mx:HBox>
+		<mx:HBox width="988">
+			<mx:Canvas width="100%">
+				<mx:Button label="Start" click="startGame(event)"  enabled="{model.start_active} " x="45" y="14" width="112" height="34" fontSize="20"></mx:Button>
+				<mx:Button label="DOWN" left="270.8" width="121" click="ImgBuyAction(event)"  enabled="{model.action_active}" height="48" toolTip="that means you buy" cornerRadius="10" fontSize="28" color="#13F00E" y="9"/>
+				<mx:Button label="UP" left="472.1" width="131" click="ImgSellAction(event)"  enabled="{model.action_active}" height="48" toolTip="that means you sell" cornerRadius="10" fontSize="28" color="#E51125" y="9"/>
+				<mx:Button label="Stop" click="getBack(event)" enabled="{model.stop_active}" x="688.65" y="13" width="102" height="34" fontSize="20"/>
+				<!--mx:ComboBox id="styleSelect" width="140.35" height="37.878788" right="9.149994" bottom="5.121212"  prompt="Please select a style"
+                change="loadStyles(styleSelect.selectedItem.data);">
+	                <mx:dataProvider>
+	                <mx:Array>
+	                    <mx:Object label="red" data="styles/red.swf" />
+	                    <mx:Object label="green" data="styles/green.swf" />
+	                    <mx:Object label="blue" data="styles/blue.swf" />
+	                </mx:Array>
+	            	</mx:dataProvider>
+                </mx:ComboBox-->
+			</mx:Canvas>
+		</mx:HBox>
+	</mx:Panel>
+</mx:Canvas>

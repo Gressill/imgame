@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns="xsive.controls.*" xmlns:mx="http://www.adobe.com/2006/mxml" width="50%" height="60%" backgroundColor="#FFFFFF" cornerRadius="4" borderStyle="outset" borderThickness="0" dropShadowEnabled="true">
+<mx:Script>
+		<![CDATA[
+			import xsive.managers.CocoaPopUpManager;
+			import mx.core.Application;
+			import mx.events.CloseEvent;
+			import net.imggame.model.ModelLocator;
+			
+			import flash.system.Security;
+			
+			import mx.controls.Alert;
+			import net.imggame.business.Imgsocket;
+			import net.imggame.event.*;
+			import net.imggame.vo.*;	
+			
+			public var model:ModelLocator = ModelLocator.getInstance();
+			
+			/**
+			 This is an example of a custom component you can create to use the CocoaPopupManager
+			 Could be usefull for things like login boxes, system messages etc.
+			 
+			 I wanted to show how you could create in the visual mxml files a nice component and
+			 have it interact with the CocoaPopUpManager
+			 
+			 Enjoy
+			 
+			 **/
+			 
+			[Bindable]
+			public var text:String;
+		
+			public static function show(text:String = "", title:String = "",
+                                flags:uint = 0x4 /* Alert.OK */, 
+                                parent:Sprite = null, 
+                                modal:Boolean = false,
+                                closeHandler:Function = null, 
+                                iconClass:Class = null, 
+                                defaultButtonFlag:uint = 0x4 /* Alert.OK */):CocoaAlert
+    		{
+
+
+				var alert:CocoaAlert = new CocoaAlert();	
+
+				if (!parent){
+					parent = Sprite(Application.application);	
+				}
+					
+				if (closeHandler != null)
+            		alert.addEventListener(CloseEvent.CLOSE, closeHandler);
+            		
+            	alert.text = text;
+				
+		        if(iconClass)
+		        	alert.img_icon = new iconClass();
+
+        		CocoaPopUpManager.addPopUp(alert, parent, modal);
+
+				return alert;
+			}
+			
+			private function enterGame( e:MouseEvent ): void {
+				model.gameParam = new ParamPost( s.value, m.value, n.value );
+				//model.workflowState = 0;
+				//Security.loadPolicyFile("http://192.168.1.115/flashpolicy.xml");
+				//Security.loadPolicyFile("xmlsocket://192.168.1.115:843");
+				//model._socket =  new Imgsocket("222.35.140.178",51313);
+				//model._socket.connect("222.35.140.178",51313);
+				//model._socket = new Imgsocket("192.168.1.115",51313);
+				//model._socket.writeUTFBytes("action=start");
+				//model._socket.flush();
+				//model._socket.connect("192.168.1.115",51313);
+				var ImgStart:ImgStartEvent 	= new ImgStartEvent();
+				ImgStart.dispatch();
+				CocoaPopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>
+	<mx:Image x="10" y="114" width="144" height="148" source="asset/logo.jpg" scaleContent="false" id="img_icon" autoLoad="true"/>
+	<!--mx:Button x="157" y="287" label="Ok" id="butn_ok" click="{CocoaPopUpManager.removePopUp(this)}"/-->
+	<mx:TextArea width="523" borderStyle="none" id="txt_label" text="{text}" height="85" editable="false" enabled="true" fontFamily="Courier New" fontSize="27" textAlign="center" x="28" y="10" fontWeight="bold"/>
+	
+	<mx:HBox height="38" width="541.9" x="18.55" y="103">
+	  	<mx:Text width="280" text="Strategy Number"  height="34" textAlign="right" textDecoration="none"/>
+	  	<mx:NumericStepper id="s" minimum="2" maximum="6" value="2" stepSize="1"  width="83" enabled="true"/>
+	  </mx:HBox>
+	  <mx:HBox height="38.030304" width="541.95" x="18.5" y="162">
+	  	<mx:Text width="280" text="Memory Size"  height="34" textAlign="right" textDecoration="none"/>
+	  	<mx:NumericStepper id="m" minimum="3" maximum="10" value="2" stepSize="1"  width="83"/>
+	  </mx:HBox>
+	  <mx:HBox height="39.015152" width="541.95" x="18.5" y="223">
+	  	<mx:Text width="280" text="Agents Number"  height="34" textAlign="right" textDecoration="none"/>
+	  	<mx:NumericStepper id="n" minimum="500" maximum="1000" value="2" stepSize="100"  width="83"/>
+	  </mx:HBox>
+	  <mx:HBox height="39.015152" width="541.95" x="18.5" y="295" horizontalAlign="center" verticalAlign="middle">
+	  	  <mx:Button label="Go to Game" width="114"  click="enterGame(event)" height="32" cornerRadius="5" verticalCenter="116" horizontalCenter="16" labelPlacement="bottom"/>
+ 	  </mx:HBox>
+</mx:Canvas>
