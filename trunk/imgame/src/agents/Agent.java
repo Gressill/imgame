@@ -5,6 +5,7 @@ public abstract class Agent {
 	protected double action = 0;//
 	protected double gain = 0;//
 	protected int[][] determining;//
+	private double score = 0;
 
 	public void setGain(double gain) {
 		
@@ -45,6 +46,10 @@ public abstract class Agent {
 	public boolean feedback(int historyChoise,int thisTurnPrice,int i) {
 
 		return true;
+	}
+	
+	public double caculateScore() {
+		return score;
 	}
 
 }

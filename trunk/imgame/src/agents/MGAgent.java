@@ -18,6 +18,8 @@ public class MGAgent extends Agent {
 	private double[] virtualScores; // The strategies' virtual scores
 
 	private int[] determining; // Array determining active strategy
+	
+	private int mgAgentScore = 0;
 
 	public MGAgent(int memorySize, int strategySize) {
 
@@ -103,6 +105,10 @@ public class MGAgent extends Agent {
 
 		}
 		return true;
+	}
+	
+	public double caculateScore() {
+		return mgAgentScore;
 	}
 
 	public double getAction() {
