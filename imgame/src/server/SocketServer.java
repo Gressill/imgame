@@ -56,30 +56,6 @@ public class SocketServer
 		}
 	}
 
-	// public static void main(String[] args) {
-	// Img iGame = new Img();
-	// iGame.init();
-	// ///////////////////////////
-	// // try
-	// // {
-	// // ServerSocket server1=new ServerSocket(8888);
-	// // while(true)
-	// // {
-	// // System.out.println("socket created....!");
-	// // Socket socket=server1.accept();
-	// // AmfServer amfServer = new AmfServer(socket);
-	// // amfServer.sentSerializationMeg();
-	// // System.out.println("connect....!");
-	// // }
-	// // } catch (Exception e)
-	// // {
-	// // e.printStackTrace();
-	// // // TODO: handle exception
-	// // }
-	// ///////////////////////////
-	// SocketServer server = new SocketServer(iGame);
-	// server.startServer(Constant.port);
-	// }
 
 	class GameThread extends Thread // 与客户机进行通信的线程累
 	{
@@ -114,15 +90,6 @@ public class SocketServer
 				// //
 				// System.out.println(msg);
 				// //imgGame.playGame();
-				// }
-				//					
-				// amfServer.sentSerializationMeg();
-				// //System.out.println("pice="+imgGame.getCurrentPrice());
-				// //向所有客户机传送信息
-				// //imgGame.writePriceFile(1212);
-				// //bMan.sendToAll(String.valueOf(imgGame.getCurrentPrice()));
-				// //bMan.sendToAll(imgGame.getPrice());
-				// //bMan.sendToAll();
 				// }
 			} catch (Exception e)
 			{
