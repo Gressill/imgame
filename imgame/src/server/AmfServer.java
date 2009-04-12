@@ -92,9 +92,10 @@ public class AmfServer {
 			System.out.println("ClassNotFoundException is "+e.getMessage());
 			//e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IOException is "+e.getMessage());
+			System.out.println("IOException is "+e.toString());
 			try {
 				socket.close();
+				System.out.println("Client disconnect by unexcept close.......");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
