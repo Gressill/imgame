@@ -61,15 +61,6 @@
 			
 			private function enterGame( e:MouseEvent ): void {
 				model.gameParam = new ParamPost( s.value, m.value, n.value );
-				//model.workflowState = 0;
-				//Security.loadPolicyFile("http://192.168.1.115/flashpolicy.xml");
-				//Security.loadPolicyFile("xmlsocket://192.168.1.115:843");
-				//model._socket =  new Imgsocket("222.35.140.178",51313);
-				//model._socket.connect("222.35.140.178",51313);
-				//model._socket = new Imgsocket("192.168.1.115",51313);
-				//model._socket.writeUTFBytes("action=start");
-				//model._socket.flush();
-				//model._socket.connect("192.168.1.115",51313);
 				var ImgStart:ImgStartEvent 	= new ImgStartEvent();
 				ImgStart.dispatch();
 				CocoaPopUpManager.removePopUp(this);
