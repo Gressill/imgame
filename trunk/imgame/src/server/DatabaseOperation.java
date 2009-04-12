@@ -16,20 +16,20 @@ import util.Constant;
 
 public class DatabaseOperation {
 
-	public String ClassString = null;
-	public String ConnectionString = null;
-	public String UserName = null;
-	public String PassWord = null;
+	public String ClassString		 	= null;
+	public String ConnectionString 		= null;
+	public String UserName 				= null;
+	public String PassWord 				= null;
 
 	public Connection Conn;
 	public Statement Stmt;
 
 	public DatabaseOperation() {
 		//From System.xml
-		ClassString = "com.mysql.jdbc.Driver";//"oracle.jdbc.driver.OracleDriver";
-		ConnectionString = "jdbc:mysql://localhost:3306/imgame";//"jdbc:oracle:thin:@192.168.103.171:1521:jstrd";
-		UserName = Constant.DB_USER_NAME;
-		PassWord = Constant.DB_PASSWORD;
+		ClassString 		= "com.mysql.jdbc.Driver";//"oracle.jdbc.driver.OracleDriver";
+		ConnectionString 	= "jdbc:mysql://localhost:3306/" + Constant.DB__DATABASE;//"jdbc:oracle:thin:@192.168.103.171:1521:jstrd";
+		UserName 			= Constant.DB_USER_NAME;
+		PassWord 			= Constant.DB_PASSWORD;
 
 		//For MySQL Driver
 		//ClassString="org.gjt.mm.mysql.Driver";
@@ -53,7 +53,7 @@ public class DatabaseOperation {
 			Stmt = Conn.createStatement();
 			mResult = true;
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			System.out.println(e.toString()+"\n"+"Error Message: Database Connection Open Error reported in line 56 DatabaseOperation.java");
 			mResult = false;
 		}
 		return (mResult);
@@ -66,6 +66,7 @@ public class DatabaseOperation {
 			Conn.close();
 		} catch (Exception e) {
 			System.out.println(e.toString());
+			System.out.println(e.toString()+"\n"+"Error Message: Database Connection Close Error reported in line 69 DatabaseOperation.java");
 		}
 	}
 
@@ -138,19 +139,19 @@ public class DatabaseOperation {
 	}
 
 	public static void testSql() {
-		String sqlString = "select * from mgtest";
-		String sqlInsert = "INSERT INTO mgtest VALUES ('yu','2','3')";
+		String sqlString = "select * from `price`";
+		String sqlInsert = "INSERT INTO `price` (`price`) VALUES (34.90)";
 		ResultSet res;
 		DatabaseOperation databaseOperation = new DatabaseOperation();
 		if(databaseOperation.OpenConnection())
 		{
-			int i = databaseOperation.ExecuteUpdate(sqlInsert);
+			int i = databaseOperation.ExecuteUpdate(sqlInsert);//I,U,D
 			System.out.print("i="+i);
-			res = databaseOperation.ExecuteQuery(sqlString);
+			res = databaseOperation.ExecuteQuery(sqlString);//S
 			//处理结果集
 			try {
 				while (res.next()) {
-					String name = res.getString("user_id");
+					String name = res.getString("price_id");
 					System.out.println(name);
 				}
 			} catch (Exception e) {

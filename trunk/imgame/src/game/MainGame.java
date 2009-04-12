@@ -9,21 +9,22 @@ public class MainGame {
 
 	public static void main(String[] args) {
 
-		//cross domain
-		runTwoSocket rSocket = new runTwoSocket();
-		Thread myThread = new Thread(rSocket);
-		myThread.start();
-		//begin game
+		//Security Policy Thead, provide security certification service. 
+		SecurityPolicySocket policySocket = new SecurityPolicySocket();
+		Thread policyThread = new Thread(policySocket);
+		policyThread.start();
+		
+		//Game Thead, provide minority game service.
 		SocketServer server = new SocketServer();
 		server.startServer(Constant.port);
 		
-		//DatabaseOperation.testSql();
+		DatabaseOperation.testSql();
 	}
 
 }
 
-class runTwoSocket implements Runnable {
-	public runTwoSocket() {
+class SecurityPolicySocket implements Runnable {
+	public SecurityPolicySocket() {
 		// TODO Auto-generated constructor stub
 	}
 

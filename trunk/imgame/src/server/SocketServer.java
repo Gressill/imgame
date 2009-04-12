@@ -38,7 +38,7 @@ public class SocketServer
 		try
 		{
 			server = new ServerSocket(port); // 创建服务器套接字
-			System.out.println("server socket created...");
+			System.out.println("Port 8888 is listening, waiting to play game.");
 			while (true)
 			{
 				Socket socket = server.accept();// 若客户机提请求，socket连接
@@ -109,7 +109,7 @@ public class SocketServer
 					reader = null;
 					writer = null;
 					socket = null;
-					System.out.println("clients disconnect..");
+					System.out.println("Message: socket disconnected at line 112 in socketserver.java with illegal mode.");
 					// 向所有客户机传送当前连接数
 					// bMan.sendClientInfo();
 				} catch (Exception e)
