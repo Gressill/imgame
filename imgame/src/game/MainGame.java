@@ -1,5 +1,6 @@
 package game;
 
+import server.DatabaseOperation;
 import server.SecurityServer;
 import server.SocketServer;
 import util.Constant;
@@ -15,6 +16,8 @@ public class MainGame {
 		//begin game
 		SocketServer server = new SocketServer();
 		server.startServer(Constant.port);
+		
+		//DatabaseOperation.testSql();
 	}
 
 }

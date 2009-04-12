@@ -17,6 +17,10 @@ public class MGHuman extends Agent
 	
 	private Socket socket;
 
+	private double mgHumanScore;
+	
+	private int lastScore = 0;
+
 	// private Agent agent[] = new Agent[number];
 
 	public MGHuman(int m, int s, int n)
@@ -153,6 +157,11 @@ public class MGHuman extends Agent
 		Constant.setGameToInterface(true);
 
 		return true;
+	}
+	
+	public double caculateScore(int thisturnscore) {
+		mgHumanScore = lastScore+thisturnscore;
+		return mgHumanScore;
 	}
 
 }
