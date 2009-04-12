@@ -83,19 +83,26 @@ public class AmfServer {
 		ASObject object = null;
 		try {
 			// this line throw a exception
-			if(!socket.isClosed())
-			{
+			if (!socket.isClosed()) {
 				object = (ASObject) amfin.readObject();
 				System.out.println(object);
 			}
 
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			System.out.println("ClassNotFoundException is "+e.getMessage());
+			//e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
+			System.out.println("IOException is "+e.getMessage());
+			try {
+				socket.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			//e.printStackTrace();
+		} catch (Exception e) {
+			System.out.println("Exception is "+e.getMessage());
+			//e.printStackTrace();
+		} 
 		return object;
 	}
 
@@ -144,8 +151,7 @@ public class AmfServer {
 								map.put("worseAgentScore", 10);
 								map.put("bestHumanScore", 111);
 								map.put("avGHumanScore", 222);
-								map.put("worseHumanScore", 333
-										);
+								map.put("worseHumanScore", 333);
 								sentSerializationMeg(map);
 
 							} else if (event.equals("sell")) {
@@ -241,7 +247,7 @@ public class AmfServer {
 		amfout.setOutputStream(dataoutstream);
 
 		// 创建Map对象、Double对象数组
-		HashMap<String, Object> map = new HashMap<String,Object>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("event", "buyAction");
 		map.put("playerName", "zhangliang");
 		map.put("price", 7777);
