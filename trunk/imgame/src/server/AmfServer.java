@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import util.Constant;
@@ -50,8 +51,8 @@ public class AmfServer {
 	private Socket socket;
 
 	private Img iGame;
-
-	private Img[] gameListImgs;
+	
+	private ArrayList<Double> hisPriceList = new ArrayList<Double>();
 
 	public AmfServer(Socket socket) {
 		this.socket = socket;
@@ -140,6 +141,10 @@ public class AmfServer {
 								iGame.init(Constant.memorySize,
 										Constant.strategySize,
 										Constant.agentNumber);
+								for (int i = 0; i < 60; i++) {
+									hisPriceList.add(Math.random()*300);
+								}
+								map.put("historyPrice", hisPriceList);
 							}
 							if (event.equals("buy")) {
 								iGame.playGame();
@@ -160,6 +165,7 @@ public class AmfServer {
 								iGame.playGame();
 								int tempPrice = iGame.getCurrentPrice();
 								map.put("event", "sellAction");
+								map.put("price", tempPrice);
 								map.put("bestAgentScore", 100);
 								map.put("avgAgentScore", 50);
 								map.put("worseAgentScore", 10);
@@ -173,7 +179,11 @@ public class AmfServer {
 								iGame.playGame();
 							} else if (event.equals("close")) {
 								//close game and write database
-								socket.close();
+								if(socket.isConnected())
+								{
+									socket.close();
+									System.out.print("client is close....");
+								}
 								break;
 							} else {
 								System.out.println(event);
@@ -253,7 +263,7 @@ public class AmfServer {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("event", "buyAction");
 		map.put("playerName", "zhangliang");
-		map.put("price", 7777);
+		map.put("price", 77);
 		map.put("bestAgentScore", 100);
 		map.put("avgAgentScore", 50);
 		map.put("worseAgentScore", 10);
