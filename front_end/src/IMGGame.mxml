@@ -2,7 +2,8 @@
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml"
 	xmlns:view="net.imggame.view.*"
 	xmlns:business="net.imggame.business.*"
- 	layout="absolute">
+ 	layout="absolute"
+   initialize="initSecurity();">
 	<!--mx:Style source="asset/imgstyle.css" /-->	
 	<mx:Style source="asset/osx/flex_skins.css" />
 	<mx:Style>
@@ -18,16 +19,18 @@
 			import mx.validators.ValidationResult;
 			import net.imggame.model.ModelLocator;
 			import net.imggame.model.ValueLocator;
-
+			import mx.controls.Alert;
+			
 			[Bindable]
 			public var model:ModelLocator = ModelLocator.getInstance();
-//			[Bindable]
-//			public var value:ValueLocator = ValueLocator.getInstance();
 			
+			public function initSecurity():void{
+							
+			}
 		]]>
 	</mx:Script>
 	
-	<mx:ViewStack width="100%" height="100%" selectedIndex="{model.workflowState}">
+	<mx:ViewStack width="100%" height="100%">
 		<view:IMGView />
 	</mx:ViewStack>
 	

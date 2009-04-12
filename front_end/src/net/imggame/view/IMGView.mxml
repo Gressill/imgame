@@ -17,7 +17,6 @@
 		<![CDATA[
 			import mx.controls.Alert;
 			import net.imggame.model.ModelLocator;
-			import net.imggame.factory.WorkflowChange;
 			import net.imggame.event.*;
 			import mx.collections.ArrayCollection;
 			import net.imggame.model.ValueLocator;
@@ -38,38 +37,31 @@
 			[Bindable]
 			public var value:ValueLocator = ValueLocator.getInstance();
 			
-	        private var medalsAC:ArrayCollection = new ArrayCollection( [
-	            { Score: "Player", bestScore: 35, avgScore:-39, worseScore: -29 },
-	            { Score: "Agents", bestScore: -32, avgScore:-17, worseScore: 14 },
-	            { Score: "others", bestScore: 27, avgScore:-27, worseScore: 38 } ]);
-			
 			public function startGame(e:MouseEvent):void {
-				//Security.loadPolicyFile("");
+			
+				Security.loadPolicyFile("xmlsocket://192.168.1.111:843");
 				model.start_active 			= false;
 				model.action_active 		= true;
 				model.stop_active  			= true;
 				stage.focus = this;
 				addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-				model._socket =  new Imgsocket("127.0.0.1",8888);
-				const UL:URLLoader = new URLLoader();
-				UL.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function(e:SecurityErrorEvent):void{
-					Alert.show('\n\nSECURITY: ' + e);
-				});
-				UL.load(new URLRequest("http://localhost/crossdomain.xml"));
+				model._socket =  new Imgsocket();
+				model._socket.connect("192.168.1.111",8888);
+				//Security.loadPolicyFile("http://localhost/crossdomain.xml")
+				//Security.loadPolicyFile("xmlsocket://localhost:843");
+				//const UL:URLLoader = new URLLoader();
+				//UL.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function(e:SecurityErrorEvent):void{
+				//	Alert.show('\n\nSECURITY: ' + e);
+				//});
+				//UL.load(new URLRequest("http://localhost/crossdomain.xml"));
 				//model._socket.
 				CocoaAlert.show("Setting the game param", "IMGGame", 0x4, this.popbutton, true);
-				//model._socket =  new Imgsocket("222.35.140.178",51313);
-				//model._socket =  new Imgsocket("218.194.47.135",8888);
-				//var ImgStart:ImgStartEvent 	= new ImgStartEvent();
-				//ImgStart.dispatch();
 			}
 						
 			public function getBack( e:MouseEvent ): void {
 				model.start_active 			= true;
 				model.action_active 		= false;
 				model.stop_active 			= false;
-				//model.workflowState = ModelLocator.CHOOSE_MODEL;
-				//WorkflowChange.goBackToChoose(e);
 				model._socket.close();
 			}
 			
