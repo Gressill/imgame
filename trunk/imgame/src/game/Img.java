@@ -31,17 +31,12 @@ public class Img
 
 	MGHuman[] mghuman;
 	
-	//ArrayList<ArrayList<MGHuman>> mgList;// = new ArrayList<ArrayList<MGHuman>>;
-
 	private int[] initCurrentChoise;
 
 	private int currentPrice;
 
-	// double[] price = new double[Constant.timeStepNumber + 1];
 	List<Integer> price = new ArrayList<Integer>();
 	
-	//this is a list to store human agent
-	//List<ArrayList<MGHuman>> mgHumanList = new ArrayList<ArrayList<MGHuman>>();
 	private GameList gameList = GameList.getInstance();
 
 	public Img()
@@ -51,30 +46,7 @@ public class Img
 
 	public Img(int m, int s, int n)
 	{
-
-		//Constant.memorySize = m;
-		//Constant.strategySize = s;
-		//Constant.agentNumber = n;
 		gameList.addHumenAgent(new MGHuman(m,s,n));
-//
-//		if (gameList.size() == 0)
-//		{
-//			gameList.addHumenAgent(new MGHuman(m,s,n));
-//			//mghuman[Constant.differetnHumNum] = new MGHuman(m, s, n);
-//		} else
-//		{
-//			for (int i = 0,j=mghuman.length; i < j; i++)
-//			{
-//				if (mghuman[i].getMemoryNum() == m && mghuman[i].getStrategyNum() == s && mghuman[i].getAgentNum() == n)
-//				{
-//					//add this human agent to the same group
-//					break;
-//				}
-//				//different m,n,s,begin a new game. game number +1
-//				if(i==j)
-//					Constant.differetnHumNum++;
-//			}
-//		}
 	}
 
 	public int getCurrentPrice()

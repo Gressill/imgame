@@ -228,31 +228,8 @@ public class AmfServer
 
 	public synchronized void sentSerializationMeg(HashMap<String, Object> map)
 	{
-		// SerializationContext serializationContext=new SerializationContext();
-		//	  
-		// //序列化amf3对象
-		// Amf3Output amfout=new Amf3Output(serializationContext);
-
-		// 实现了一个输出流，其中的数据被写入一个 byte 数组。
-		// ByteArrayOutputStream byteoutStream=new ByteArrayOutputStream();
-
-		// 将byteoutStream产生的数组流导入到DataOutputStream流中
-		// DataOutputStream dataoutstream=new DataOutputStream(byteoutStream);
-
-		// 创建ServerSocket和Socket对象
-		// ServerSocket serverSocekt;
-
 		// 设置流的编码格式为amf3
 		amfout.setOutputStream(dataoutstream);
-
-		// 创建Map对象、Double对象数组
-		// HashMap map = new HashMap();
-		// map.put("event", "buyAction");
-		// map.put("playerName", "zhangliang");
-		// map.put("price", tempPrice);
-		// map.put("best", 100);
-		// map.put("avg", 50);
-		// map.put("worse", 10);
 
 		try
 		{
@@ -307,25 +284,12 @@ public class AmfServer
 
 	public synchronized void sentSerializationMeg()
 	{
-		// SerializationContext serializationContext=new SerializationContext();
-		//	  
-		// //序列化amf3对象
-		// Amf3Output amfout=new Amf3Output(serializationContext);
-
-		// 实现了一个输出流，其中的数据被写入一个 byte 数组。
-		// ByteArrayOutputStream byteoutStream=new ByteArrayOutputStream();
-
-		// 将byteoutStream产生的数组流导入到DataOutputStream流中
-		// DataOutputStream dataoutstream=new DataOutputStream(byteoutStream);
-
-		// 创建ServerSocket和Socket对象
-		// ServerSocket serverSocekt;
 
 		// 设置流的编码格式为amf3
 		amfout.setOutputStream(dataoutstream);
 
 		// 创建Map对象、Double对象数组
-		HashMap map = new HashMap();
+		HashMap<String, Comparable> map = new HashMap();
 		map.put("event", "buyAction");
 		map.put("playerName", "zhangliang");
 		map.put("price", 7777);

@@ -86,14 +86,6 @@ public class GameList
 					existStatue[1] = i;
 				}
 			}
-			// for (Iterator iterator = humanAgentList.iterator();
-			// iterator.hasNext();) {
-			// tempHumanList = (ArrayList<MGHuman>)iterator.next();
-			// //check if exist
-			// if(tempHumanList.get(0).isTheSame(mgHuman))
-			// {
-			// return true;
-			// }
 			// }
 		}
 		return existStatue;
