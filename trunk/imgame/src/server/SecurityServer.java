@@ -35,13 +35,30 @@ public class SecurityServer {
 				security_Socket = server.accept();// 若客户机提请求，socket连接
 				reader = new BufferedReader(new InputStreamReader(security_Socket.getInputStream(), "utf8"));
 				writer = new PrintWriter(security_Socket.getOutputStream(), true);
+
+				char[] by = new char[22];
+				reader.read(by, 0, 22);
+				String head = new String(by);
+				// 判断是不是第一求请求连接的安全验证，当客户端连socket时,as3会自动向服务端发送<policy-file-request
+				// />这个字符串请求返回策略文件，所以当服务器收到这个串后给client返回就好了。
+				// 如果是返回xML信息
+				if (head.equals("<policy-file-request/>")) {
+					System.out.println("连接服务器");
+					writer.print(corssDomain + "\0");
+					writer.flush();
+					reader.close();
+					writer.close();
+				} else {
+					// 自己的正常请求处理逻辑
+					System.out.println("自己的正常请求处理逻辑");
+				}
 				//if((msg = reader.readLine()) == "<policy-file-request/>\n"){
-				System.out.println("Get message: " + reader.readLine());
-				//No matter send what, we just return the security policy file. 
-				writer.print(corssDomain);
-				System.out.println("Send message: "+ corssDomain);
-				writer.write(corssDomain);
-				writer.flush();
+//				System.out.println("Get message: " + reader.readLine());
+//				//No matter send what, we just return the security policy file. 
+//				writer.print(corssDomain);
+//				System.out.println("Send message: "+ corssDomain);
+//				writer.write(corssDomain);
+//				writer.flush();
 				//}
 			}
 		} catch (Exception e) {
