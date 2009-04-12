@@ -27,7 +27,7 @@ package net.imggame.business {
 				//ValueLocator.ImgPriceData.addItem(ModelLocator.INIT_PRICE_DATA);
 				this.configureListeners();
 			}catch(e:Error){
-				Alert.show("error is:"+e.getStackTrace()+e.toString());
+				Alert.show("Error is:"+e.getStackTrace()+e.toString());
 			}
 		}
 		private function configureListeners():void{
@@ -37,7 +37,7 @@ package net.imggame.business {
 		        
 	        if(ModelLocator.XML_SERIALIZE_TAG == "XML")
 			{
-				Alert.show("XML");
+				//Alert.show("XML");
 				this.addEventListener(ProgressEvent.SOCKET_DATA,socketDataHandlerXml);
 			}
 			else if(ModelLocator.XML_SERIALIZE_TAG == "SERIALIZE")
@@ -70,37 +70,30 @@ package net.imggame.business {
     		//Alert.show("Total="+event.bytesTotal.toString()+",loaded="+event.bytesLoaded.toString());
     		//Alert.show(this.bytesAvailable.toString());
     		
-    		try {
-    			this.str = this.str + this.readUTFBytes(this.bytesAvailable).toString();
-    			if(this.str.substring(this.str.length-7,this.str.length)=="</game>")
-    			{
-    				valuelocator.parseResultXml(this.str);
-    				this.str = "";
-    			}
-      		}catch( e:IOError ){
-      			Alert.show("IOError"+e.toString());
-      		}
+//    		try {
+//    			this.str = this.str + this.readUTFBytes(this.bytesAvailable).toString();
+//    			if(this.str.substring(this.str.length-7,this.str.length)=="</game>")
+//    			{
+//    				valuelocator.parseResultXml(this.str);
+//    				this.str = "";
+//    			}
+//      		}catch( e:IOError ){
+//      			Alert.show("IOError"+e.toString());
+//      		}
+
 	    }
 			
 		public function ioErrorHandler(event:IOErrorEvent):void {
-			trace("ioErrorHandler信息： " + event);
+			trace("IoErrorHandler： " + event);
 		}
 		
 		public function socketDataHandlerSerialize(event:ProgressEvent):void {
-			//Alert.show("接收数据");
+		
 			obj=modellocator._socket.readObject();
-//			for(var k in obj)
-//			{
-//			    Alert.show(k+":"+obj[k]);
-//			}
-////			trace("----------------------------------");
-//            Alert.show("111111111111111"+modellocator.ImgPriceData.length);
-//          
+       
 			valuelocator.parseResultSerialize(obj);
             this.obj = null;
-//            modellocator.action_active = true;
-			//this.dispatchEvent(new Event("recieved")); 
-			//recievedData();
+		
 		}
 	}
 }
