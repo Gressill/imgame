@@ -78,6 +78,8 @@ public class Constant {
 	public static String waitingMsg = "We are playing.... please not disturb";
 
 	public static String numberOfTurnsShouldPlay = "You mush play 200+ turns to challenge for the hiscore.";
+	
+	public static final String CORSS_DOMAIN = "<?xml version=\"1.0\"?><!DOCTYPE cross-domain-policy SYSTEM \"http://www.macromedia.com/xml/dtds/cross-domain-policy.dtd\"><cross-domain-policy><allow-access-from domain=\"*\" to-ports=\"*\" /></cross-domain-policy>";
 
 	public static String betMsg = "Bet on next price move";
 	

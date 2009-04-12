@@ -7,10 +7,15 @@ package server;
  * 
  */
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+
+import util.Constant;
 
 import com.sun.org.apache.xpath.internal.axes.ReverseAxesWalker;
 
@@ -27,6 +32,18 @@ public class SecurityServer {
 
 	public void startServer() // 启动服务器
 	{
+
+		String ip = "";
+		try {
+			ip = InetAddress.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		
+//		String xml = "<cross-domain-policy><site-control permitted-cross-domain-policies=\"all\"/>";
+//		xml = xml + "<allow-access-from domain=\"" + ip
+//				+ "\" to-ports=\"1234\" />";
+//		xml = xml + "</cross-domain-policy>";
 		try {
 			ServerSocket server = new ServerSocket(843); // 创建服务器套接字
 			System.out.println("Port 843 is listening, waiting to return the security policy file." + "\n");
@@ -44,14 +61,19 @@ public class SecurityServer {
 				// 如果是返回xML信息
 				if (head.equals("<policy-file-request/>")) {
 					System.out.println("连接服务器");
-					writer.print(corssDomain + "\0");
-					System.out.println(corssDomain);
+					writer.print(Constant.CORSS_DOMAIN + "\0");
 					writer.flush();
+					//reader.close();
+					//writer.close();
+					System.out.println(corssDomain);
+
 				} else {
 					// 自己的正常请求处理逻辑
 					System.out.println("自己的正常请求处理逻辑");
 				}
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
