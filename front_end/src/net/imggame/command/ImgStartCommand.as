@@ -24,8 +24,6 @@ package net.imggame.command {
 
 		public function execute(event:CairngormEvent):void	{
 			
-//			var str:String = new String("s="+model.gameParam.s+"&m="+model.gameParam.m+"&n="+model.gameParam.n);
-//			model._socket.writeUTFBytes(str);
 			if(ModelLocator.XML_SERIALIZE_TAG == "XML"){
 				var str:String = new String("s="+model.gameParam.s+"&m="+model.gameParam.m+"&n="+model.gameParam.n);
 			    model._socket.writeUTFBytes(str);

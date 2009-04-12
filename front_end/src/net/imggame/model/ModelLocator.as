@@ -56,8 +56,8 @@ package net.imggame.model {
 		public static const CHOOSE_MODEL:uint 		= 2;
 		public static const INIT_PRICE_DATA:uint	= 0; //the initial historical price data.
 		
-		//public static const XML_SERIALIZE_TAG:String = "SERIALIZE";
-		public static const XML_SERIALIZE_TAG:String = "XML";
+		public static const XML_SERIALIZE_TAG:String = "SERIALIZE";
+		//public static const XML_SERIALIZE_TAG:String = "XML";
 		
 		public static const GAME_INFO:String        = "Minority Game is a game proposed by the University of Fribourg. It is inspired by the El Farol bar problem, which is a simple model that shows how (selfish) players cooperate with each other in the absence of communication. In the Minority Game, an odd number of players each have to choose one of two choices independently at each turn. The players who end up on the minority side win.";
 
