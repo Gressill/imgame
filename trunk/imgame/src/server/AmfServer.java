@@ -96,7 +96,7 @@ public class AmfServer {
 			System.out.println("IOException is "+e.toString());
 			try {
 				socket.close();
-				System.out.println("Client disconnect by unexcept close.......");
+				System.out.println("Client disconnect by unexcept closed line 99 file amf server.java.......");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -142,9 +142,11 @@ public class AmfServer {
 										Constant.strategySize,
 										Constant.agentNumber);
 								for (int i = 0; i < 60; i++) {
-									hisPriceList.add(Math.random()*300);
+									hisPriceList.add(Math.random()*100);
 								}
+								map.put("event", "startAction");
 								map.put("historyPrice", hisPriceList);
+								sentSerializationMeg(map);
 							}
 							if (event.equals("buy")) {
 								iGame.playGame();
@@ -182,7 +184,7 @@ public class AmfServer {
 								if(socket.isConnected())
 								{
 									socket.close();
-									System.out.print("client is close....");
+									System.out.print("client is closeed in line 187 file amf server.java place.");
 								}
 								break;
 							} else {
@@ -198,6 +200,7 @@ public class AmfServer {
 		} finally {
 			try {
 				socket.close();
+				System.out.print("client is closeed in line 203 file amf server.java place..");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
