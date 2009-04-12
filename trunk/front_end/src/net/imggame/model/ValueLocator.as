@@ -110,29 +110,28 @@ package net.imggame.model {
 		
 		public function parseResultSerialize(obj:Object):void
 		{
-//			try{
-//				//var a:int = this.ImgPriceData[this.ImgPriceData.length-1];
-//	            model.action_active = true;
-//				ValueLocator.ImgPriceData.addItem((obj.price));
-//				//a = this.ImgPriceData[this.ImgPriceData.length -1];
-//	            
-//	            //this.ImgPriceData.addItem( {"price":obj.price as XMLNode,"ma5":this.averageprice} );
-//	            
-//	            /*if( int(obj.price)>0 )
-//	            {
-//	            	this.score = this.score - ((int)(obj.price)-a);
-//	            }else
-//	            {
-//	            	this.score = this.score + ((int)(obj.price)-a);
-//	            }
-//	            //this.obj = null;
-//	            //Alert.show("ImgPriceData="+ImgPriceData.toString());
-//	            */
-//	            //Alert.show("obj price"+obj.price);
-//	            //Alert.show("imgprice:"+this.ImgPriceData.toString() + "obj price" + obj.price);
-//			}catch(e:Error){
-//				Alert.show("error is:"+e.getStackTrace()+e.toString());
-//			}
+			try{
+				ValueLocator.ImgPriceData.addItem((obj.price));
+					            
+	            /*
+	            //var a:int = this.ImgPriceData[this.ImgPriceData.length-1];
+	            if( int(obj.price)>0 )
+	            {
+	            	this.score = this.score - ((int)(obj.price)-a);
+	            }else
+	            {
+	            	this.score = this.score + ((int)(obj.price)-a);
+	            }
+	            //this.obj = null;
+	            //Alert.show("ImgPriceData="+ImgPriceData.toString());
+	            */
+	            Alert.show("obj price"+obj.price);
+			}catch(e:Error){
+				Alert.show("error is:"+e.getStackTrace()+e.toString());
+			}finally
+			{
+				model.action_active = true;
+			}
 			
 		}
 

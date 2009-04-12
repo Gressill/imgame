@@ -39,14 +39,14 @@
 			
 			public function startGame(e:MouseEvent):void {
 			
-				Security.loadPolicyFile("xmlsocket://192.168.1.111:843");
+				Security.loadPolicyFile("xmlsocket://192.168.1.107:843");
 				model.start_active 			= false;
 				model.action_active 		= true;
 				model.stop_active  			= true;
 				stage.focus = this;
 				addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
 				model._socket =  new Imgsocket();
-				model._socket.connect("192.168.1.111",8888);
+				model._socket.connect("192.168.1.107",8888);
 				//Security.loadPolicyFile("http://localhost/crossdomain.xml")
 				//Security.loadPolicyFile("xmlsocket://localhost:843");
 				//const UL:URLLoader = new URLLoader();
