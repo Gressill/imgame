@@ -39,6 +39,8 @@ public class Img
 
 	private static ArrayList<Double> hisPriceList = new ArrayList<Double>();
 	
+	private double[] agentScoreInfo;
+	
 	private GameList gameList = GameList.getInstance();
 
 	public Img()
@@ -88,7 +90,7 @@ public class Img
 		//from database to get historypeice
 
 		// TODO change the agentNumber to configured value
-		agents = new Agent[Constant.agentNumber + 1]; // number of
+		agents = new Agent[n + 1]; // number of
 		// computer-controlled
 		// agents PLUS human
 
@@ -130,6 +132,7 @@ public class Img
 		hisPriceList = loadHistory(hisPriceList);
 		game.playGame();
 		this.currentPrice = game.getCurrentPrice();
+		this.agentScoreInfo = game.getAgentScore();
 		// price.set(price.size()+1, price.get(price.size())+currentPrice);
 	}
 	
@@ -139,7 +142,7 @@ public class Img
 	 * @return history price list
 	 */
 	public ArrayList<Double> getHistoryPrice(int indexNum) {
-		String sqlString = "select price from price order by price_id desc limit "+indexNum;
+		String sqlString = "select price from price_info order by price_id desc limit "+indexNum;
 		ResultSet res;
 		DatabaseOperation databaseOperation = new DatabaseOperation();
 		if(databaseOperation.OpenConnection())
@@ -255,15 +258,6 @@ public class Img
 		}
 	}
 
-	public void destroy()
-	{
-		initCurrentChoise = null;
-
-		agents = null;
-		game = null;
-
-	}
-
 	private double caculateVolatility(List price)
 	{
 		double lastDTurnA = 0;
@@ -290,6 +284,10 @@ public class Img
 				- (lastDTurnA / Constant.dVolatility)
 				* (lastDTurnA / Constant.dVolatility);
 		return volatility;
+	}
+
+	public double[] getAgentScore() {
+		return agentScoreInfo;
 	}
 
 }
