@@ -14,11 +14,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import agents.MGHuman;
+
 import util.Constant;
 import flex.messaging.io.SerializationContext;
 import flex.messaging.io.amf.ASObject;
 import flex.messaging.io.amf.Amf3Input;
 import flex.messaging.io.amf.Amf3Output;
+import game.GameList;
 import game.Img;
 
 public class AmfServer {
@@ -116,6 +119,7 @@ public class AmfServer {
 	public synchronized void receiveSerializationMeg() {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		try {
+			iGame = new Img();
 			// Init();
 			// ASObject message = ReceiveMsg();
 			if (true) {
@@ -132,8 +136,6 @@ public class AmfServer {
 								int memorySize = (Integer) message.get("m");
 								int strategySize = (Integer) message.get("s");
 								int agentNumber = (Integer) message.get("n");
-								iGame = new Img(memorySize, strategySize,
-										agentNumber);
 								// iGame.init();
 								iGame.init(memorySize, strategySize,
 										agentNumber);
@@ -169,11 +171,16 @@ public class AmfServer {
 								map.put("worseHumanScore", 333);
 								map.put("isEnd", "true");
 								sentSerializationMeg(map);
+								priceBufferArrayList.add(iGame
+										.getCurrentPrice());
 
 							} else if (event.equals("hold")) {
 								iGame.playGame();
+								priceBufferArrayList.add(iGame
+										.getCurrentPrice());
 							} else if (event.equals("close")) {
 								// close game and write database
+								this.addPriceBuffer(iGame.getHumanAgent());
 								if (socket.isConnected()) {
 									socket.close();
 									System.out
@@ -206,10 +213,8 @@ public class AmfServer {
 	 * @param price
 	 * @return
 	 */
-	private boolean addPriceBuffer(double price) {
-		if (priceBufferArrayList.size() < 100) {
-			priceBufferArrayList.add(price);
-		} else {
+	private boolean addPriceBuffer(MGHuman mgHuman) {
+		if ((!priceBufferArrayList.isEmpty())&&(mgHuman.canWriteDatabase())) {
 			// write database
 			DatabaseOperation databaseOperation = new DatabaseOperation();
 			StringBuilder sqlString = new StringBuilder();
@@ -225,9 +230,19 @@ public class AmfServer {
 				int i = databaseOperation.ExecuteUpdate(sqlString.toString());// I,U,D
 				databaseOperation.CloseConnection();
 				priceBufferArrayList.clear();
-				priceBufferArrayList.add(price);
+				//priceBufferArrayList.add(price);
 			}
-		}
+			GameList gameList = GameList.getInstance();
+			ArrayList<MGHuman> tempHumanList = new ArrayList<MGHuman>();
+			for (int i = 0,j = gameList.size(); i < j; i++)
+			{
+				tempHumanList = gameList.getHumanAgentList().get(i);
+				for (int i1 = 0,j1 = tempHumanList.size(); i1 < j1; i1++)
+				{
+					tempHumanList.get(i1).setCanWriteDataBase(false);
+				}
+			}
+		} 
 		return true;
 	}
 

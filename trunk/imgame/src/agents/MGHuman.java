@@ -74,7 +74,10 @@ public class MGHuman extends Agent
 	{
 		return agentNum;
 	}
-	
+	/**
+	 * if can ,return true,can't return false
+	 * @return
+	 */
 	public boolean canWriteDatabase() {
 		return canWriteDadabase;
 	}

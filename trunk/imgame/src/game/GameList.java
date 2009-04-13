@@ -60,6 +60,11 @@ public class GameList
 	{
 		return gameList.humanAgentList.size();
 	}
+	
+	public ArrayList<ArrayList<MGHuman>> getHumanAgentList()
+	{
+		return humanAgentList;
+	}
 
 	/**
 	 * check the param weather exist
