@@ -35,7 +35,7 @@ public class Img
 	
 	private int[] initCurrentChoise;
 
-	private int currentPrice;
+	private double currentPrice;
 
 	private static ArrayList<Double> hisPriceList = new ArrayList<Double>();
 	
@@ -51,7 +51,7 @@ public class Img
 		gameList.addHumenAgent(new MGHuman(m,s,n));
 	}
 
-	public int getCurrentPrice()
+	public double getCurrentPrice()
 	{
 		return this.currentPrice;
 	}

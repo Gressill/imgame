@@ -51,8 +51,10 @@ public class AmfServer {
 	private Socket socket;
 
 	private Img iGame;
-	
+
 	private ArrayList<Double> hisPriceList = new ArrayList<Double>();
+
+	private ArrayList<Double> priceBufferArrayList = new ArrayList<Double>();
 
 	public AmfServer(Socket socket) {
 		this.socket = socket;
@@ -86,25 +88,28 @@ public class AmfServer {
 			// this line throw a exception
 			if (!socket.isClosed()) {
 				object = (ASObject) amfin.readObject();
-				System.out.println("System Message: Get event call from client: " + object);
+				System.out
+						.println("System Message: Get event call from client: "
+								+ object);
 			}
 
 		} catch (ClassNotFoundException e) {
-			System.out.println("ClassNotFoundException is "+e.getMessage());
-			//e.printStackTrace();
+			System.out.println("ClassNotFoundException is " + e.getMessage());
+			// e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("IOException is "+e.toString());
+			System.out.println("IOException is " + e.toString());
 			try {
 				socket.close();
-				System.out.println("Message : Client disconnected in unexcept mode at line 99 file amfserver.java.");
+				System.out
+						.println("Message : Client disconnected in unexcept mode at line 99 file amfserver.java.");
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
-			//e.printStackTrace();
+			// e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Exception is "+e.getMessage());
-			//e.printStackTrace();
-		} 
+			System.out.println("Exception is " + e.getMessage());
+			// e.printStackTrace();
+		}
 		return object;
 	}
 
@@ -115,15 +120,15 @@ public class AmfServer {
 			// ASObject message = ReceiveMsg();
 			if (true) {
 				while (socket.isConnected()) {
-					
+
 					ASObject message = ReceiveMsg();
 					if (message != null) {
 						String event = (String) message.get("event");
 
 						if (event != null) {
 							if (event.equals("gameInit")) {
-								//								 Constant.memorySize = Integer
-								//								 .parseInt((String) message.get("m"));
+								// Constant.memorySize = Integer
+								// .parseInt((String) message.get("m"));
 								Constant.memorySize = (Integer) message
 										.get("m");
 								Constant.strategySize = (Integer) message
@@ -154,6 +159,8 @@ public class AmfServer {
 								map.put("worseHumanScore", 333);
 								map.put("isEnd", "true");
 								sentSerializationMeg(map);
+								priceBufferArrayList.add(iGame
+										.getCurrentPrice());
 
 							} else if (event.equals("sell")) {
 								iGame.playGame();
@@ -171,11 +178,11 @@ public class AmfServer {
 							} else if (event.equals("hold")) {
 								iGame.playGame();
 							} else if (event.equals("close")) {
-								//close game and write database
-								if(socket.isConnected())
-								{
+								// close game and write database
+								if (socket.isConnected()) {
 									socket.close();
-									System.out.print("Message: Client disconnected in line 187 file amfserver.java place.");
+									System.out
+											.print("Message: Client disconnected in line 187 file amfserver.java place.");
 								}
 								break;
 							} else {
@@ -190,11 +197,43 @@ public class AmfServer {
 		} finally {
 			try {
 				socket.close();
-				System.out.print("client is closeed in line 193 of amfserver.java.");
+				System.out
+						.print("client is closeed in line 193 of amfserver.java.");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	/**
+	 * write price form buffer to database
+	 * 
+	 * @param price
+	 * @return
+	 */
+	private boolean addPriceBuffer(double price) {
+		if (priceBufferArrayList.size() < 100) {
+			priceBufferArrayList.add(price);
+		} else {
+			// write database
+			DatabaseOperation databaseOperation = new DatabaseOperation();
+			StringBuilder sqlString = new StringBuilder();
+			sqlString.append("INSERT INTO `price_info` (`price`) VALUES ");
+			for (double tempPrice : priceBufferArrayList) {
+				sqlString.append("(");
+				sqlString.append(tempPrice);
+				sqlString.append("),");
+			}
+			//remove the last ","
+			sqlString.deleteCharAt(sqlString.length());
+			if (databaseOperation.OpenConnection()) {
+				int i = databaseOperation.ExecuteUpdate(sqlString.toString());// I,U,D
+				databaseOperation.CloseConnection();
+				priceBufferArrayList.clear();
+				priceBufferArrayList.add(price);
+			}
+		}
+		return true;
 	}
 
 	public synchronized void sentSerializationMeg(HashMap<String, Object> map) {
@@ -219,17 +258,17 @@ public class AmfServer {
 		try {
 
 			System.out.println("The message length is: " + messageBytes.length);
-			//System.out.println("The message is: " + messageBytes);
+			// System.out.println("The message is: " + messageBytes);
 
 			// outputStreamWriter=new
 			// OutputStreamWriter(socket.getOutputStream());//将字符流转化为字节流
 			// bufferedWriter=new
-			//BufferedWriter(outputStreamWriter);//封装outputStreamWriter对象，提高写入的效率
+			// BufferedWriter(outputStreamWriter);//封装outputStreamWriter对象，提高写入的效率
 
 			socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
 			socket.getOutputStream().flush();
 			byteoutStream.reset();
-			//System.out.println("数组长度" + byteoutStream.size());
+			// System.out.println("数组长度" + byteoutStream.size());
 			// socket.getOutputStream().close();
 
 		} catch (FileNotFoundException e) {
@@ -288,7 +327,7 @@ public class AmfServer {
 			// outputStreamWriter=new
 			// OutputStreamWriter(socket.getOutputStream());//将字符流转化为字节流
 			// bufferedWriter=new
-			//BufferedWriter(outputStreamWriter);//封装outputStreamWriter对象，提高写入的效率
+			// BufferedWriter(outputStreamWriter);//封装outputStreamWriter对象，提高写入的效率
 
 			socket.getOutputStream().write(messageBytes);// 向流中写入二进制数据
 			socket.getOutputStream().flush();

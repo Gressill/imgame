@@ -9,20 +9,21 @@ import java.util.Calendar;
 
 import util.Constant;
 
-/** */
 /**
+ * use to operation database
+ * @author yufei
  *
  */
 
 public class DatabaseOperation {
 
-	public String ClassString		 	= null;
-	public String ConnectionString 		= null;
-	public String UserName 				= null;
-	public String PassWord 				= null;
+	private String ClassString		 	= null;
+	private String ConnectionString 		= null;
+	private String UserName 				= null;
+	private String PassWord 				= null;
 
-	public Connection Conn;
-	public Statement Stmt;
+	private Connection Conn;
+	private Statement Stmt;
 
 	public DatabaseOperation() {
 		//From System.xml
@@ -139,8 +140,9 @@ public class DatabaseOperation {
 	}
 
 	public static void testSql() {
-		String sqlString = "select * from `price`";
-		String sqlInsert = "INSERT INTO `price` (`price`) VALUES (34.90)";
+		String sqlString = "select * from `price_info`";
+		String sqlInsert = "INSERT INTO `price_info` (`price`) VALUES (34.90)";
+		//String ssString = "INSERT INTO `price_info` (`price`) VALUES (34.90),(12),(25)";
 		ResultSet res;
 		DatabaseOperation databaseOperation = new DatabaseOperation();
 		if(databaseOperation.OpenConnection())
