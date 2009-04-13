@@ -31,7 +31,7 @@ public class Img
 
 	private Agent[] agents;
 
-	private MGHuman[] mghuman;
+	private MGHuman mghuman;
 	
 	private int[] initCurrentChoise;
 
@@ -50,7 +50,8 @@ public class Img
 
 	public Img(int m, int s, int n)
 	{
-		gameList.addHumenAgent(new MGHuman(m,s,n));
+		this.mghuman = new MGHuman(m,s,n);
+		gameList.addHumenAgent(this.mghuman);
 	}
 
 	public double getCurrentPrice()
@@ -69,27 +70,9 @@ public class Img
 
 	public void init(int m,int s,int n)
 	{
-
-//		try
-//		{
-//			// 用户没填m,s,n的时候用默认数据3，2，95
-//			// Constant.memorySize = Integer
-//			// .parseInt((this.getParameter("memory") == null) ? String
-//			// .valueOf(Constant.memorySize) : this
-//			// .getParameter("memory"));
-////			if (mgHumanList.exist(msn))) {
-////				//add to the exsit game
-////			} else {
-////				//begin a new game
-////			}
-//		} catch (Exception e)
-//		{
-//
-//			e.printStackTrace();
-//		}
-		//from database to get historypeice
-
-		// TODO change the agentNumber to configured value
+		//check game list
+		gameList.addHumenAgent(new MGHuman(m,s,n));
+		//change the agentNumber to configured value
 		agents = new Agent[n + 1]; // number of
 		// computer-controlled
 		// agents PLUS human
@@ -97,12 +80,12 @@ public class Img
 		// 初始化agent
 		for (int i = 0; i < agents.length; i++)
 		{
-			agents[i] = new MGAgent(Constant.memorySize, Constant.strategySize);
+			agents[i] = new MGAgent(m, s);
 		}
 
 		// game plays once to initialise
 		// game = new Game(agents, 0, 200 * (1 << 3));
-		game = new Game(agents, 0, Constant.agentNumber + 1);// third @param will
+		game = new Game(agents, 0, n + 1);// third @param will
 																// be the number
 																// of agents
 
@@ -288,6 +271,11 @@ public class Img
 
 	public double[] getAgentScore() {
 		return agentScoreInfo;
+	}
+	
+	public MGHuman getHumanAgent()
+	{
+		return this.mghuman;
 	}
 
 }
