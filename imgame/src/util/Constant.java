@@ -91,6 +91,8 @@ public class Constant {
 	public final static String DB__DATABASE = "imgame";
 	public final static String DB_USER_NAME = "ctottrunsql";
 	public final static String DB_PASSWORD = "ctottruningsql";
+	//public final static String DB_USER_NAME = "root";
+	//public final static String DB_PASSWORD = "uestc";
 
 
 }

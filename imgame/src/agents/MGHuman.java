@@ -20,6 +20,8 @@ public class MGHuman extends Agent
 	private double mgHumanScore;
 	
 	private int lastScore = 0;
+	
+	private boolean canWriteDadabase = true;
 
 	// private Agent agent[] = new Agent[number];
 
@@ -71,6 +73,14 @@ public class MGHuman extends Agent
 	public int getAgentNum()
 	{
 		return agentNum;
+	}
+	
+	public boolean canWriteDatabase() {
+		return canWriteDadabase;
+	}
+	
+	public void setCanWriteDataBase(boolean b) {
+		this.canWriteDadabase = b;
 	}
 
 	/**
@@ -154,13 +164,15 @@ public class MGHuman extends Agent
 		Constant.agentGainMin = agentsMinGain;
 		Constant.agentGainAv = agentsAvgGain;
 
-		Constant.setGameToInterface(true);
-
 		return true;
 	}
 	
-	public double caculateScore(int thisturnscore) {
-		mgHumanScore = lastScore+thisturnscore;
+	public void caculateScore(int thisturnscore) {
+		mgHumanScore = mgHumanScore+thisturnscore;
+	}
+	
+	public double getScore() {
+		// TODO Auto-generated method stub
 		return mgHumanScore;
 	}
 

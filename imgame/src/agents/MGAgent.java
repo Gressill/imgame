@@ -84,12 +84,15 @@ public class MGAgent extends Agent {
 	 */
 
 
-	public boolean feedback(int historyChoise, int thisTurnPrice,int num) {
-		//update virtuakScore
+	//public boolean feedback(int historyChoise, int thisTurnPrice,int num) {
+	public boolean feedback(int thisTurnPrice) {
+				//update virtuakScore and agents score
 		if (thisTurnPrice * action < 0) {
 			virtualScores[determining[0]]++;
+			mgAgentScore = mgAgentScore+Math.abs(thisTurnPrice);
 		} else if (thisTurnPrice * action > 0) {
 			virtualScores[determining[0]]--;
+			mgAgentScore = mgAgentScore-Math.abs(thisTurnPrice);
 
 		}
 		//// 根据历史虚分值选择策略
@@ -99,15 +102,12 @@ public class MGAgent extends Agent {
 				determining[0] = i;
 
 			}
-
 			//System.out.println("agent["+num+"]v[" + i + "]=" + virtualScores[i]);
-
-
 		}
 		return true;
 	}
 	
-	public double caculateScore() {
+	public double getScore() {
 		return mgAgentScore;
 	}
 

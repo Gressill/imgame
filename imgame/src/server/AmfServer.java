@@ -129,19 +129,14 @@ public class AmfServer {
 							if (event.equals("gameInit")) {
 								// Constant.memorySize = Integer
 								// .parseInt((String) message.get("m"));
-								Constant.memorySize = (Integer) message
-										.get("m");
-								Constant.strategySize = (Integer) message
-										.get("s");
-								Constant.agentNumber = (Integer) message
-										.get("n");
-								iGame = new Img(Constant.memorySize,
-										Constant.strategySize,
-										Constant.agentNumber);
+								int memorySize = (Integer) message.get("m");
+								int strategySize = (Integer) message.get("s");
+								int agentNumber = (Integer) message.get("n");
+								iGame = new Img(memorySize, strategySize,
+										agentNumber);
 								// iGame.init();
-								iGame.init(Constant.memorySize,
-										Constant.strategySize,
-										Constant.agentNumber);
+								iGame.init(memorySize, strategySize,
+										agentNumber);
 								hisPriceList = iGame.getHistoryPrice(60);
 								map.put("event", "startAction");
 								map.put("historyPrice", hisPriceList);
@@ -151,9 +146,9 @@ public class AmfServer {
 								iGame.playGame();
 								map.put("event", "buyAction");
 								map.put("price", iGame.getCurrentPrice());
-								map.put("bestAgentScore", 100);
-								map.put("avgAgentScore", 50);
-								map.put("worseAgentScore", 10);
+								map.put("bestAgentScore", iGame.getAgentScore()[2]);
+								map.put("avgAgentScore", iGame.getAgentScore()[1]);
+								map.put("worseAgentScore", iGame.getAgentScore()[0]);
 								map.put("bestHumanScore", 111);
 								map.put("avGHumanScore", 222);
 								map.put("worseHumanScore", 333);
@@ -166,9 +161,9 @@ public class AmfServer {
 								iGame.playGame();
 								map.put("event", "sellAction");
 								map.put("price", iGame.getCurrentPrice());
-								map.put("bestAgentScore", 100);
-								map.put("avgAgentScore", 50);
-								map.put("worseAgentScore", 10);
+								map.put("bestAgentScore", iGame.getAgentScore()[2]);
+								map.put("avgAgentScore", iGame.getAgentScore()[1]);
+								map.put("worseAgentScore", iGame.getAgentScore()[0]);
 								map.put("bestHumanScore", 111);
 								map.put("avGHumanScore", 222);
 								map.put("worseHumanScore", 333);

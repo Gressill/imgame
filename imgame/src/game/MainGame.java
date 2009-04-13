@@ -18,7 +18,7 @@ public class MainGame {
 		SocketServer server = new SocketServer();
 		server.startServer(Constant.port);
 		
-		DatabaseOperation.testSql();
+		//DatabaseOperation.testSql();
 	}
 
 }

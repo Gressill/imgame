@@ -43,13 +43,18 @@ public abstract class Agent {
 	 * 
 	 */
 
-	public boolean feedback(int historyChoise,int thisTurnPrice,int i) {
+	public boolean feedback(int thisTurnPrice) {
 
 		return true;
 	}
 	
 	public double caculateScore() {
 		return score;
+	}
+
+	public double getScore() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
