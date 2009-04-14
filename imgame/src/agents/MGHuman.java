@@ -1,6 +1,7 @@
 package agents;
 
 import java.net.Socket;
+import java.text.DecimalFormat;
 
 import util.Constant;
 
@@ -97,6 +98,12 @@ public class MGHuman extends Agent {
 	}
 
 	public double[] getHumanScoreInfo() {
+
+		DecimalFormat daDecimalFormat = new DecimalFormat("########.00");
+		//Àƒ…·ŒÂ»Î
+		humanScoreInfo[0] = Double.parseDouble(daDecimalFormat.format(humanScoreInfo[0]));
+		humanScoreInfo[1] = Double.parseDouble(daDecimalFormat.format(humanScoreInfo[1]));
+		humanScoreInfo[2] = Double.parseDouble(daDecimalFormat.format(humanScoreInfo[2]));
 		return humanScoreInfo;
 	}
 	

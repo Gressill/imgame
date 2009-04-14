@@ -1,6 +1,7 @@
 package game;
 
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -173,6 +174,12 @@ public class Game implements Strategy {
 	 * @return an array A ,A[0] = worse score, A[1] = average score, A[2] = best score
 	 */
 	public double[] getAgentScore() {
+  
+		DecimalFormat daDecimalFormat = new DecimalFormat("########.00");
+		//Àƒ…·ŒÂ»Î
+		agentScoreInfo[0] = Double.parseDouble(daDecimalFormat.format(agentScoreInfo[0]));
+		agentScoreInfo[1] = Double.parseDouble(daDecimalFormat.format(agentScoreInfo[1]));
+		agentScoreInfo[2] = Double.parseDouble(daDecimalFormat.format(agentScoreInfo[2]));
 		return agentScoreInfo;
 	}
 
