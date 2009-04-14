@@ -9,12 +9,12 @@ public class MainGame {
 
 	public static void main(String[] args) {
 
-		//Security Policy Thead, provide security certification service. 
+		//Security Policy Thread, provide security certification service. 
 		SecurityPolicySocket policySocket = new SecurityPolicySocket();
 		Thread policyThread = new Thread(policySocket);
 		policyThread.start();
 		
-		//Game Thead, provide minority game service.
+		//Game Thread, provide minority game service.
 		SocketServer server = new SocketServer();
 		server.startServer(Constant.port);
 		
