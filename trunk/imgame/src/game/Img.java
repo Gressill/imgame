@@ -71,21 +71,23 @@ public class Img
 	public void init(int m,int s,int n)
 	{
 		//check game list
-		gameList.addHumenAgent(new MGHuman(m,s,n));
+		this.mghuman = new MGHuman(m,s,n);
+		gameList.addHumenAgent(this.mghuman);
 		//change the agentNumber to configured value
 		agents = new Agent[n + 1]; // number of
+		agents[n] = this.mghuman;
 		// computer-controlled
 		// agents PLUS human
 
 		// ≥ı ºªØagent
-		for (int i = 0; i < agents.length; i++)
+		for (int i = 0; i < (agents.length-1); i++)
 		{
 			agents[i] = new MGAgent(m, s);
 		}
 
 		// game plays once to initialise
 		// game = new Game(agents, 0, 200 * (1 << 3));
-		game = new Game(agents, 0, n + 1);// third @param will
+		game = new Game(agents);// third @param will
 																// be the number
 																// of agents
 
@@ -112,7 +114,8 @@ public class Img
 
 	public void playGame()
 	{
-		hisPriceList = loadHistory(hisPriceList);
+		//load price xml documents 
+		//hisPriceList = loadHistory(hisPriceList);
 		game.playGame();
 		this.currentPrice = game.getCurrentPrice();
 		this.agentScoreInfo = game.getAgentScore();
@@ -269,7 +272,7 @@ public class Img
 		return volatility;
 	}
 
-	public double[] getAgentScore() {
+	public double[] getAgentScoreInfo() {
 		return agentScoreInfo;
 	}
 	
