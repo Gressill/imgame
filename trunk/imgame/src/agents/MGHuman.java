@@ -150,9 +150,6 @@ public class MGHuman extends Agent {
 	 * @return
 	 */
 	public boolean feedback(int thisTurnPrice) {
-		//double worseHumanScore = 0;
-		//double avgHumanScore = 0;
-		//double bestHumanScore = 0;
 		turns++;
 		if (humanAction == -1) {
 				mgHumanScore = mgHumanScore + thisTurnPrice;
@@ -171,10 +168,8 @@ public class MGHuman extends Agent {
 
 		this.totalPrice = this.totalPrice + mgHumanScore;
 
-		//this.humanScoreInfo[0] = worseHumanScore;
 		this.humanScoreInfo[1] = this.totalPrice / turns;
-		//this.humanScoreInfo[2] = bestHumanScore;
-		System.out.println("human:--best is:"+this.humanScoreInfo[2]+"avg is:"+this.humanScoreInfo[1]+"worse is:"+this.humanScoreInfo[0]);
+		//System.out.println("human:--best is:"+this.humanScoreInfo[2]+"avg is:"+this.humanScoreInfo[1]+"worse is:"+this.humanScoreInfo[0]);
 		return true;
 	}
 

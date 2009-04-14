@@ -217,7 +217,7 @@ public class Game implements Strategy {
 //		this.agentScoreInfo[0] = worseAgentScore;
 //		this.agentScoreInfo[1] = avgAgentScore;
 //		this.agentScoreInfo[2] = bestAgentScore;
-		System.out.println("agent:--best is:"+this.agentScoreInfo[2]+"avg is:"+this.agentScoreInfo[1]+"worse is:"+this.agentScoreInfo[0]);
+//		System.out.println("agent:--best is:"+this.agentScoreInfo[2]+"avg is:"+this.agentScoreInfo[1]+"worse is:"+this.agentScoreInfo[0]);
 	}
 
 }

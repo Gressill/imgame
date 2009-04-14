@@ -58,6 +58,8 @@ public class AmfServer {
 	private ArrayList<Double> hisPriceList = new ArrayList<Double>();
 
 	private ArrayList<Double> priceBufferArrayList = new ArrayList<Double>();
+	
+	private MGHuman mgHuman;
 
 	public AmfServer(Socket socket) {
 		this.socket = socket;
@@ -139,51 +141,54 @@ public class AmfServer {
 								// iGame.init();
 								iGame.init(memorySize, strategySize,
 										agentNumber);
+								mgHuman = iGame.getHumanAgent();
 								hisPriceList = iGame.getHistoryPrice(60);
 								map.put("event", "startAction");
 								map.put("historyPrice", hisPriceList);
 								sentSerializationMeg(map);
 							}
 							if (event.equals("buy")) {
-								iGame.getHumanAgent().setHumanAction(-1);
+								mgHuman.setHumanAction(-1);
 								iGame.playGame();
 								map.put("event", "buyAction");
 								map.put("price", iGame.getCurrentPrice());
 								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
 								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
 								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
-								map.put("bestHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[2]);
-								map.put("avGHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[1]);
-								map.put("worseHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[0]);
-								map.put("isEnd", "true");
+								map.put("mgSocre", mgHuman.getScore());
+								//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
+								map.put("avGHumanScore", mgHuman.getHumanScoreInfo()[1]);
+								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
+								map.put("canSavetoDatabase", mgHuman.canWriteDatabase());
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame
 										.getCurrentPrice());
 
 							} else if (event.equals("sell")) {
-								iGame.getHumanAgent().setHumanAction(1);
+								mgHuman.setHumanAction(1);
 								iGame.playGame();
 								map.put("event", "sellAction");
 								map.put("price", iGame.getCurrentPrice());
 								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
 								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
 								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
-								map.put("bestHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[2]);
-								map.put("avGHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[1]);
-								map.put("worseHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[0]);
-								map.put("isEnd", "true");
+								map.put("mgSocre", mgHuman.getScore());
+								//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
+								map.put("avGHumanScore", mgHuman.getHumanScoreInfo()[1]);
+								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
+								map.put("canSavetoDatabase", mgHuman.canWriteDatabase());
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame
 										.getCurrentPrice());
 
 							} else if (event.equals("hold")) {
-								iGame.getHumanAgent().setHumanAction(0);
+								mgHuman.setHumanAction(0);
 								iGame.playGame();
 								priceBufferArrayList.add(iGame
 										.getCurrentPrice());
 							} else if (event.equals("close")) {
 								// close game and write database
-								this.addPriceBuffer(iGame.getHumanAgent());
+								this.addPriceBuffer(mgHuman);
 								if (socket.isConnected()) {
 									socket.close();
 									System.out
