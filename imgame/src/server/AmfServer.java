@@ -145,36 +145,39 @@ public class AmfServer {
 								sentSerializationMeg(map);
 							}
 							if (event.equals("buy")) {
+								iGame.getHumanAgent().setHumanAction(-1);
 								iGame.playGame();
 								map.put("event", "buyAction");
 								map.put("price", iGame.getCurrentPrice());
-								map.put("bestAgentScore", iGame.getAgentScore()[2]);
-								map.put("avgAgentScore", iGame.getAgentScore()[1]);
-								map.put("worseAgentScore", iGame.getAgentScore()[0]);
-								map.put("bestHumanScore", 111);
-								map.put("avGHumanScore", 222);
-								map.put("worseHumanScore", 333);
+								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
+								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
+								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
+								map.put("bestHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[2]);
+								map.put("avGHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[1]);
+								map.put("worseHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[0]);
 								map.put("isEnd", "true");
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame
 										.getCurrentPrice());
 
 							} else if (event.equals("sell")) {
+								iGame.getHumanAgent().setHumanAction(1);
 								iGame.playGame();
 								map.put("event", "sellAction");
 								map.put("price", iGame.getCurrentPrice());
-								map.put("bestAgentScore", iGame.getAgentScore()[2]);
-								map.put("avgAgentScore", iGame.getAgentScore()[1]);
-								map.put("worseAgentScore", iGame.getAgentScore()[0]);
-								map.put("bestHumanScore", 111);
-								map.put("avGHumanScore", 222);
-								map.put("worseHumanScore", 333);
+								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
+								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
+								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
+								map.put("bestHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[2]);
+								map.put("avGHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[1]);
+								map.put("worseHumanScore", iGame.getHumanAgent().getHumanScoreInfo()[0]);
 								map.put("isEnd", "true");
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame
 										.getCurrentPrice());
 
 							} else if (event.equals("hold")) {
+								iGame.getHumanAgent().setHumanAction(0);
 								iGame.playGame();
 								priceBufferArrayList.add(iGame
 										.getCurrentPrice());

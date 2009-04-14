@@ -111,7 +111,7 @@ public class MGAgent extends Agent {
 		return mgAgentScore;
 	}
 
-	public double getAction() {
+	public int getAction() {
 		return this.action;
 	}
 }

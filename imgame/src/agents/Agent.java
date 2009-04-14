@@ -2,7 +2,7 @@ package agents;
 
 public abstract class Agent {
 
-	protected double action = 0;//
+	protected int action = 0;//
 	protected double gain = 0;//
 	protected int[][] determining;//
 	private double score = 0;
@@ -32,7 +32,7 @@ public abstract class Agent {
 		return false;
 	}
 	
-	public double getAction() {
+	public int getAction() {
 		
 		return action;
 	}

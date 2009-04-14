@@ -4,8 +4,7 @@ import java.net.Socket;
 
 import util.Constant;
 
-public class MGHuman extends Agent
-{
+public class MGHuman extends Agent {
 
 	private Agent[] agents;
 
@@ -14,19 +13,24 @@ public class MGHuman extends Agent
 	private int strategyNum;
 
 	private int agentNum;
-	
+
 	private Socket socket;
 
 	private double mgHumanScore;
-	
-	private int lastScore = 0;
-	
+
+	private double lastScore = 0;
+
 	private boolean canWriteDadabase = true;
+
+	private double thisTurnPrice = 0;
+	
+	private int humanAction = 0;
+	
+	private double[] humanScoreInfo = new double[3];
 
 	// private Agent agent[] = new Agent[number];
 
-	public MGHuman(int m, int s, int n)
-	{
+	public MGHuman(int m, int s, int n) {
 
 		// this.agents = agent;
 
@@ -34,46 +38,39 @@ public class MGHuman extends Agent
 		this.strategyNum = s;
 		this.agentNum = n;
 	}
-	
-	public void setSocket(Socket socket)
-	{
+
+	public void setSocket(Socket socket) {
 		this.socket = socket;
 	}
-	
-	public Socket getSocket()
-	{
+
+	public Socket getSocket() {
 		return socket;
 	}
 
-	public void setMemoryNum(int m)
-	{
+	public void setMemoryNum(int m) {
 		this.memoryNum = m;
 	}
 
-	public int getMemoryNum()
-	{
+	public int getMemoryNum() {
 		return memoryNum;
 	}
 
-	public void setStrategyNum(int s)
-	{
+	public void setStrategyNum(int s) {
 		this.strategyNum = s;
 	}
 
-	public int getStrategyNum()
-	{
+	public int getStrategyNum() {
 		return strategyNum;
 	}
 
-	public void seAgentNum(int n)
-	{
+	public void seAgentNum(int n) {
 		this.agentNum = n;
 	}
 
-	public int getAgentNum()
-	{
+	public int getAgentNum() {
 		return agentNum;
 	}
+
 	/**
 	 * if can ,return true,can't return false
 	 * @return
@@ -81,28 +78,37 @@ public class MGHuman extends Agent
 	public boolean canWriteDatabase() {
 		return canWriteDadabase;
 	}
-	
+
 	public void setCanWriteDataBase(boolean b) {
 		this.canWriteDadabase = b;
 	}
+	
+	public void setHumanAction(int n) {
+		this.humanAction = n;
+	}
+	
+	public int getAction()
+	{
+		return this.humanAction;
+	}
 
+	public double[] getHumanScoreInfo() {
+		return humanScoreInfo;
+	}
+	
 	/**
 	 * compare two mghunmen have the same m,n,s,ormaybe could extend to compare they are from the same place..
 	 * @param mghuman
 	 * @return
 	 */
-	public boolean isTheSame(MGHuman mgHuman)
-	{
-		if (!(mgHuman instanceof MGHuman))
-		{
+	public boolean isTheSame(MGHuman mgHuman) {
+		if (!(mgHuman instanceof MGHuman)) {
 			return false;
 		} else if ((this.agentNum == mgHuman.getAgentNum())
 				&& (this.strategyNum == mgHuman.getStrategyNum())
-				&& (this.memoryNum == mgHuman.getMemoryNum()))
-		{
+				&& (this.memoryNum == mgHuman.getMemoryNum())) {
 			return true;
-		} else
-		{
+		} else {
 			return false;
 		}
 	}
@@ -110,22 +116,18 @@ public class MGHuman extends Agent
 	/**
 	 * 
 	 */
-	public boolean agentAct(int mu)
-	{
+	public boolean agentAct(int mu) {
 
-		while (!Constant.isInterfaceToGame())
-		{
+		while (!Constant.isInterfaceToGame()) {
 			// DO NOTHING
 		}
 
 		Constant.setInterfaceToGame(false);
 
-		if (Constant.interfaceToGameAction == Constant.HUMAN_PLAYER_EXIT)
-		{
+		if (Constant.interfaceToGameAction == Constant.HUMAN_PLAYER_EXIT) {
 			action = 0;
 			return false;
-		} else
-		{
+		} else {
 			action = Constant.interfaceToGameAction;
 			return true;
 		}
@@ -136,44 +138,38 @@ public class MGHuman extends Agent
 	 * @param agent
 	 * @return
 	 */
-	public boolean feedback(Agent[] agent)
-	{
+	public boolean feedback(int thisTurnPrice) {
+		//double worseHumanScore = 0;
+		//double avgHumanScore = 0;
+		//double bestHumanScore = 0;
+		if (humanAction == -1) {
+				mgHumanScore = mgHumanScore + thisTurnPrice;
+		}else if (humanAction == 1) {
+			mgHumanScore = mgHumanScore - thisTurnPrice;
+		}
+		if (mgHumanScore < this.humanScoreInfo[0]) {
 
-		double agentsMaxGain = agents[0].getGain();
-		double agentsMinGain = agents[0].getGain();
-		double agentsAvgGain = agents[0].getGain();
-
-		for (int i = 1; i < (agent.length - 1); i++)
-		{
-			if (agents[i].getGain() < agentsMinGain)
-			{
-
-				agentsMinGain = agents[i].getGain();
-
-			}
-
-			if (agents[i].getGain() > agentsMaxGain)
-			{
-
-				agentsMaxGain = agents[i].getGain();
-			}
-
-			agentsAvgGain = agentsAvgGain + agents[i].getGain();
+			this.humanScoreInfo[0] = mgHumanScore;
 		}
 
-		agentsAvgGain = agentsAvgGain / (agent.length - 1);
+		if (mgHumanScore > this.humanScoreInfo[2]) {
 
-		Constant.agentGainMax = agentsMaxGain;
-		Constant.agentGainMin = agentsMinGain;
-		Constant.agentGainAv = agentsAvgGain;
+			this.humanScoreInfo[2] = mgHumanScore;
+		}
 
+		this.humanScoreInfo[1] = this.humanScoreInfo[1] + mgHumanScore;
+
+		//this.humanScoreInfo[0] = worseHumanScore;
+		this.humanScoreInfo[1] = this.humanScoreInfo[0] / 2;
+		//this.humanScoreInfo[2] = bestHumanScore;
+		System.out.println("human:--best is:"+this.humanScoreInfo[2]+"avg is:"+this.humanScoreInfo[1]+"worse is:"+this.humanScoreInfo[0]);
 		return true;
 	}
-	
+
 	public void caculateScore(int thisturnscore) {
-		mgHumanScore = mgHumanScore+thisturnscore;
+		mgHumanScore = mgHumanScore + thisturnscore;
 	}
-	
+
 	public double getScore() {
 		// TODO Auto-generated method stub
 		return mgHumanScore;

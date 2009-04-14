@@ -14,12 +14,6 @@ public class Game implements Strategy {
 
 	private int turns = 0; // turns
 
-	// ?
-	private int ttrans = 0;
-
-	// computer agents number
-	private int tmax = 0;
-
 	// history space
 	private int P = 8;// 1 << 16;
 
@@ -29,7 +23,7 @@ public class Game implements Strategy {
 
 	private int[] currentChoise;// 存放每个agent的选择的数组
 
-	private int currentPrice = 0;
+	private double currentPrice = 0;
 
 	private Thread gameThread;
 
@@ -40,13 +34,11 @@ public class Game implements Strategy {
 	private double[] agentScoreInfo = new double[3];
 
 	//
-	public Game(Agent[] agents, int tTrans, int tMax) {
-		this.agents = agents; // agents[95]
-		ttrans = tTrans;
-		tmax = tMax; // 59
+	public Game(Agent[] agents) {
+		this.agents = agents; // agents
 		currentChoise = new int[agents.length];
 		historyChoise = new int[agents.length];
-		for (int i = 0; i < agents.length; i++) {
+		for (int i = 0; i < (agents.length-1); i++) {
 			historyChoise[i] = (int) (P * Math.random());// random number
 			// between 0 to p:8
 		}
@@ -60,19 +52,22 @@ public class Game implements Strategy {
 		// false ,we end the game.
 		// loadHistory();
 
-		for (int i = 0; i < agents.length; i++) {
+		for (int i = 0; i < (agents.length-1); i++) {
 			// System.out.println(historyChoise[i]);
 			agents[i].agentAct(historyChoise[i]);// 根据历史来决定买和卖，也就是action的值，为0或者1
 			currentChoise[i] = (int) agents[i].getAction();
 			// System.out.println("current"+i+"Choise"+currentChoise[i]);
 		}
-		for (int i = 0; i < agents.length; i++) {
+		for (int i = 0; i < (agents.length); i++) {
 			//agent[i].feedback(historyChoise[i],caculateThisTurnPrice(currentChoise), i);
 			agents[i].feedback(caculateThisTurnPrice(currentChoise));
 			updateHistory(historyChoise, currentChoise, i);
 		}
+		//agents[agents.length-1].feedback(caculateThisTurnPrice(currentChoise));
+		//System.out.println(agents[agents.length-1].getClass());
+		//System.out.println(agents[33].getClass());
 		// 得到该轮的价格 feedback to client
-		currentPrice = caculatePrice(currentChoise) + Constant.userChoise;
+		currentPrice = caculatePrice(currentChoise) + agents[agents.length-1].getAction();
 		this.updateAgentScore(agents);
 		// System.out.println("currentPrice"+currentPrice);
 		// Constant.keepPlaying = false;
@@ -93,7 +88,7 @@ public class Game implements Strategy {
 		return currentChoise;
 	}
 
-	public int getCurrentPrice() {
+	public double getCurrentPrice() {
 		return this.currentPrice;
 	}
 
@@ -120,7 +115,7 @@ public class Game implements Strategy {
 	 *            ：储存该轮的所有agent的决定（买或者卖,1/-1）
 	 * @return currentPrice：每一轮的价格
 	 */
-	private int caculatePrice(int[] currentChoise) {
+	private double caculatePrice(int[] currentChoise) {
 
 		// int currentPrice = 0;
 		for (int i = 0; i < currentChoise.length; i++) {
@@ -184,36 +179,41 @@ public class Game implements Strategy {
 		return agentScoreInfo;
 	}
 
+	public double getHumanScoreInfo() {
+		return agents[agents.length].getScore();
+	}
+	
 	/**
 	 * update agents score,best,worse,average score of agents
 	 * @param agents: all agents
 	 */
 	public void updateAgentScore(Agent[] agents) {
 
-		double avgAgentScore = 0;
-		double bestAgentScore = 0;
-		double worseAgentScore = 0;
-		System.out.println("agents is:"+agents.length);
-		avgAgentScore = agents[22].getScore();
-		System.out.println("agents score is:" + agents[500].getScore());
-		for (int i = 0, j = agents.length; i < j; i++) {
-			if (agents[i].getScore() < worseAgentScore) {
+//		double avgAgentScore = 0;
+//		double bestAgentScore = 0;
+//		double worseAgentScore = 0;
+		//System.out.println("agents is:"+agents.length);
+		//avgAgentScore = agents[22].getScore();
+		//System.out.println("agents score is:" + agents[500].getScore());
+		for (int i = 0, j = (agents.length-1); i < j; i++) {
+			if (agents[i].getScore() < this.agentScoreInfo[0]) {
 
-				worseAgentScore = agents[i].getScore();
+				this.agentScoreInfo[0] = agents[i].getScore();
 			}
 
-			if (agents[i].getScore() > bestAgentScore) {
+			if (agents[i].getScore() > this.agentScoreInfo[2]) {
 
-				bestAgentScore = agents[i].getScore();
+				this.agentScoreInfo[2] = agents[i].getScore();
 			}
 
-			avgAgentScore = avgAgentScore + agents[i].getScore();
+			this.agentScoreInfo[1] = this.agentScoreInfo[1] + agents[i].getScore();
 		}
-		avgAgentScore = avgAgentScore / (agents.length);
+		this.agentScoreInfo[1] = this.agentScoreInfo[1] / (agents.length-1);
 		//Arrays.sort(agents);
-		this.agentScoreInfo[0] = worseAgentScore;
-		this.agentScoreInfo[1] = avgAgentScore;
-		this.agentScoreInfo[2] = bestAgentScore;
+//		this.agentScoreInfo[0] = worseAgentScore;
+//		this.agentScoreInfo[1] = avgAgentScore;
+//		this.agentScoreInfo[2] = bestAgentScore;
+		System.out.println("agent:--best is:"+this.agentScoreInfo[2]+"avg is:"+this.agentScoreInfo[1]+"worse is:"+this.agentScoreInfo[0]);
 	}
 
 }
