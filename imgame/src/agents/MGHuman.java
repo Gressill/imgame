@@ -27,6 +27,10 @@ public class MGHuman extends Agent {
 	private int humanAction = 0;
 	
 	private double[] humanScoreInfo = new double[3];
+	
+	private int turns = 0;
+	
+	private double totalPrice = 0;
 
 	// private Agent agent[] = new Agent[number];
 
@@ -142,6 +146,7 @@ public class MGHuman extends Agent {
 		//double worseHumanScore = 0;
 		//double avgHumanScore = 0;
 		//double bestHumanScore = 0;
+		turns++;
 		if (humanAction == -1) {
 				mgHumanScore = mgHumanScore + thisTurnPrice;
 		}else if (humanAction == 1) {
@@ -157,10 +162,10 @@ public class MGHuman extends Agent {
 			this.humanScoreInfo[2] = mgHumanScore;
 		}
 
-		this.humanScoreInfo[1] = this.humanScoreInfo[1] + mgHumanScore;
+		this.totalPrice = this.totalPrice + mgHumanScore;
 
 		//this.humanScoreInfo[0] = worseHumanScore;
-		this.humanScoreInfo[1] = this.humanScoreInfo[0] / 2;
+		this.humanScoreInfo[1] = this.totalPrice / turns;
 		//this.humanScoreInfo[2] = bestHumanScore;
 		System.out.println("human:--best is:"+this.humanScoreInfo[2]+"avg is:"+this.humanScoreInfo[1]+"worse is:"+this.humanScoreInfo[0]);
 		return true;

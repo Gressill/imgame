@@ -228,7 +228,7 @@ public class AmfServer {
 				sqlString.append("),");
 			}
 			//remove the last ","
-			sqlString.deleteCharAt(sqlString.length());
+			sqlString.deleteCharAt(sqlString.length()-1);
 			if (databaseOperation.OpenConnection()) {
 				int i = databaseOperation.ExecuteUpdate(sqlString.toString());// I,U,D
 				databaseOperation.CloseConnection();
