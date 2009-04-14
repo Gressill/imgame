@@ -87,9 +87,7 @@ public class Img
 
 		// game plays once to initialise
 		// game = new Game(agents, 0, 200 * (1 << 3));
-		game = new Game(agents);// third @param will
-																// be the number
-																// of agents
+		game = new Game(agents,m);
 
 		initCurrentChoise = game.getCurrentChoise();
 
