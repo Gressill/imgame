@@ -51,7 +51,7 @@ public class Game implements Strategy {
 		// boolean keepPlaying = Constant.keepPlaying;//when keepPlaying ==
 		// false ,we end the game.
 		// loadHistory();
-
+		turns++;
 		for (int i = 0; i < (agents.length-1); i++) {
 			// System.out.println(historyChoise[i]);
 			agents[i].agentAct(historyChoise[i]);// 根据历史来决定买和卖，也就是action的值，为0或者1
@@ -63,16 +63,13 @@ public class Game implements Strategy {
 			agents[i].feedback(caculateThisTurnPrice(currentChoise));
 			updateHistory(historyChoise, currentChoise, i);
 		}
-		//agents[agents.length-1].feedback(caculateThisTurnPrice(currentChoise));
 		//System.out.println(agents[agents.length-1].getClass());
-		//System.out.println(agents[33].getClass());
 		// 得到该轮的价格 feedback to client
 		currentPrice = caculatePrice(currentChoise) + agents[agents.length-1].getAction();
 		this.updateAgentScore(agents);
 		// System.out.println("currentPrice"+currentPrice);
 		// Constant.keepPlaying = false;
 		System.out.println("currentPrice" + currentPrice);
-		turns++;
 
 	}
 
