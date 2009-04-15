@@ -178,8 +178,8 @@ public class AmfServer {
 								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
 								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
 								map.put("permision", mgHuman.canWriteDatabase());
-								map.put("lastBuyNum", iGame.getGame().getLastBuyNum());
-								map.put("lastSellNum", iGame.getGame().getLastSellNum());
+								map.put("lastBuyNum", mgHuman.canWriteDatabase());
+								map.put("lastSellNum", mgHuman.canWriteDatabase());
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame.getCurrentPrice());
 
@@ -190,7 +190,7 @@ public class AmfServer {
 										.getCurrentPrice());
 							} else if (event.equals("close")) {
 								// close game and write database
-								this.addPriceBuffer(mgHuman);
+								this.writePriceToDatabase(mgHuman);
 								if (socket.isConnected()) {
 									socket.close();
 									System.out
@@ -219,12 +219,12 @@ public class AmfServer {
 
 	/**
 	 * write price form buffer to database
-	 * 
+	 * you can write to data base only if you play more than 200 turns 
 	 * @param price
 	 * @return
 	 */
-	private boolean addPriceBuffer(MGHuman mgHuman) {
-		if ((!priceBufferArrayList.isEmpty())&&(mgHuman.canWriteDatabase())) {
+	private boolean writePriceToDatabase(MGHuman mgHuman) {
+		if ((priceBufferArrayList.size()>=Constant.PRICE_BUFFFER_SIZE)&&(mgHuman.canWriteDatabase())) {
 			// write database
 			DatabaseOperation databaseOperation = new DatabaseOperation();
 			StringBuilder sqlString = new StringBuilder();
@@ -240,7 +240,7 @@ public class AmfServer {
 				int i = databaseOperation.ExecuteUpdate(sqlString.toString());// I,U,D
 				databaseOperation.CloseConnection();
 				priceBufferArrayList.clear();
-				//priceBufferArrayList.add(price);
+				//System.out.println("total"+i+"lines was add to price_info table");
 			}
 			GameList gameList = GameList.getInstance();
 			ArrayList<MGHuman> tempHumanList = new ArrayList<MGHuman>();
@@ -252,8 +252,11 @@ public class AmfServer {
 					tempHumanList.get(i1).setCanWriteDataBase(false);
 				}
 			}
-		} 
-		return true;
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 	public synchronized void sentSerializationMeg(HashMap<String, Object> map) {
