@@ -155,14 +155,13 @@ public class AmfServer {
 								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
 								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
 								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
-								map.put("mgSocre", mgHuman.getScore());
+								map.put("myScore", mgHuman.getScore());
 								//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
-								map.put("avGHumanScore", mgHuman.getHumanScoreInfo()[1]);
+								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
 								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
-								map.put("canSavetoDatabase", mgHuman.canWriteDatabase());
+								map.put("permision", mgHuman.canWriteDatabase());
 								sentSerializationMeg(map);
-								priceBufferArrayList.add(iGame
-										.getCurrentPrice());
+								priceBufferArrayList.add(iGame.getCurrentPrice());
 
 							} else if (event.equals("sell")) {
 								mgHuman.setHumanAction(1);
@@ -172,14 +171,13 @@ public class AmfServer {
 								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
 								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
 								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
-								map.put("mgSocre", mgHuman.getScore());
+								map.put("myScore", mgHuman.getScore());
 								//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
-								map.put("avGHumanScore", mgHuman.getHumanScoreInfo()[1]);
+								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
 								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
-								map.put("canSavetoDatabase", mgHuman.canWriteDatabase());
+								map.put("permision", mgHuman.canWriteDatabase());
 								sentSerializationMeg(map);
-								priceBufferArrayList.add(iGame
-										.getCurrentPrice());
+								priceBufferArrayList.add(iGame.getCurrentPrice());
 
 							} else if (event.equals("hold")) {
 								mgHuman.setHumanAction(0);
