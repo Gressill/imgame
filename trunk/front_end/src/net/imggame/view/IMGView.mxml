@@ -21,6 +21,9 @@
 			import mx.collections.ArrayCollection;
 			import net.imggame.model.ValueLocator;
 			import net.imggame.business.Imgsocket;
+			import flash.net.*;
+			
+			import flash.events.Event;
 			
 			import mx.events.ItemClickEvent;
 			import mx.managers.PopUpManager;
@@ -38,17 +41,40 @@
 			public var value:ValueLocator = ValueLocator.getInstance();
 			
 			public function startGame(e:MouseEvent):void {
-				Security.loadPolicyFile("xmlsocket://"+ ModelLocator.SERVER_IP +":843");
 				model.start_active 			= false;
 				model.action_active 		= true;
 				model.stop_active  			= true;
 				stage.focus = this;
 				addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
+				//get xml configuration.
+				var loader:URLLoader   = new URLLoader();
+				var request:URLRequest = new URLRequest("./config.xml");
+				loader.load(request); 
+				loader.addEventListener(Event.COMPLETE, onComplete);
+				
+				Security.loadPolicyFile("xmlsocket://"+ model.serverip +":843");
 				model._socket =  new Imgsocket();
-				model._socket.connect(ModelLocator.SERVER_IP,8888);
+				model._socket.connect(model.serverip,8888);
+				
 				CocoaAlert.show("Setting the game param", "IMGGame", 0x4, this.popbutton, true);
 			}
-						
+			
+			public function onComplete(e:Event):void{
+				var loader:URLLoader = e.target as URLLoader;
+			    if (loader != null)
+			    {
+			        model.config = new XML(loader.data);
+			        model.serverip = model.config.linkip[0];
+			        Alert.show(model.serverip);
+			        trace(model.config.toXMLString());
+			    }
+			    else
+			    {
+			        trace("loader is not a URLLoader!");
+			    }
+
+			}
+			
 			public function getBack( e:MouseEvent ): void {
 				model.start_active 			= true;
 				model.action_active 		= false;
@@ -92,6 +118,11 @@
 			private function login(e:Event):void{
 				model.username = username.text;
 			}
+			
+			private function download(e:Event):void{
+				var url:URLRequest = new URLRequest("http://www.baidu.com");
+				navigateToURL(url,'_blank');
+			}
 		]]>
 	</mx:Script>
 	
@@ -112,18 +143,22 @@
 		
 	<mx:Panel id="popbutton" width="80%" height="80%" title="Interactive Minority Game" fontSize="15" horizontalAlign="center" verticalAlign="middle" horizontalCenter="0" verticalCenter="0">
 		
-		<mx:ApplicationControlBar id="ApplicationControlBar1">
+		<mx:ApplicationControlBar id="ApplicationControlBar" horizontalAlign="left">
 			<mx:HBox id = "mainHbox">
 				<mx:Text text="User Name" width="80"/>
 				<mx:TextInput id="username" text="{model.username}"/>
 				<mx:Button label="Login" click="login(event)"/>
 			</mx:HBox>
+			
 		</mx:ApplicationControlBar>
-		
+		<mx:HBox>
+		<mx:Text text="Level: esay" textAlign="left" fontSize="16" color="#0D1CDD"/>
+		<mx:Text text="last trade(buys:20+1,sells:50);your P/L: {value.myScore}" textAlign="left" fontSize="16"  errorColor="#B61313"/>
+		</mx:HBox>
 		<mx:HBox horizontalAlign="center" width="100%">
 		<mx:HDividedBox id="hdivid_1" label="price" width="100%">
 		   <mx:VDividedBox  id="vdivid" label="twolinechardbox" width="60%" liveDragging="true" height="100%" horizontalAlign="left">
-			<mx:LineChart id="priceLineChar" height="280"  dataProvider="{ValueLocator.ImgPriceData}" showDataTips="true"  scaleX="1" scaleY="1" fontSize="12" width="100%">
+			<mx:LineChart id="priceLineChar" height="280"  dataProvider="{value.ImgPriceData}" showDataTips="true"  scaleX="1" scaleY="1" fontSize="12" width="100%">
 			<mx:horizontalAxis>
 				<mx:LinearAxis interval="5" minorInterval="1"/>
 			</mx:horizontalAxis>
@@ -138,50 +173,56 @@
 			</mx:LineChart>
 		</mx:VDividedBox>
 		<mx:VBox fontSize="16" width="35%" height="100%">	
-			<mx:Accordion  id="accordion" width="100%" height="100%" fontWeight="bold" fontSize="24" fillColors="#123456" fontStyle="normal">
-				<mx:VBox label="Your Score" width="100%" height="100%" >
+			<mx:Accordion  id="accordion" width="100%" height="100%"  fontSize="24" fillColors="#123456" fontStyle="normal">
+				<mx:VBox label="Game Statisics" width="100%" height="100%" >
 					<mx:HBox width="100%">
-						<mx:Label text="User Name:" width="180"/>
-						<mx:Text text="{model.username}" width="80"/>				
+						<mx:Label text="Your Name:" width="180" fontWeight="normal"/>
+						<mx:Text text="{model.username}" width="130" fontSize="18"  color="#F05315" fontFamily="Verdana"/>				
 					</mx:HBox>
 					<mx:HBox width="100%">
-						<mx:Label text="Agents Number:" width="180"/>
-						<mx:Label text="100" color="#123456" width="130"/>				
+						<mx:Label text="Your Score:" width="180" fontSize="16"/>
+						<mx:Label text="{value.myScore}" color="#123456" width="130" fontSize="16"/>				
 					</mx:HBox>
 					<mx:HBox width="100%">
-						<mx:Label text="Memory Size:  " width="180"/>
-						<mx:Label text="5" color="#123456" width="130"/>				
+						<mx:Label text="Your Average Score:" width="180" fontSize="16"/>
+						<mx:Label text="{value.avgScore} per turn" color="#123456" width="130" fontSize="16"/>				
 					</mx:HBox>
-					<mx:HBox width="100%">
-						<mx:Label text="Strategy Size:" width="180"/>
-						<mx:Label text="2" color="#123456" width="130"/>				
-					</mx:HBox>
-					<mx:Button label="Download Data"/>
+					<mx:VBox>
+						<mx:HBox width="100%">
+							<mx:Label text="Best  Score:" width="180" color="#0D1CDD" fontSize="16"/>
+							<mx:Label text="{value.BestScore}" color="#F05315" width="130" fontSize="16"/>				
+						</mx:HBox>
+						<mx:HBox width="100%">
+							<mx:Label text="Avg   Score:" width="180" color="#0D1CDD" fontSize="16"/>
+							<mx:Label text="{value.AvgScore}" color="#F05315" width="130" fontSize="16"/>				
+						</mx:HBox>
+						<mx:HBox width="100%">
+							<mx:Label text="Worst Score:" width="180" color="#0D1CDD" fontSize="16"/>
+							<mx:Label text="{value.WorstScore}" color="#F05315" width="130" fontSize="16"/>				
+						</mx:HBox>
+						<mx:HBox width="100%">
+							<mx:Label text="{value.turn} turns" width="180" color="#0D1CDD" fontSize="36"/>			
+						</mx:HBox>
+					</mx:VBox>
+					
 				</mx:VBox>
-				<mx:VBox label="Game Info" width="100%" height="100%">
-					<mx:HBox width="100%">
-						<mx:Label text="Agents Number:" width="180"/>
-						<mx:Label text="100" color="#123456" width="130"/>				
-					</mx:HBox>
-					<mx:HBox width="100%">
-						<mx:Label text="Memory Size:  " width="180"/>
-						<mx:Label text="5" color="#123456" width="130"/>				
-					</mx:HBox>
-					<mx:HBox width="100%">
-						<mx:Label text="Strategy Size:" width="180"/>
-						<mx:Label text="2" color="#123456" width="130"/>				
-					</mx:HBox>
+				<mx:VBox label="Download Data" width="100%" height="100%"> 
+					<mx:Text text="If you are an analystor of the minority game, you can download the history price data to do some experiment. 
+					Just click the next button after you played the game."  fontSize="9" width="300" fontFamily="Verdana" fontWeight="normal"/>
+					<mx:Button id="downloadprice" label="Download History Price" click="download(event);"/>
 				</mx:VBox>
 			</mx:Accordion>
 		</mx:VBox>
 		</mx:HDividedBox>
 		</mx:HBox>
 		<mx:HBox width="988">
-			<mx:Canvas width="100%">
+			<mx:Canvas width="100%" height="92">
 				<mx:Button label="Start" click="startGame(event)"  enabled="{model.start_active} " x="45" y="14" width="112" height="34" fontSize="20"></mx:Button>
 				<mx:Button label="DOWN" left="270.8" width="121" click="ImgBuyAction(event)"  enabled="{model.action_active}" height="48" toolTip="that means you buy" cornerRadius="10" fontSize="28" color="#13F00E" y="9"/>
 				<mx:Button label="UP" left="472.1" width="131" click="ImgSellAction(event)"  enabled="{model.action_active}" height="48" toolTip="that means you sell" cornerRadius="10" fontSize="28" color="#E51125" y="9"/>
-				<mx:Button label="Stop" click="getBack(event)" enabled="{model.stop_active}" x="688.65" y="13" width="102" height="34" fontSize="20"/>
+				<mx:Button label="Stop" click="getBack(event)" enabled="{model.stop_active}" x="705.65" y="18" width="102" height="34" fontSize="20"/>
+				<mx:Label x="356" y="65" text="Bet on next price move" width="176" color="#0D1CDD"/>
+				<mx:Label x="648.65" y="62" text="You must play 200+ turns to challenge for the histories." color="#0D1CDD" width="173" fontSize="13" fontFamily="Verdana" fontWeight="normal"/>
 			</mx:Canvas>
 		</mx:HBox>
 	</mx:Panel>

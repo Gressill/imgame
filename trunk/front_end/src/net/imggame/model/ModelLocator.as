@@ -4,6 +4,10 @@ package net.imggame.model {
 	import com.adobe.cairngorm.CairngormMessageCodes;
 	import com.adobe.cairngorm.model.IModelLocator;
 	
+	import flash.net.URLRequest;
+	
+	//import mx.controls.Alert;
+	
 	import mx.collections.ArrayCollection;
 	
 	import net.imggame.business.Imgsocket;
@@ -20,7 +24,7 @@ package net.imggame.model {
 			if (access == null) {
 			    throw new CairngormError( CairngormMessageCodes.SINGLETON_EXCEPTION, "ModelLocator" );
 			}
-			
+			//Alert.show("hello");
 			instance = this;
 		
 		}
@@ -42,10 +46,12 @@ package net.imggame.model {
 		public var gameParam:ParamPost;												 /*game Param: m,n,s*/
 		public var _socket:Imgsocket;												 /*socket connector*/
 		public var _connect:String;													 /*connect hander*/
-		public var username:String;													 /*the game user name*/
+		public var username:String = new String("anonymous");													 /*the game user name*/
+		public var config:XML;
 		public var start_active:Boolean = true;										 //
 		public var action_active:Boolean = false;
 		public var stop_active:Boolean = false;
+		public var serverip:String;
 		/*
 		*	Static Variables
 		*/
@@ -55,7 +61,8 @@ package net.imggame.model {
 		public static const INIT_PRICE_DATA:uint	= 0; //the initial historical price data.
 		
 		public static const XML_SERIALIZE_TAG:String = "SERIALIZE";
-		public static const SERVER_IP:String = "192.168.1.111";
+		
+		
 	}
 }
 
