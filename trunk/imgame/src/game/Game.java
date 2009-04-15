@@ -33,6 +33,10 @@ public class Game implements Strategy {
 	private int[] lastDturnA;
 
 	private double[] agentScoreInfo = new double[3];
+	
+	private int lastBuyNum = 0;
+	
+	private int lastSellNum = 0;
 
 	//
 	public Game(Agent[] agents, int m) {
@@ -54,10 +58,19 @@ public class Game implements Strategy {
 		// false ,we end the game.
 		// loadHistory();
 		turns++;
+		this.lastBuyNum = 0;
+		this.lastSellNum = 0;
 		for (int i = 0; i < (agents.length - 1); i++) {
 			// System.out.println(historyChoise[i]);
 			agents[i].agentAct(historyChoise[i]);// 根据历史来决定买和卖，也就是action的值，为0或者1
 			currentChoise[i] = (int) agents[i].getAction();
+			if (currentChoise[i]==-1) {
+				lastBuyNum++;
+			} else if(currentChoise[i]==1){
+				lastSellNum++;
+			}else {
+				System.out.println("currentChoise[i] is:"+currentChoise[i]);
+			}
 			// System.out.println("current"+i+"Choise"+currentChoise[i]);
 		}
 		for (int i = 0; i < (agents.length); i++) {
@@ -93,6 +106,15 @@ public class Game implements Strategy {
 		return this.currentPrice;
 	}
 
+	public int getLastBuyNum() {
+		System.out.println(lastBuyNum);
+		return lastBuyNum;
+	}
+	
+	public int getLastSellNum() {
+		System.out.println(lastSellNum);
+		return lastSellNum;
+	}
 	/**
 	 * 计算该轮的价格
 	 * 

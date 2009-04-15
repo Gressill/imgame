@@ -278,5 +278,9 @@ public class Img
 	{
 		return this.mghuman;
 	}
+	
+	public Game getGame() {
+		return this.game;
+	}
 
 }

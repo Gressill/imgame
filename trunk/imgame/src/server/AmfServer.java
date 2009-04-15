@@ -160,6 +160,8 @@ public class AmfServer {
 								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
 								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
 								map.put("permision", mgHuman.canWriteDatabase());
+								map.put("lastBuyNum", iGame.getGame().getLastBuyNum());
+								map.put("lastSellNum", iGame.getGame().getLastSellNum());
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame.getCurrentPrice());
 
@@ -176,6 +178,8 @@ public class AmfServer {
 								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
 								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
 								map.put("permision", mgHuman.canWriteDatabase());
+								map.put("lastBuyNum", iGame.getGame().getLastBuyNum());
+								map.put("lastSellNum", iGame.getGame().getLastSellNum());
 								sentSerializationMeg(map);
 								priceBufferArrayList.add(iGame.getCurrentPrice());
 
