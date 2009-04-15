@@ -20,7 +20,6 @@ public class GameList
 	private GameList()
 	{
 
-		
 	}
 
 	public static GameList getInstance()
@@ -45,7 +44,7 @@ public class GameList
 			{//exist
 				humanAgentList.get(tempCheckStatue[1]).add(mgHuman);
 			} else if (tempCheckStatue[0] == 0)
-			{//not exist,then all a new list
+			{//not exist,then add a new list
 				ArrayList<MGHuman> tempMGHumanList = new ArrayList<MGHuman>();
 				tempMGHumanList.add(mgHuman);
 				humanAgentList.add(tempMGHumanList);

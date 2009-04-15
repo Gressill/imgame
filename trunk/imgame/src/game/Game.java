@@ -62,7 +62,7 @@ public class Game implements Strategy {
 		this.lastSellNum = 0;
 		for (int i = 0; i < (agents.length - 1); i++) {
 			// System.out.println(historyChoise[i]);
-			agents[i].agentAct(historyChoise[i]);// 根据历史来决定买和卖，也就是action的值，为0或者1
+			agents[i].agentAct(historyChoise[i]);// 根据历史来决定买和卖，也就是action的值，为-1或者1
 			currentChoise[i] = (int) agents[i].getAction();
 			if (currentChoise[i]==-1) {
 				lastBuyNum++;
@@ -107,11 +107,12 @@ public class Game implements Strategy {
 	}
 
 	public int getLastBuyNum() {
-		System.out.println(lastBuyNum);
+		//System.out.println(lastBuyNum);
 		return lastBuyNum;
 	}
 	
 	public int getLastSellNum() {
+		//
 		System.out.println(lastSellNum);
 		return lastSellNum;
 	}

@@ -155,7 +155,7 @@ public class Img
 	 *            : price list
 	 * @return priceList: price list
 	 */
-	private ArrayList<Double> loadHistory(ArrayList<Double> price)
+	private ArrayList<Double> loadHistoryXml(ArrayList<Double> price)
 	{
 
 		// check file exist
