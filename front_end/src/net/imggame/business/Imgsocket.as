@@ -52,11 +52,11 @@ package net.imggame.business {
 		}
 		
 		protected function securityErrorHandler( e:SecurityErrorEvent ):void {
-			Alert.show( "SecurityErrorEvent: \n"+e.toString() );
+			//Alert.show( "SecurityErrorEvent: \n"+e.toString() );
 		}
 		
 		protected function onConnect(event:Event):void{
-			Alert.show("onConnect\n");
+			//Alert.show("onConnect\n");
 		}
 		
 		protected function onClose(event:Event):void{

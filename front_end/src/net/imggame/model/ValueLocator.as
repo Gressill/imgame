@@ -6,7 +6,6 @@ package net.imggame.model {
 	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
-	import mx.controls.DataGrid;
 	
 	[Bindable]
 	public final class ValueLocator implements IModelLocator {
@@ -46,15 +45,23 @@ package net.imggame.model {
 				switch (returnObj.event){
 				case "startAction":
 					//Alert.show(returnObj.historyPrice as DataGrid);
-					ValueLocator.ImgPriceData.removeAll();
+					turn=0;
+					ImgPriceData.removeAll();
 					for(var i:uint=0; i<returnObj.historyPrice.length; i++){
-						ValueLocator.ImgPriceData.addItem({"price":returnObj.historyPrice[i]});
+						ImgPriceData.addItem({"price":returnObj.historyPrice[i]});
 					}
 					break;
 				case "buyAction":
-					ValueLocator.ImgPriceData.addItem({"price":returnObj.price});break;
 				case "sellAction":
-					ValueLocator.ImgPriceData.addItem({"price":returnObj.price});break;
+					ImgPriceData.addItem({"price":returnObj.price});
+					//Alert.show(returnObj.bestAgentScore);
+					BestScore = returnObj.bestAgentScore;
+					AvgScore  = returnObj.avgAgentScore;
+					WorstScore= returnObj.worseAgentScore;
+					myScore   = returnObj.myScore;
+					avgScore  = returnObj.avgScore;
+					turn = turn +1;
+					break;
 				default:
 				    break;
 				}
@@ -71,8 +78,16 @@ package net.imggame.model {
 		*	Variables
 		*/
 
-		public static var ImgPriceData:ArrayCollection	= new ArrayCollection;//init history price array
-
+		public  var ImgPriceData:ArrayCollection	= new ArrayCollection;//init history price array
+		public  var BestScore:int;
+		public  var AvgScore:int;
+		public  var WorstScore:int;
+		public  var BestHumanScore:int;
+		public  var AvgHumanScore:int;
+		public  var WorstHumanScore:int;
+		public  var myScore:int;
+		public  var avgScore:int;
+		public  var turn:int;
 	}
 }
 
