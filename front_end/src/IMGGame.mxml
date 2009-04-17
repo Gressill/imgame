@@ -3,7 +3,7 @@
 	xmlns:view="net.imggame.view.*"
 	xmlns:business="net.imggame.business.*"
  	layout="absolute"
-   initialize="initSecurity();">
+   initialize="init();">
 	<!--mx:Style source="asset/imgstyle.css" /-->	
 	<mx:Style source="asset/osx/flex_skins.css" />
 	<mx:Style>
@@ -20,12 +20,31 @@
 			import net.imggame.model.ModelLocator;
 			import net.imggame.model.ValueLocator;
 			import mx.controls.Alert;
+			import flash.net.*;
+			import flash.events.Event;
 			
 			[Bindable]
 			public var model:ModelLocator = ModelLocator.getInstance();
 			
-			public function initSecurity():void{
-							
+			public function init():void{
+				//get xml configuration.
+				var loader:URLLoader   = new URLLoader();
+				var request:URLRequest = new URLRequest("./config.xml");
+				loader.load(request); 
+				loader.addEventListener(Event.COMPLETE, onComplete);			
+			}
+			
+			public function onComplete(e:Event):void{
+				var loader:URLLoader = e.target as URLLoader;
+			    if (loader != null)
+			    {
+			        model.config = new XML(loader.data);
+			    }
+			    else
+			    {
+			        trace("loader is not a URLLoader!");
+			    }
+
 			}
 		]]>
 	</mx:Script>

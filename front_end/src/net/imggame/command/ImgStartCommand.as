@@ -2,19 +2,15 @@ package net.imggame.command {
 	import com.adobe.cairngorm.commands.ICommand;
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
-	import flash.net.Socket;
-	
 	import mx.controls.Alert;
-	import mx.rpc.events.ResultEvent;
 	
-	import net.imggame.business.Imgsocket;
 	import net.imggame.model.ModelLocator;
-		
-	//import mx.controls.Alert;
+	import net.imggame.model.ValueLocator;
 
 	public class ImgStartCommand implements ICommand {
 		
 		public var model:ModelLocator = ModelLocator.getInstance();
+		public var value:ValueLocator = ValueLocator.getInstance();
 		private var requestObj:Object;
 		 
 		public function ImgStartCommand()	{
@@ -24,6 +20,21 @@ package net.imggame.command {
 
 		public function execute(event:CairngormEvent):void	{
 			
+			//set level.
+			var level:Number = Math.pow(2,model.gameParam.m)/(model.gameParam.n as Number);
+			Alert.show(level.toString());
+			if(0<level<=0.04){
+				value.level = "Easy";
+			}else if(0.04<level<=0.08){
+				value.level = "Apprentice";
+			}else if(0.08<level<=0.17){
+				value.level = "Trader";
+			}else if(0.17<level<=0.67){
+				value.level = "Proffessional";
+			}else{
+				value.level = "Guru";
+			}
+            
 			if(ModelLocator.XML_SERIALIZE_TAG == "XML"){
 				var str:String = new String("s="+model.gameParam.s+"&m="+model.gameParam.m+"&n="+model.gameParam.n);
 			    model._socket.writeUTFBytes(str);
@@ -33,8 +44,8 @@ package net.imggame.command {
             	requestObj = {event:"gameInit",m:model.gameParam.m,s:model.gameParam.s,n:model.gameParam.n,user:model.username};
             	model._socket.writeObject(requestObj);
 			}
-			
             model._socket.flush();
+            
 		}
 	}
 }

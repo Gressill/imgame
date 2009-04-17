@@ -48,10 +48,9 @@ package net.imggame.model {
 		public var _connect:String;													 /*connect hander*/
 		public var username:String = new String("anonymous");													 /*the game user name*/
 		public var config:XML;
-		public var start_active:Boolean = true;										 //
-		public var action_active:Boolean = false;
-		public var stop_active:Boolean = false;
-		public var serverip:String;
+		public var start_active:Boolean 	= true;										 //
+		public var action_active:Boolean 	= false;
+		public var stop_active:Boolean 		= false;
 		/*
 		*	Static Variables
 		*/

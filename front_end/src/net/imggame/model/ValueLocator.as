@@ -60,6 +60,18 @@ package net.imggame.model {
 					WorstScore= returnObj.worseAgentScore;
 					myScore   = returnObj.myScore;
 					avgScore  = returnObj.avgScore;
+					lastBuyNum= returnObj.lastBuyNum;
+					lastSellNum= returnObj.lastSellNum;
+					if(returnObj.event == "buyAction"){
+						tradeInfo = "last trade(buys:"+lastBuyNum+"+1"+",sells:"+lastSellNum+"); your P/L: "+myScore;
+					}else if(returnObj.event == "sellAction"){
+						tradeInfo = "last trade(buys:"+lastBuyNum+",sells:"+lastSellNum+"+1"+"); your P/L: "+myScore;
+					}
+					if(returnObj.permision==true){
+						permision = "Able to submit";
+					}else{
+						permision = "Unable to submit, try to play again.";
+					}
 					turn = turn +1;
 					break;
 				default:
@@ -88,6 +100,12 @@ package net.imggame.model {
 		public  var myScore:int;
 		public  var avgScore:int;
 		public  var turn:int;
+		public  var permision:String = new String("Able to submit");
+		public  var connectMessage:String = new String("Disconnecting to the server.");
+		public  var lastBuyNum:int;
+		public  var lastSellNum:int;
+		public  var tradeInfo:String = new String("last trade(buys:0+1,sells:0); your P/L: 0");
+		public  var level:String;
 	}
 }
 
