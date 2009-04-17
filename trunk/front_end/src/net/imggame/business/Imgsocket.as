@@ -57,30 +57,17 @@ package net.imggame.business {
 		
 		protected function onConnect(event:Event):void{
 			//Alert.show("onConnect\n");
+			valuelocator.connectMessage = new String("Connectting to the server.");
 		}
 		
 		protected function onClose(event:Event):void{
 			 //Alert.show("onClose \n");
+			valuelocator.connectMessage = new String("Disconnecting to the server.");
 			this.close();
 		}
 		
     	public function socketDataHandlerXml( event:ProgressEvent ):void{
-
-    		//Alert.show(this.str.substring(this.str.length-7,this.str.length));
-    		//Alert.show("Total="+event.bytesTotal.toString()+",loaded="+event.bytesLoaded.toString());
-    		//Alert.show(this.bytesAvailable.toString());
-    		
-//    		try {
-//    			this.str = this.str + this.readUTFBytes(this.bytesAvailable).toString();
-//    			if(this.str.substring(this.str.length-7,this.str.length)=="</game>")
-//    			{
-//    				valuelocator.parseResultXml(this.str);
-//    				this.str = "";
-//    			}
-//      		}catch( e:IOError ){
-//      			Alert.show("IOError"+e.toString());
-//      		}
-
+			
 	    }
 			
 		public function ioErrorHandler(event:IOErrorEvent):void {
@@ -90,8 +77,9 @@ package net.imggame.business {
 		public function socketDataHandlerSerialize(event:ProgressEvent):void {
 		
 			obj=modellocator._socket.readObject();
-       
+       		
 			valuelocator.parseResultSerialize(obj);
+			
             this.obj = null;
 		
 		}

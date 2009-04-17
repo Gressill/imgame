@@ -2,19 +2,15 @@ package net.imggame.command {
 	import com.adobe.cairngorm.commands.ICommand;
 	import com.adobe.cairngorm.control.CairngormEvent;
 	
-	import flash.net.Socket;
-	
-	import mx.controls.Alert;
-	import mx.rpc.events.ResultEvent;
-	
-	import net.imggame.business.Imgsocket;
 	import net.imggame.model.ModelLocator;
+	import net.imggame.model.ValueLocator;
 		
 	//import mx.controls.Alert;
 
 	public class ImgCloseCommand implements ICommand	{
 		
 		public var model:ModelLocator = ModelLocator.getInstance();
+		public var value:ValueLocator = ValueLocator.getInstance();
 		 
 		private var requestObj:Object;
 		
@@ -35,12 +31,14 @@ package net.imggame.command {
 			}
 			else if(ModelLocator.XML_SERIALIZE_TAG == "SERIALIZE"){
 				requestObj = new Object();
-            	//requestObj = {event:"buy",userName:"yufaye",userAction:"haha"};
             	requestObj = {event:"close"};
             	model._socket.writeObject(requestObj);
+            	
 			}
 			
             model._socket.flush();
+            
+            value.connectMessage = new String("Disconnecting to the server.");
 		}
 	}
 }

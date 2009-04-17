@@ -46,36 +46,19 @@
 				model.stop_active  			= true;
 				stage.focus = this;
 				addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown);
-				//get xml configuration.
-				var loader:URLLoader   = new URLLoader();
-				var request:URLRequest = new URLRequest("./config.xml");
-				loader.load(request); 
-				loader.addEventListener(Event.COMPLETE, onComplete);
 				
-				Security.loadPolicyFile("xmlsocket://"+ model.serverip +":843");
+				Security.loadPolicyFile("xmlsocket://"+ model.config.linkip +":843");
 				model._socket =  new Imgsocket();
-				model._socket.connect(model.serverip,8888);
+				model._socket.connect(model.config.linkip,8888);
 				
 				CocoaAlert.show("Setting the game param", "IMGGame", 0x4, this.popbutton, true);
 			}
 			
-			public function onComplete(e:Event):void{
-				var loader:URLLoader = e.target as URLLoader;
-			    if (loader != null)
-			    {
-			        model.config = new XML(loader.data);
-			        model.serverip = model.config.linkip[0];
-			        Alert.show(model.serverip);
-			        trace(model.config.toXMLString());
-			    }
-			    else
-			    {
-			        trace("loader is not a URLLoader!");
-			    }
-
-			}
-			
 			public function getBack( e:MouseEvent ): void {
+				if(value.turn < 200){
+					Alert.show("You must play 200+ turns before submitting.","Submit Warning",1);
+					return;
+				}
 				model.start_active 			= true;
 				model.action_active 		= false;
 				model.stop_active 			= false;
@@ -120,7 +103,7 @@
 			}
 			
 			private function download(e:Event):void{
-				var url:URLRequest = new URLRequest("http://www.baidu.com");
+				var url:URLRequest = new URLRequest(model.config.downloadlink);
 				navigateToURL(url,'_blank');
 			}
 		]]>
@@ -152,8 +135,9 @@
 			
 		</mx:ApplicationControlBar>
 		<mx:HBox>
-		<mx:Text text="Level: esay" textAlign="left" fontSize="16" color="#0D1CDD"/>
-		<mx:Text text="last trade(buys:20+1,sells:50);your P/L: {value.myScore}" textAlign="left" fontSize="16"  errorColor="#B61313"/>
+		<mx:Text text="Level:{value.level}" textAlign="left" fontSize="16" color="#0D1CDD"/>
+		<mx:Text text="{value.tradeInfo}" textAlign="left" fontSize="16"  errorColor="#B61313"/>
+		<mx:Label text="   {value.permision}" width="306.13635" color="#0D1CDD" fontSize="16" height="24.015152"/>
 		</mx:HBox>
 		<mx:HBox horizontalAlign="center" width="100%">
 		<mx:HDividedBox id="hdivid_1" label="price" width="100%">
@@ -173,7 +157,7 @@
 			</mx:LineChart>
 		</mx:VDividedBox>
 		<mx:VBox fontSize="16" width="35%" height="100%">	
-			<mx:Accordion  id="accordion" width="100%" height="100%"  fontSize="24" fillColors="#123456" fontStyle="normal">
+			<mx:Accordion  id="accordion" width="100%" height="100%"  fontSize="24" fontStyle="normal">
 				<mx:VBox label="Game Statisics" width="100%" height="100%" >
 					<mx:HBox width="100%">
 						<mx:Label text="Your Name:" width="180" fontWeight="normal"/>
@@ -201,7 +185,7 @@
 							<mx:Label text="{value.WorstScore}" color="#F05315" width="130" fontSize="16"/>				
 						</mx:HBox>
 						<mx:HBox width="100%">
-							<mx:Label text="{value.turn} turns" width="180" color="#0D1CDD" fontSize="36"/>			
+							<mx:Label text="{value.turn} turns" width="180" color="#0D1CDD" fontSize="36"/>	
 						</mx:HBox>
 					</mx:VBox>
 					
@@ -210,6 +194,10 @@
 					<mx:Text text="If you are an analystor of the minority game, you can download the history price data to do some experiment. 
 					Just click the next button after you played the game."  fontSize="9" width="300" fontFamily="Verdana" fontWeight="normal"/>
 					<mx:Button id="downloadprice" label="Download History Price" click="download(event);"/>
+					<mx:Text text="HELP:"  fontSize="12" width="300" fontFamily="Verdana" fontWeight="bold"/>
+					<mx:Text text="1. You'd better enter your name before you play the game."  fontSize="9" width="300" fontFamily="Verdana" fontWeight="normal"/>
+					<mx:Text text="2. Click the 'START' button to set the game parameters. Then press 'DOWN' and 'UP' button to bet on next price move. Finally, press 'STOP' button to submit your play. Before submitting, you must play 200+ turns. Others may submit before you, so you must hurry."  fontSize="9" width="300" fontFamily="Verdana" fontWeight="normal"/>
+					<mx:Text text="3. Learn more about Interactive Minority Game, please visit to {model.config.introlink}."  fontSize="9" width="300" fontFamily="Verdana" fontWeight="normal"/>
 				</mx:VBox>
 			</mx:Accordion>
 		</mx:VBox>
@@ -225,5 +213,9 @@
 				<mx:Label x="648.65" y="62" text="You must play 200+ turns to challenge for the histories." color="#0D1CDD" width="173" fontSize="13" fontFamily="Verdana" fontWeight="normal"/>
 			</mx:Canvas>
 		</mx:HBox>
+		<mx:Canvas width="100%">
+		<mx:Text x="0" y="0" fontSize="9" text="{value.connectMessage}" width="326.0606" height="24.015152" color="#0ADE5F"/>
+		<mx:Text x="440" y="0" fontSize="9" text="@2009 IMG Team" width="326.0606" height="24.015152" />
+		</mx:Canvas>
 	</mx:Panel>
 </mx:Canvas>
