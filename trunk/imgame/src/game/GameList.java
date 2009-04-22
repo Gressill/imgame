@@ -11,8 +11,6 @@ import agents.MGHuman;
  */
 public class GameList
 {
-	private static MGHuman[] humanlist;
-
 	private static ArrayList<ArrayList<MGHuman>> humanAgentList = new ArrayList<ArrayList<MGHuman>>();
 
 	private static GameList gameList = new GameList();
@@ -66,7 +64,9 @@ public class GameList
 	}
 
 	/**
-	 * check the param weather exist
+	 * check the if the same param game have already exist<br>
+	 * to make sure that the same param game will in the same group<br>
+	 * and all of them will in one game instance 
 	 * 
 	 * @param mgHuman
 	 * @return array[0] could be 0 or 1,1 means is exist and 0 means not,if
@@ -90,7 +90,6 @@ public class GameList
 					existStatue[1] = i;
 				}
 			}
-			// }
 		}
 		return existStatue;
 	}

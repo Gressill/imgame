@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<database>imgame</database>
+	<port>8888</port>
+	<databasetable>price_info</databasetable>
+	<databaseusername>root</databaseusername>
+	<databasepassword>uestc</databasepassword>
+	<logpath>"src/xmlfile/history.xml"</logpath>
+</config>

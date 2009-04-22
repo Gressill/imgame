@@ -9,16 +9,25 @@ public class MainGame {
 
 	public static void main(String[] args) {
 
-		//Security Policy Thread, provide security certification service. 
-		SecurityPolicySocket policySocket = new SecurityPolicySocket();
-		Thread policyThread = new Thread(policySocket);
-		policyThread.start();
-		
-		//Game Thread, provide minority game service.
-		SocketServer server = new SocketServer();
-		server.startServer(Constant.port);
-		
-		//DatabaseOperation.testSql();
+		if (Constant.initGameFromXml()) {
+			//Test database connection
+			try{
+				DatabaseOperation.testConnection();
+			}catch(Exception e){
+				System.out.println("System Msgs: Database connection failed.");
+				return;
+			}
+			//Security Policy Thread, provide security certification service. 
+			SecurityPolicySocket policySocket = new SecurityPolicySocket();
+			Thread policyThread = new Thread(policySocket);
+			policyThread.start();
+			//Game Thread, provide minority game service.
+			SocketServer server = new SocketServer();
+			server.startServer(Constant.port);
+		}else {
+			System.out.println("System Msgs: Read config file failed, the game stopped.");
+			return;
+		}
 	}
 
 }

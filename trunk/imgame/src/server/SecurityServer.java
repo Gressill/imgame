@@ -46,7 +46,7 @@ public class SecurityServer {
 //		xml = xml + "</cross-domain-policy>";
 		try {
 			ServerSocket server = new ServerSocket(843); // 创建服务器套接字
-			System.out.println("Port 843 is listening, waiting to return the security policy file." + "\n");
+			System.out.println("System Msgs: Port 843 is listening, waiting to return the security policy file." + "\n");
 			//String msg;
 			while (true) {
 				security_Socket = server.accept();// 若客户机提请求，socket连接

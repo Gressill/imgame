@@ -58,7 +58,7 @@ public class AmfServer {
 	private ArrayList<Double> hisPriceList = new ArrayList<Double>();
 
 	private ArrayList<Double> priceBufferArrayList = new ArrayList<Double>();
-	
+
 	private MGHuman mgHuman;
 
 	public AmfServer(Socket socket) {
@@ -124,86 +124,92 @@ public class AmfServer {
 			iGame = new Img();
 			// Init();
 			// ASObject message = ReceiveMsg();
-			if (true) {
-				while (socket.isConnected()) {
+			//if (true) {
+			while (socket.isConnected()) {
 
-					ASObject message = ReceiveMsg();
-					if (message != null) {
-						String event = (String) message.get("event");
+				ASObject message = ReceiveMsg();
+				if (message != null) {
+					String event = (String) message.get("event");
 
-						if (event != null) {
-							if (event.equals("gameInit")) {
-								// Constant.memorySize = Integer
-								// .parseInt((String) message.get("m"));
-								int memorySize = (Integer) message.get("m");
-								int strategySize = (Integer) message.get("s");
-								int agentNumber = (Integer) message.get("n");
-								// iGame.init();
-								iGame.init(memorySize, strategySize,
-										agentNumber);
-								mgHuman = iGame.getHumanAgent();
-								hisPriceList = iGame.getHistoryPrice(60);
-								map.put("event", "startAction");
-								map.put("historyPrice", hisPriceList);
-								sentSerializationMeg(map);
+					if (event != null) {
+						if (event.equals("gameInit")) {
+							// Constant.memorySize = Integer
+							// .parseInt((String) message.get("m"));
+							int memorySize	 	= (Integer) message.get("m");
+							int strategySize 	= (Integer) message.get("s");
+							int agentNumber 	= (Integer) message.get("n");
+							// iGame.init();
+							iGame.init(memorySize, strategySize, agentNumber);
+							mgHuman = iGame.getHumanAgent();
+							hisPriceList = iGame.getHistoryPrice(60);
+							map.put("event", "startAction");
+							map.put("historyPrice", hisPriceList);
+							sentSerializationMeg(map);
+						}
+						if (event.equals("buy")) {
+							mgHuman.setHumanAction(-1);
+							iGame.playGame();
+							map.put("event", "buyAction");
+							map.put("price", iGame.getCurrentPrice());
+							map.put("bestAgentScore",
+									iGame.getAgentScoreInfo()[2]);
+							map.put("avgAgentScore",
+									iGame.getAgentScoreInfo()[1]);
+							map.put("worseAgentScore", iGame
+									.getAgentScoreInfo()[0]);
+							map.put("myScore", mgHuman.getScore());
+							//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
+							map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
+							//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
+							map.put("permision", mgHuman.canWriteDatabase());
+							map.put("lastBuyNum", iGame.getGame()
+									.getLastBuyNum());
+							map.put("lastSellNum", iGame.getGame()
+									.getLastSellNum());
+							sentSerializationMeg(map);
+							priceBufferArrayList.add(iGame.getCurrentPrice());
+
+						} else if (event.equals("sell")) {
+							mgHuman.setHumanAction(1);
+							iGame.playGame();
+							map.put("event", "sellAction");
+							map.put("price", iGame.getCurrentPrice());
+							map.put("bestAgentScore",
+									iGame.getAgentScoreInfo()[2]);
+							map.put("avgAgentScore",
+									iGame.getAgentScoreInfo()[1]);
+							map.put("worseAgentScore", iGame
+									.getAgentScoreInfo()[0]);
+							map.put("myScore", mgHuman.getScore());
+							//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
+							map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
+							//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
+							map.put("permision", mgHuman.canWriteDatabase());
+							map.put("lastBuyNum", mgHuman.canWriteDatabase());
+							map.put("lastSellNum", mgHuman.canWriteDatabase());
+							sentSerializationMeg(map);
+							priceBufferArrayList.add(iGame.getCurrentPrice());
+
+						} else if (event.equals("hold")) {
+							mgHuman.setHumanAction(0);
+							iGame.playGame();
+							priceBufferArrayList.add(iGame.getCurrentPrice());
+						} else if (event.equals("close")) {
+							// close game and write database
+							this.writePriceToDatabase(mgHuman);
+							if (socket.isConnected()) {
+								socket.close();
+								System.out
+										.print("Message: Client disconnected in line 187 file amfserver.java place.");
 							}
-							if (event.equals("buy")) {
-								mgHuman.setHumanAction(-1);
-								iGame.playGame();
-								map.put("event", "buyAction");
-								map.put("price", iGame.getCurrentPrice());
-								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
-								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
-								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
-								map.put("myScore", mgHuman.getScore());
-								//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
-								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
-								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
-								map.put("permision", mgHuman.canWriteDatabase());
-								map.put("lastBuyNum", iGame.getGame().getLastBuyNum());
-								map.put("lastSellNum", iGame.getGame().getLastSellNum());
-								sentSerializationMeg(map);
-								priceBufferArrayList.add(iGame.getCurrentPrice());
-
-							} else if (event.equals("sell")) {
-								mgHuman.setHumanAction(1);
-								iGame.playGame();
-								map.put("event", "sellAction");
-								map.put("price", iGame.getCurrentPrice());
-								map.put("bestAgentScore", iGame.getAgentScoreInfo()[2]);
-								map.put("avgAgentScore", iGame.getAgentScoreInfo()[1]);
-								map.put("worseAgentScore", iGame.getAgentScoreInfo()[0]);
-								map.put("myScore", mgHuman.getScore());
-								//map.put("bestHumanScore", mgHuman.getHumanScoreInfo()[2]);
-								map.put("avgScore", mgHuman.getHumanScoreInfo()[1]);
-								//map.put("worseHumanScore", mgHuman.getHumanScoreInfo()[0]);
-								map.put("permision", mgHuman.canWriteDatabase());
-								map.put("lastBuyNum", mgHuman.canWriteDatabase());
-								map.put("lastSellNum", mgHuman.canWriteDatabase());
-								sentSerializationMeg(map);
-								priceBufferArrayList.add(iGame.getCurrentPrice());
-
-							} else if (event.equals("hold")) {
-								mgHuman.setHumanAction(0);
-								iGame.playGame();
-								priceBufferArrayList.add(iGame
-										.getCurrentPrice());
-							} else if (event.equals("close")) {
-								// close game and write database
-								this.writePriceToDatabase(mgHuman);
-								if (socket.isConnected()) {
-									socket.close();
-									System.out
-											.print("Message: Client disconnected in line 187 file amfserver.java place.");
-								}
-								break;
-							} else {
-								System.out.println(event);
-							}
+							break;
+						} else {
+							System.out.println(event);
 						}
 					}
 				}
 			}
+			//}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -224,7 +230,8 @@ public class AmfServer {
 	 * @return
 	 */
 	private boolean writePriceToDatabase(MGHuman mgHuman) {
-		if ((priceBufferArrayList.size()>=Constant.PRICE_BUFFFER_SIZE)&&(mgHuman.canWriteDatabase())) {
+		if ((priceBufferArrayList.size() >= Constant.PRICE_BUFFFER_SIZE)
+				&& (mgHuman.canWriteDatabase())) {
 			// write database
 			DatabaseOperation databaseOperation = new DatabaseOperation();
 			StringBuilder sqlString = new StringBuilder();
@@ -235,7 +242,7 @@ public class AmfServer {
 				sqlString.append("),");
 			}
 			//remove the last ","
-			sqlString.deleteCharAt(sqlString.length()-1);
+			sqlString.deleteCharAt(sqlString.length() - 1);
 			if (databaseOperation.OpenConnection()) {
 				int i = databaseOperation.ExecuteUpdate(sqlString.toString());// I,U,D
 				databaseOperation.CloseConnection();
@@ -244,11 +251,9 @@ public class AmfServer {
 			}
 			GameList gameList = GameList.getInstance();
 			ArrayList<MGHuman> tempHumanList = new ArrayList<MGHuman>();
-			for (int i = 0,j = gameList.size(); i < j; i++)
-			{
+			for (int i = 0, j = gameList.size(); i < j; i++) {
 				tempHumanList = gameList.getHumanAgentList().get(i);
-				for (int i1 = 0,j1 = tempHumanList.size(); i1 < j1; i1++)
-				{
+				for (int i1 = 0, j1 = tempHumanList.size(); i1 < j1; i1++) {
 					tempHumanList.get(i1).setCanWriteDataBase(false);
 				}
 			}
@@ -256,7 +261,7 @@ public class AmfServer {
 		} else {
 			return false;
 		}
-		
+
 	}
 
 	public synchronized void sentSerializationMeg(HashMap<String, Object> map) {

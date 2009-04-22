@@ -128,20 +128,7 @@ public class MGHuman extends Agent {
 	 * 
 	 */
 	public boolean agentAct(int mu) {
-
-		while (!Constant.isInterfaceToGame()) {
-			// DO NOTHING
-		}
-
-		Constant.setInterfaceToGame(false);
-
-		if (Constant.interfaceToGameAction == Constant.HUMAN_PLAYER_EXIT) {
-			action = 0;
-			return false;
-		} else {
-			action = Constant.interfaceToGameAction;
-			return true;
-		}
+		return true;
 	}
 
 	/**
