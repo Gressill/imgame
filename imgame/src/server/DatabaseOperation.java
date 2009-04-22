@@ -138,30 +138,15 @@ public class DatabaseOperation {
 		}
 		return (result);
 	}
-
-	public static void testSql() {
-		String sqlString = "select * from `price_info`";
-		String sqlInsert = "INSERT INTO `price_info` (`price`) VALUES (34.90)";
-		//String ssString = "INSERT INTO `price_info` (`price`) VALUES (34.90),(12),(25)";
-		ResultSet res;
+	
+	public static void testConnection(){
 		DatabaseOperation databaseOperation = new DatabaseOperation();
-		if(databaseOperation.OpenConnection())
-		{
-			int i = databaseOperation.ExecuteUpdate(sqlInsert);//I,U,D
-			System.out.print("i="+i);
-			res = databaseOperation.ExecuteQuery(sqlString);//S
-			//处理结果集
-			try {
-				while (res.next()) {
-					String name = res.getString("price_id");
-					System.out.println(name);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}finally{
-				databaseOperation.CloseConnection();
-			}
+		if(databaseOperation.OpenConnection()){
+			System.out.println("System Msgs: Server has connected to the mysql database.");
+		}else{
+			System.out.println("System Msgs: Server has failed to connect to the mysql database.");
 		}
+		
 	}
 }
 

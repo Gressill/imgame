@@ -14,12 +14,12 @@ public class SocketServer
 {
 	private ServerSocket server;
 
-	private int userDefineMemorySize = 0;
-
-	private int userDefinestrategySize = 0;
-
-	private int userDefineAgentNumber = 0;
-
+//	private int userDefineMemorySize = 0;
+//
+//	private int userDefinestrategySize = 0;
+//
+//	private int userDefineAgentNumber = 0;
+//
 	private Img imgGame;
 
 	private BManager bMan = new BManager();// 消息广播者
@@ -38,16 +38,16 @@ public class SocketServer
 		try
 		{
 			server = new ServerSocket(port); // 创建服务器套接字
-			System.out.println("Port 8888 is listening, waiting to play game.");
+			System.out.println("System Msgs: Port "+Constant.port+" is listening, waiting to play game.");
 			while (true)
 			{
 				Socket socket = server.accept();// 若客户机提请求，socket连接
+				//may be we should not start a thread here
+				//this place will only receive the M,N,S,param
 				new GameThread(socket).start();// 启动线程
-				bMan.add(socket);// 添加套接字
+				//bMan.add(socket);// 添加套接字
 				// AmfServer amfServer1 = new AmfServer(socket);
 				// amfServer1.sentSerializationMeg();
-				// bMan.sendClientInfo();//使用套接字输出当前连接人数
-				// bMan.sendToAll();
 			}
 		} catch (Exception e)
 		{
@@ -81,7 +81,7 @@ public class SocketServer
 				reader = new BufferedReader(new InputStreamReader(socket
 						.getInputStream(), "utf8"));
 				writer = new PrintWriter(socket.getOutputStream(), true);
-				String msg;
+				//String msg;
 				// writer.println(imgGame.getPrice());
 				// System.out.println("pice="+imgGame.getPrice());
 				// 从输出流获取信息
