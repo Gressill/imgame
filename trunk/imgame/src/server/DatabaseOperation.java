@@ -28,7 +28,7 @@ public class DatabaseOperation {
 	public DatabaseOperation() {
 		//From System.xml
 		ClassString 		= "com.mysql.jdbc.Driver";//"oracle.jdbc.driver.OracleDriver";
-		ConnectionString 	= "jdbc:mysql://localhost:3306/" + Constant.DB__DATABASE;//"jdbc:oracle:thin:@192.168.103.171:1521:jstrd";
+		ConnectionString 	= "jdbc:mysql://"+Constant.DB_IP+":3306/" + Constant.DB_DATABASE;//"jdbc:oracle:thin:@192.168.103.171:1521:jstrd";
 		UserName 			= Constant.DB_USER_NAME;
 		PassWord 			= Constant.DB_PASSWORD;
 
@@ -139,12 +139,15 @@ public class DatabaseOperation {
 		return (result);
 	}
 	
-	public static void testConnection(){
+	public static boolean testConnection(){
 		DatabaseOperation databaseOperation = new DatabaseOperation();
 		if(databaseOperation.OpenConnection()){
 			System.out.println("System Msgs: Server has connected to the mysql database.");
+			databaseOperation.CloseConnection();
+			return true;
 		}else{
 			System.out.println("System Msgs: Server has failed to connect to the mysql database.");
+			return false;
 		}
 		
 	}

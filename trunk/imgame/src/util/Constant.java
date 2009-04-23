@@ -65,11 +65,12 @@ public class Constant {
 	public static int sellers = 0;
 
 	// database string
-	public static String DB__DATABASE;
+	public static String DB_DATABASE;
 	public static String DB_USER_NAME;
 	public static String DB_PASSWORD;
 	public static int port;
 	public static int PRICE_BUFFFER_SIZE = 200;
+	public static String DB_IP;
 
 	// public final static String DB_USER_NAME = "root";
 	// public final static String DB_PASSWORD = "uestc";
@@ -89,13 +90,14 @@ public class Constant {
 			Document doc = reader.read(configfile);
 			Element root = doc.getRootElement();
 			port = Integer.parseInt(root.element("port").getTextTrim());
-			DB__DATABASE = root.element("database").getTextTrim();
+			DB_DATABASE = root.element("database").getTextTrim();
 			DB_USER_NAME = root.element("databaseusername").getTextTrim();
 			DB_PASSWORD = root.element("databasepassword").getTextTrim();
+			DB_IP = root.element("databaseip").getTextTrim();
 			LOG_PATH = root.element("logpath").getTextTrim();
 			//System.out.println("port:" + port + "\ndatabase" + DB__DATABASE+ "\nusername:" + DB_USER_NAME + "\npassword:" + DB_PASSWORD);
 			System.out.println("System Msgs: Load config file succeed. The config argument is: ");
-			System.out.println("DATABASE: "+DB__DATABASE+"\nDB_USER_NAME: "+DB_USER_NAME+"\nDB_PASSWORD: "+DB_PASSWORD+"\nport: "+port);
+			System.out.println("DATABASE: "+DB_DATABASE+"\nDB_USER_NAME: "+DB_USER_NAME+"\nDB_PASSWORD: "+DB_PASSWORD+"\nport: "+port+"\ndb_ip: "+DB_IP);
 			return true;
 		} catch (Exception e) {
 			System.out.println("System Msgs: Load config file error:"+e.getMessage());
