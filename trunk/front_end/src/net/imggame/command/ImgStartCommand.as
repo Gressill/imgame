@@ -22,7 +22,7 @@ package net.imggame.command {
 			
 			//set level.
 			var level:Number = Math.pow(2,model.gameParam.m)/(model.gameParam.n as Number);
-			Alert.show(level.toString());
+			//Alert.show(level.toString());
 			if(0<level<=0.04){
 				value.level = "Easy";
 			}else if(0.04<level<=0.08){
@@ -45,7 +45,6 @@ package net.imggame.command {
             	model._socket.writeObject(requestObj);
 			}
             model._socket.flush();
-            
 		}
 	}
 }
