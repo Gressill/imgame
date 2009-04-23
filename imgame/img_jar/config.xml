@@ -3,7 +3,7 @@
 	<database>imgame</database>
 	<port>8888</port>
 	<databasetable>price_info</databasetable>
-	<databaseip>192.168.1.103</databaseip>
+	<databaseip>192.168.1.117</databaseip>
 	<databaseusername>imguser</databaseusername>
 	<databasepassword>uestc</databasepassword>
 	<logpath>"src/xmlfile/history.xml"</logpath>
