@@ -5,7 +5,7 @@
  	layout="absolute"
    initialize="init();">
 	<!--mx:Style source="asset/imgstyle.css" /-->	
-	<mx:Style source="asset/osx/flex_skins.css" />
+	<mx:Style source="asset/default/flex_skins.css" />
 	<mx:Style>
 		Application{
 			/* set modal transparency to 0 if you want to use the background fade */
