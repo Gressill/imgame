@@ -44,7 +44,6 @@
 			    {
 			        trace("loader is not a URLLoader!");
 			    }
-
 			}
 		]]>
 	</mx:Script>
