@@ -88,6 +88,7 @@ public class Constant {
 			//get path
 			String userdirString = System.getProperty("user.dir");
 			File configfile = new File(userdirString+"/config.xml");
+			System.out.println(userdirString);
 			SAXReader reader = new SAXReader();
 			Document doc = reader.read(configfile);
 			Element root = doc.getRootElement();
