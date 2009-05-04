@@ -55,10 +55,10 @@
 			}
 			
 			public function getBack( e:MouseEvent ): void {
-				if(value.turn < 200){
-					Alert.show("You must play 200+ turns before submitting.","Submit Warning",1);
-					return;
-				}
+				//if(value.turn < 200){
+				//	Alert.show("You must play 200+ turns before submitting.","Submit Warning",Alert.OK | Alert.CANCEL);
+				//	return;
+				//}
 				model.start_active 			= true;
 				model.action_active 		= false;
 				model.stop_active 			= false;
