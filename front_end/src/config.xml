@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-	<linkip>192.168.1.111</linkip>
+	<linkip>192.168.1.102</linkip>
 	<linkport>8888</linkport>
 	<minturn>200</minturn>
 	<introlink>http://www.baidu.com</introlink>
