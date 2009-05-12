@@ -8,10 +8,6 @@ ApplicationControlBar {
    paddingBottom: 0;
 }
 
-@font-face {
-	src:url("lucidaGrande.swf"); 
-	font-family: "Lucida Grande";
-}
 
 Application {
 	fontFamily: "Lucida Grande";
